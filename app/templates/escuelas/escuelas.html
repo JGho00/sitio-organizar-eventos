@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+
+{% block title %}
+Escuelas
+{% endblock %}
+
+{% block styles %}
+<link rel="stylesheet" href="/static/css/escuelas.css">
+{% endblock %}
+
+{% block content %}
+
+<h1>Escuelas Contratadas</h1>
+
+<table>
+
+    <thead>
+        <tr>
+            <th>Escuela</th>
+            <th>Ciudad</th>
+            <th>Año</th>
+        </tr>
+    </thead>
+
+    <tbody>
+
+        {% for escuela in escuelas %}
+
+        <tr>
+            <td>{{ escuela.nombre }}</td>
+            <td>{{ escuela.ciudad }}</td>
+            <td>{{ escuela.anio }}</td>
+        </tr>
+
+        {% endfor %}
+
+    </tbody>
+
+</table>
+
+{% endblock %}
