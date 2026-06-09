@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block title %}
+Escuelas
+{% endblock %}
+
+{% block styles %}
+<link rel="stylesheet" href="/static/css/escuelas.css">
+{% endblock %}
+
+{% block content %}
+    <h1>Detalles de la Escuela</h1>
+    <p><strong>Nombre:</strong> {{ escuela.nombre }}</p>
+    <p><strong>Ciudad:</strong> {{ escuela.ciudad }}</p>
+    <p><strong>Año:</strong> {{ escuela.anio }}</p>
+{% endblock %}

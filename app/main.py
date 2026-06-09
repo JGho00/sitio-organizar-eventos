@@ -2,8 +2,14 @@ from fastapi import FastAPI
 from api.endopoints.egresados import router as egresados_router
 from api.endopoints.escuelas import router as escuelas_router
 from api.endopoints.eventos import router as eventos_router
+from fastapi.staticfiles import StaticFiles
+import os
+
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
 # Inicializar la aplicación
 app = FastAPI()
+app.mount("/static", StaticFiles(directory=os.path.join(BASE_DIR, "app", "static")), name="static")
 app.include_router(egresados_router)
 app.include_router(escuelas_router)
 app.include_router(eventos_router)
