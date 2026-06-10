@@ -1,11 +1,40 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Egresados</title>
-</head>
-<body>
-    
-</body>
-</html>
+{% extends "base.html" %}
+
+{% block title %}
+egresados
+{% endblock %}
+
+{% block styles %}
+<link rel="stylesheet" href="/static/css/egresados.css">
+{% endblock %}
+
+{% block content %}
+
+
+<h1>egresados</h1>
+
+<table>
+
+    <thead>
+        <tr>
+            <th>Nombre</th>
+            <th>Carrera</th>
+        </tr>
+    </thead>
+
+    <tbody>
+
+        {% for egresado in egresados %}
+
+        <tr>
+            <td>{{ egresado.nombre }}</td>
+            <td>{{ egresado.carrera }}</td>
+        </tr>
+
+        {% endfor %}
+
+    </tbody>
+
+</table>
+
+{% endblock %}

@@ -44,9 +44,12 @@ def obtener_escuela_por_id(id: int, request: Request):
     return {"error": "Escuela no encontrada"}
 
 
-@router.post("/escuelas")
+@router.post("/escuelas/{id}")
 def agregar_escuela(escuela: dict,request: Request):
-    escuela["id"] = len(escuelas) + 1
+    try:
+        escuela["id"] = len(escuelas) + 1
+    except Exception as e:
+        return {"error": str(e)}
     escuelas.append(escuela)
     return templates.TemplateResponse(
         request=request,
@@ -55,6 +58,21 @@ def agregar_escuela(escuela: dict,request: Request):
             "escuelas": escuelas
         }
     )
+
+@router.delete("/escuelas/{id}")
+def eliminar_escuela(id: int,request: Request):
+    print(id)
+    for escuela in escuelas:
+        if escuela["id"] == id:
+            escuelas.remove(escuela)
+            return templates.TemplateResponse(
+                request=request,
+                name="escuelas/escuelas.html",
+                context={
+                    "escuelas": escuelas
+                }
+            )
+    return {"error": "Escuela no encontrada"}
 
 
 escuelas = [    

@@ -2,6 +2,7 @@ from fastapi import FastAPI
 from api.endopoints.egresados import router as egresados_router
 from api.endopoints.escuelas import router as escuelas_router
 from api.endopoints.eventos import router as eventos_router
+from api.endopoints.auth import router as auth_router
 from fastapi.staticfiles import StaticFiles
 import os
 
@@ -13,6 +14,7 @@ app.mount("/static", StaticFiles(directory=os.path.join(BASE_DIR, "app", "static
 app.include_router(egresados_router)
 app.include_router(escuelas_router)
 app.include_router(eventos_router)
+app.include_router(auth_router)
 # Ruta raíz (GET)
 @app.get("/")
 def leer_raiz():
