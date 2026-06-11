@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
 {% block title %}
-egresados
+Egresados
 {% endblock %}
 
 {% block styles %}
@@ -10,31 +10,213 @@ egresados
 
 {% block content %}
 
+<div class="page-container">
+    <!-- Header de la página -->
+    <div class="page-header">
+        <h1>Gestión de Egresados</h1>
+        <p class="subtitle">Administra el registro de egresados</p>
+    </div>
 
-<h1>egresados</h1>
+    <!-- Barra de herramientas: Búsqueda y filtros -->
+    <div class="toolbar">
+        <div class="search-section">
+            <div class="search-group">
+                <input 
+                    type="text" 
+                    id="searchInput" 
+                    class="search-input" 
+                    placeholder="🔍 Buscar por nombre..."
+                    onkeyup="filterTable()"
+                >
+                <input 
+                    type="text" 
+                    id="dniInput" 
+                    class="search-input" 
+                    placeholder="🔍 Buscar por DNI..."
+                    onkeyup="filterTable()"
+                >
+                <input 
+                    type="text" 
+                    id="escuelaInput" 
+                    class="search-input" 
+                    placeholder="🔍 Buscar por escuela..."
+                    onkeyup="filterTable()"
+                >
+            </div>
+        </div>
+        
+        <div class="actions-section">
+            <button class="btn-primary" onclick="openAddModal()">
+                ➕ Agregar Egresado
+            </button>
+        </div>
+    </div>
 
-<table>
+    <!-- Tabla de egresados -->
+    <div class="table-container">
+        <table class="egresados-table">
+            <thead>
+                <tr>
+                    <th>Nombre</th>
+                    <th>DNI</th>
+                    <th>Escuela</th>
+                    <th>Direccion</th>
+                    <th>Telefono</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody id="egresadosTableBody">
+                {% for egresado in egresados %}
+                <tr class="table-row" data-search="{{ (egresado.nombre|lower) }} {{ (egresado.dni|lower) }} {{ (egresado.escuela|lower) }}">
+                    <td class="cell-nombre">
+                        <strong>{{ egresado.nombre }}</strong>
+                    </td>
+                    <td class="cell-dni">{{ egresado.dni }}</td>
+                    <td class="cell-escuela">{{ egresado.escuela }}</td>
+                    <td class="cell-direccion">{{ egresado.direccion }}</td>
+                    <td class="cell-telefono">{{ egresado.telefono }}</td>
+                    <td class="cell-acciones">
+                        <button class="btn-small btn-edit" onclick="editEgresado('{{ egresado.dni }}')">
+                            ✏️ Editar
+                        </button>
+                        <button class="btn-small btn-delete" onclick="deleteEgresado('{{ egresado.dni }}')">
+                            🗑️ Eliminar
+                        </button>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        
+        {% if not egresados %}
+        <div class="empty-state">
+            <p>📭 No hay egresados registrados</p>
+            <button class="btn-primary" onclick="openAddModal()">Agregar Primer Egresado</button>
+        </div>
+        {% endif %}
+    </div>
+</div>
 
-    <thead>
-        <tr>
-            <th>Nombre</th>
-            <th>Carrera</th>
-        </tr>
-    </thead>
+<!-- Modal para agregar/editar egresado -->
+<div id="egresadoModal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h2 id="modalTitle">Agregar Nuevo Egresado</h2>
+            <button class="close-btn" onclick="closeModal()">&times;</button>
+        </div>
+        <form id="egresadoForm" class="form-egresado">
+            <div class="form-group">
+                <label for="nombreEgresado">Nombre Completo</label>
+                <input 
+                    type="text" 
+                    id="nombreEgresado" 
+                    name="nombre" 
+                    required
+                    placeholder="Ej: Juan Pérez García"
+                >
+            </div>
+            
+            <div class="form-group">
+                <label for="dniEgresado">DNI</label>
+                <input 
+                    type="text" 
+                    id="dniEgresado" 
+                    name="dni" 
+                    required
+                    placeholder="Ej: 12345678"
+                >
+            </div>
+            
+            <div class="form-group">
+                <label for="escuelaEgresado">Escuela</label>
+                <input 
+                    type="text" 
+                    id="escuelaEgresado" 
+                    name="escuela" 
+                    required
+                    placeholder="Ej: Instituto San José"
+                >
+            </div>
+            
+            <div class="form-group">
+                <label for="carreraEgresado">Carrera</label>
+                <input 
+                    type="text" 
+                    id="carreraEgresado" 
+                    name="carrera" 
+                    required
+                    placeholder="Ej: Ingeniería en Sistemas"
+                >
+            </div>
+            
+            <div class="form-actions">
+                <button type="submit" class="btn-primary">Guardar</button>
+                <button type="button" class="btn-secondary" onclick="closeModal()">Cancelar</button>
+            </div>
+        </form>
+    </div>
+</div>
 
-    <tbody>
+<script>
+function filterTable() {
+    const nombreInput = document.getElementById('searchInput').value.toLowerCase();
+    const dniInput = document.getElementById('dniInput').value.toLowerCase();
+    const escuelaInput = document.getElementById('escuelaInput').value.toLowerCase();
+    const tableRows = document.querySelectorAll('#egresadosTableBody .table-row');
+    
+    tableRows.forEach(row => {
+        const searchData = row.getAttribute('data-search');
+        
+        const nombreMatch = searchData.includes(nombreInput) || nombreInput === '';
+        const dniMatch = row.querySelector('.cell-dni').textContent.toLowerCase().includes(dniInput) || dniInput === '';
+        const escuelaMatch = row.querySelector('.cell-escuela').textContent.toLowerCase().includes(escuelaInput) || escuelaInput === '';
+        
+        if (nombreMatch && dniMatch && escuelaMatch) {
+            row.style.display = '';
+        } else {
+            row.style.display = 'none';
+        }
+    });
+}
 
-        {% for egresado in egresados %}
+function openAddModal() {
+    document.getElementById('modalTitle').textContent = 'Agregar Nuevo Egresado';
+    document.getElementById('egresadoForm').reset();
+    document.getElementById('egresadoModal').style.display = 'block';
+}
 
-        <tr>
-            <td>{{ egresado.nombre }}</td>
-            <td>{{ egresado.carrera }}</td>
-        </tr>
+function closeModal() {
+    document.getElementById('egresadoModal').style.display = 'none';
+}
 
-        {% endfor %}
+function editEgresado(id) {
+    document.getElementById('modalTitle').textContent = 'Editar Egresado';
+    document.getElementById('egresadoModal').style.display = 'block';
+    alert('Función de edición en desarrollo: Egresado ID ' + id);
+    // TODO: Implementar edición de egresado
+}
 
-    </tbody>
+function deleteEgresado(id) {
+    if (confirm('¿Está seguro de que desea eliminar este egresado?')) {
+        alert('Función de eliminación en desarrollo: Egresado ID ' + id);
+        // TODO: Implementar eliminación de egresado
+    }
+}
 
-</table>
+// Cerrar modal al hacer clic fuera de él
+window.onclick = function(event) {
+    const modal = document.getElementById('egresadoModal');
+    if (event.target === modal) {
+        modal.style.display = 'none';
+    }
+}
+
+// Enviar formulario
+document.getElementById('egresadoForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    alert('Formulario en desarrollo');
+    // TODO: Enviar datos al servidor
+});
+</script>
 
 {% endblock %}

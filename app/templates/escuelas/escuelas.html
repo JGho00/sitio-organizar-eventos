@@ -5,38 +5,178 @@ Escuelas
 {% endblock %}
 
 {% block styles %}
-<link rel="stylesheet" href="/static/css/escuelas.css">
+<link rel="stylesheet" href="/static/css/escuelas_eventos.css">
 {% endblock %}
 
 {% block content %}
 
+<div class="page-container">
+    <!-- Header con título -->
+    <div class="page-header">
+        <h1>Gestión de Escuelas</h1>
+        <p class="subtitle">Administra las escuelas contratadas</p>
+    </div>
 
-<h1>Escuelas Contratadas</h1>
+    <!-- Barra de herramientas: Búsqueda y filtros -->
+    <div class="toolbar">
+        <div class="search-section">
+            <input 
+                type="text" 
+                id="searchInput" 
+                class="search-input" 
+                placeholder="🔍 Buscar escuela por nombre o ciudad..."
+                onkeyup="filterTable()"
+            >
+        </div>
+        
+        <div class="actions-section">
+            <button class="btn-primary" onclick="openAddModal()">
+                ➕ Agregar Escuela
+            </button>
+        </div>
+    </div>
 
-<table>
+    <!-- Tabla de escuelas -->
+    <div class="table-container">
+        <table class="escuelas-table">
+            <thead>
+                <tr>
+                    <th>Nombre de Escuela</th>
+                    <th>Ciudad</th>
+                    <th>Año</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody id="escuelasTableBody">
+                {% for escuela in escuelas %}
+                <tr class="table-row" data-search="{{ (escuela.nombre|lower) }} {{ (escuela.ciudad|lower) }}">
+                    <td class="cell-nombre">
+                        <strong>{{ escuela.nombre }}</strong>
+                    </td>
+                    <td class="cell-ciudad">{{ escuela.ciudad }}</td>
+                    <td class="cell-anio">{{ escuela.anio }}</td>
+                    <td class="cell-acciones">
+                        <button class="btn-small btn-edit" onclick="editEscuela('{{ escuela.id }}')">
+                            ✏️ Editar
+                        </button>
+                        <button class="btn-small btn-delete" onclick="deleteEscuela('{{ escuela.id }}')">
+                            🗑️ Eliminar
+                        </button>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        
+        {% if not escuelas %}
+        <div class="empty-state">
+            <p>📭 No hay escuelas registradas</p>
+            <button class="btn-primary" onclick="openAddModal()">Agregar Primera Escuela</button>
+        </div>
+        {% endif %}
+    </div>
+</div>
 
-    <thead>
-        <tr>
-            <th>Escuela</th>
-            <th>Ciudad</th>
-            <th>Año</th>
-        </tr>
-    </thead>
+<!-- Modal para agregar/editar escuela -->
+<div id="escuelaModal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h2 id="modalTitle">Agregar Nueva Escuela</h2>
+            <button class="close-btn" onclick="closeModal()">&times;</button>
+        </div>
+        <form id="escuelaForm" class="form-escuela">
+            <div class="form-group">
+                <label for="nombreEscuela">Nombre de la Escuela</label>
+                <input 
+                    type="text" 
+                    id="nombreEscuela" 
+                    name="nombre" 
+                    required
+                    placeholder="Ej: Instituto San José"
+                >
+            </div>
+            
+            <div class="form-group">
+                <label for="ciudadEscuela">Ciudad</label>
+                <input 
+                    type="text" 
+                    id="ciudadEscuela" 
+                    name="ciudad" 
+                    required
+                    placeholder="Ej: Buenos Aires"
+                >
+            </div>
+            
+            <div class="form-group">
+                <label for="anioEscuela">Año</label>
+                <input 
+                    type="number" 
+                    id="anioEscuela" 
+                    name="anio" 
+                    required
+                    placeholder="Ej: 2024"
+                >
+            </div>
+            
+            <div class="form-actions">
+                <button type="submit" class="btn-primary">Guardar</button>
+                <button type="button" class="btn-secondary" onclick="closeModal()">Cancelar</button>
+            </div>
+        </form>
+    </div>
+</div>
 
-    <tbody>
+<script>
+function filterTable() {
+    const input = document.getElementById('searchInput').value.toLowerCase();
+    const tableRows = document.querySelectorAll('#escuelasTableBody .table-row');
+    
+    tableRows.forEach(row => {
+        const searchData = row.getAttribute('data-search');
+        if (searchData.includes(input)) {
+            row.style.display = '';
+        } else {
+            row.style.display = 'none';
+        }
+    });
+}
 
-        {% for escuela in escuelas %}
+function openAddModal() {
+    document.getElementById('modalTitle').textContent = 'Agregar Nueva Escuela';
+    document.getElementById('escuelaForm').reset();
+    document.getElementById('escuelaModal').style.display = 'block';
+}
 
-        <tr>
-            <td>{{ escuela.nombre }}</td>
-            <td>{{ escuela.ciudad }}</td>
-            <td>{{ escuela.anio }}</td>
-        </tr>
+function closeModal() {
+    document.getElementById('escuelaModal').style.display = 'none';
+}
 
-        {% endfor %}
+function editEscuela(id) {
+    alert('Función de edición en desarrollo: Escuela ID ' + id);
+    // TODO: Implementar edición de escuela
+}
 
-    </tbody>
+function deleteEscuela(id) {
+    if (confirm('¿Está seguro de que desea eliminar esta escuela?')) {
+        alert('Función de eliminación en desarrollo: Escuela ID ' + id);
+        // TODO: Implementar eliminación de escuela
+    }
+}
 
-</table>
+// Cerrar modal al hacer clic fuera de él
+window.onclick = function(event) {
+    const modal = document.getElementById('escuelaModal');
+    if (event.target === modal) {
+        modal.style.display = 'none';
+    }
+}
+
+// Enviar formulario
+document.getElementById('escuelaForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    alert('Formulario en desarrollo');
+    // TODO: Enviar datos al servidor
+});
+</script>
 
 {% endblock %}

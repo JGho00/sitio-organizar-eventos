@@ -1,5 +1,5 @@
 from urllib import request
-
+from models.escuela import escuelas
 from fastapi import APIRouter
 from fastapi import Request
 from fastapi.templating import Jinja2Templates
@@ -75,23 +75,3 @@ def eliminar_escuela(id: int,request: Request):
     return {"error": "Escuela no encontrada"}
 
 
-escuelas = [    
-        {
-            "id": 1,
-            "nombre": "Colegio Nacional",
-            "ciudad": "La Rioja",
-            "anio": 2026
-        },
-        {
-            "id": 2,
-            "nombre": "Escuela Comercial",
-            "ciudad": "Chilecito",
-            "anio": 2026
-        },
-        {
-            "id": 3,
-            "nombre": "Escuela Provincial",
-            "ciudad": "La Rioja",
-            "anio": 2026
-        }
-    ]

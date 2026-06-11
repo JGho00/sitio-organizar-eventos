@@ -1,6 +1,7 @@
 from fastapi import APIRouter
 from fastapi import Request
 from fastapi.templating import Jinja2Templates
+from models.egresado import egresados
 import os
 router = APIRouter(
     prefix="/egresados",
@@ -22,9 +23,3 @@ async def get_egresados(request:Request):
     )
 
 
-egresados = [
-    {"id": 1, "nombre": "Juan Pérez", "carrera": "Ingeniería en Sistemas"},
-    {"id": 2, "nombre": "María Gómez", "carrera":"Licenciatura en Administración de Empresas"},
-    {"id": 3, "nombre": "Carlos Rodríguez", "carrera": "Arquitectura"},
-    {"id": 4, "nombre": "Ana Martínez", "carrera": "Medicina"}
-]

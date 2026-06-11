@@ -1,5 +1,4 @@
-from fastapi import APIRouter
-from fastapi import Request
+from fastapi import APIRouter, Request, Form
 from fastapi.templating import Jinja2Templates
 import os
 
@@ -24,12 +23,9 @@ async def login(request:Request):
     )
 
 @router.post("/")
-async def login_post(username: str, password: str, request: Request):
+async def login_post(request: Request, username: str = Form(...), password: str = Form(...)):
     print("Recibiendo datos de login...")
-    print(request)
-    form_data = await request.form()
-    username = form_data.get("usuario")
-    password = form_data.get("password")
+    print(f"Usuario: {username}, Contraseña: {password}")
     
     # Aquí puedes agregar la lógica de autenticación, por ejemplo, verificar el usuario y contraseña en una base de datos.
     

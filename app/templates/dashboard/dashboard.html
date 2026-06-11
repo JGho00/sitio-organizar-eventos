@@ -1,0 +1,268 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard - Sistema de Organización de Eventos{% endblock %}
+
+{% block styles %}
+<link rel="stylesheet" href="/static/css/dashboard.css">
+{% endblock %}
+
+{% block content %}
+<div class="dashboard-container">
+    <!-- ENCABEZADO -->
+    <header class="header">
+        <div class="header-content">
+            <div class="header-left">
+                <img src="/static/images/logo.png" alt="Logo" class="logo">
+                <h1 class="site-title">Gestor de Eventos</h1>
+            </div>
+            <div class="header-right">
+                <span class="user-info">
+                    <span class="user-icon">👤</span>
+                    <span class="user-name">Usuario Nombre</span>
+                </span>
+            </div>
+        </div>
+    </header>
+
+    <div class="main-content">
+        <!-- MENÚ VERTICAL IZQUIERDO -->
+        <aside class="sidebar">
+            <nav class="sidebar-nav">
+                <ul class="nav-list">
+                    <li class="nav-item">
+                        <a href="#escuelas" class="nav-link active">
+                            <span class="nav-icon">🏫</span>
+                            <span class="nav-text">Escuelas</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#egresados" class="nav-link">
+                            <span class="nav-icon">👨‍🎓</span>
+                            <span class="nav-text">Egresados</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#pagos" class="nav-link">
+                            <span class="nav-icon">💰</span>
+                            <span class="nav-text">Pagos</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#eventos" class="nav-link">
+                            <span class="nav-icon">📅</span>
+                            <span class="nav-text">Eventos</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#reportes" class="nav-link">
+                            <span class="nav-icon">📊</span>
+                            <span class="nav-text">Reportes</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#contratos" class="nav-link">
+                            <span class="nav-icon">📋</span>
+                            <span class="nav-text">Contratos</span>
+                        </a>
+                    </li>
+                    <li class="nav-item nav-divider"></li>
+                    <li class="nav-item">
+                        <a href="/logout" class="nav-link logout">
+                            <span class="nav-icon">🚪</span>
+                            <span class="nav-text">Cerrar Sesión</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </aside>
+
+        <!-- CONTENIDO PRINCIPAL -->
+        <main class="content">
+            <div class="dashboard-grid">
+                
+                <!-- SECCIÓN 1: ÚLTIMOS PAGOS REALIZADOS -->
+                <section class="dashboard-card">
+                    <div class="card-header">
+                        <h2 class="card-title">
+                            <span class="card-icon">✅</span>
+                            Últimos Pagos Realizados
+                        </h2>
+                        <a href="#" class="card-link">Ver más →</a>
+                    </div>
+                    <div class="card-content">
+                        <div class="payments-table">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Egresado</th>
+                                        <th>Monto</th>
+                                        <th>Fecha</th>
+                                        <th>Concepto</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>Juan García</td>
+                                        <td class="amount">$50.00</td>
+                                        <td>2024-06-10</td>
+                                        <td>Cuota Mensual</td>
+                                    </tr>
+                                    <tr>
+                                        <td>María López</td>
+                                        <td class="amount">$75.00</td>
+                                        <td>2024-06-10</td>
+                                        <td>Evento Anual</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Carlos Rodríguez</td>
+                                        <td class="amount">$50.00</td>
+                                        <td>2024-06-09</td>
+                                        <td>Cuota Mensual</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Ana Martínez</td>
+                                        <td class="amount">$100.00</td>
+                                        <td>2024-06-09</td>
+                                        <td>Evento Especial</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Pedro Sánchez</td>
+                                        <td class="amount">$50.00</td>
+                                        <td>2024-06-08</td>
+                                        <td>Cuota Mensual</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- SECCIÓN 2: PAGOS CON VENCIMIENTO PRÓXIMO -->
+                <section class="dashboard-card">
+                    <div class="card-header">
+                        <h2 class="card-title">
+                            <span class="card-icon">⏰</span>
+                            Pagos Próximos a Vencer
+                        </h2>
+                        <a href="#" class="card-link">Ver más →</a>
+                    </div>
+                    <div class="card-content">
+                        <div class="upcoming-payments">
+                            <div class="payment-item">
+                                <div class="payment-info">
+                                    <p class="payment-name">Sofia Flores</p>
+                                    <p class="payment-detail">Cuota Mensual - Vence en 3 días</p>
+                                </div>
+                                <div class="payment-amount">$50.00</div>
+                            </div>
+                            <div class="payment-item">
+                                <div class="payment-info">
+                                    <p class="payment-name">Miguel Torres</p>
+                                    <p class="payment-detail">Evento Anual - Vence en 5 días</p>
+                                </div>
+                                <div class="payment-amount">$75.00</div>
+                            </div>
+                            <div class="payment-item">
+                                <div class="payment-info">
+                                    <p class="payment-name">Laura Vargas</p>
+                                    <p class="payment-detail">Cuota Mensual - Vence en 6 días</p>
+                                </div>
+                                <div class="payment-amount">$50.00</div>
+                            </div>
+                            <div class="payment-item">
+                                <div class="payment-info">
+                                    <p class="payment-name">Roberto Díaz</p>
+                                    <p class="payment-detail">Evento Especial - Vence en 7 días</p>
+                                </div>
+                                <div class="payment-amount">$100.00</div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- SECCIÓN 3: PAGOS VENCIDOS CON MORA -->
+                <section class="dashboard-card">
+                    <div class="card-header">
+                        <h2 class="card-title">
+                            <span class="card-icon">⚠️</span>
+                            Pagos Vencidos
+                        </h2>
+                        <a href="#" class="card-link">Ver más →</a>
+                    </div>
+                    <div class="card-content">
+                        <div class="overdue-payments">
+                            <div class="overdue-item">
+                                <div class="overdue-info">
+                                    <p class="overdue-name">Francisco Gómez</p>
+                                    <p class="overdue-detail">Vencido hace 15 días</p>
+                                </div>
+                                <div class="overdue-amounts">
+                                    <div class="original-amount">
+                                        <span class="label">Original:</span>
+                                        <span class="amount">$50.00</span>
+                                    </div>
+                                    <div class="with-interest">
+                                        <span class="label">Con mora:</span>
+                                        <span class="amount highlight">$57.50</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="overdue-item">
+                                <div class="overdue-info">
+                                    <p class="overdue-name">Patricia Ruiz</p>
+                                    <p class="overdue-detail">Vencido hace 8 días</p>
+                                </div>
+                                <div class="overdue-amounts">
+                                    <div class="original-amount">
+                                        <span class="label">Original:</span>
+                                        <span class="amount">$75.00</span>
+                                    </div>
+                                    <div class="with-interest">
+                                        <span class="label">Con mora:</span>
+                                        <span class="amount highlight">$82.50</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="overdue-item">
+                                <div class="overdue-info">
+                                    <p class="overdue-name">Javier Núñez</p>
+                                    <p class="overdue-detail">Vencido hace 22 días</p>
+                                </div>
+                                <div class="overdue-amounts">
+                                    <div class="original-amount">
+                                        <span class="label">Original:</span>
+                                        <span class="amount">$100.00</span>
+                                    </div>
+                                    <div class="with-interest">
+                                        <span class="label">Con mora:</span>
+                                        <span class="amount highlight">$118.00</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="overdue-item">
+                                <div class="overdue-info">
+                                    <p class="overdue-name">Daniela Cervantes</p>
+                                    <p class="overdue-detail">Vencido hace 5 días</p>
+                                </div>
+                                <div class="overdue-amounts">
+                                    <div class="original-amount">
+                                        <span class="label">Original:</span>
+                                        <span class="amount">$50.00</span>
+                                    </div>
+                                    <div class="with-interest">
+                                        <span class="label">Con mora:</span>
+                                        <span class="amount highlight">$53.00</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+            </div>
+        </main>
+    </div>
+</div>
+
+<script src="/static/js/dashboard.js"></script>
+{% endblock %}
