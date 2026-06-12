@@ -23,3 +23,27 @@ async def get_egresados(request:Request):
     )
 
 
+@router.post("/{dni}")
+async def get_egresado_dni(request:Request,dni:int):
+
+    egresado = get_egresado_dni_bd(dni)
+
+    return templates.TemplateResponse(
+        request=request,
+        name = "egresados/egresado.html",
+        context={
+            "egresado": egresado
+        }
+    )
+
+
+
+def get_egresado_dni_bd(dni:int):
+
+    egresado_dni:str = ''
+
+    for egresado in egresados:
+        if egresado.dni == dni:
+            egresado_dni = egresado
+
+    return egresado_dni

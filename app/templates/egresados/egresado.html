@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block title %}
+Escuelas
+{% endblock %}
+
+{% block styles %}
+<link rel="stylesheet" href="/static/css/egresados.css">
+{% endblock %}
+
+{% block content %}
+    <h1>Detalles del Egresado</h1>
+    <p><strong>Nombre:</strong> {{ egresado.nombre }}</p>
+    <p><strong>Ciudad:</strong> {{ egresado.ciudad }}</p>
+    <p><strong>Año:</strong> {{ egresado.anio }}</p>
+{% endblock %}
