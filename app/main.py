@@ -3,7 +3,8 @@ from fastapi.responses import RedirectResponse
 from api.endopoints.egresados import router as egresados_router
 from api.endopoints.escuelas import router as escuelas_router
 from api.endopoints.eventos import router as eventos_router
-from api.endopoints.login_ejemplo import router as auth_router
+from api.endopoints.auth import router as auth_router
+from api.endopoints.dashboard import router as dashboard_router
 from fastapi.staticfiles import StaticFiles
 import os
 
@@ -16,6 +17,7 @@ app.include_router(egresados_router)
 app.include_router(escuelas_router)
 app.include_router(eventos_router)
 app.include_router(auth_router)
+app.include_router(dashboard_router)
 
 # Ruta de logout global - Redirecciona a /login
 @app.get("/logout")
