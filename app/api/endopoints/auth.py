@@ -51,7 +51,7 @@ async def login(request: Request, form_data: OAuth2PasswordRequestForm = Depends
     
     token_access = token.replace('USER',form_data.username)
     print(token_access)
-    response = RedirectResponse(url="/dashboard", status_code=status.HTTP_303_SEE_OTHER)
+    response = RedirectResponse(url="/", status_code=status.HTTP_303_SEE_OTHER)
 
     response.set_cookie(
         key="access_token", 

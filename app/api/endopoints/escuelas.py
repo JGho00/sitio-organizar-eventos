@@ -11,11 +11,11 @@ router = APIRouter(
     tags=["escuelas"]
 )
 
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-templates = Jinja2Templates(directory=os.path.join(BASE_DIR, "templates"))
+#BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+#templates = Jinja2Templates(directory=os.path.join(BASE_DIR, "templates"))
 
 
-print(os.path.join(BASE_DIR, "templates"))
+templates = Jinja2Templates(directory=os.path.join("templates"))
 
 @router.get("/",response_class=HTMLResponse)
 def listar_escuelas(request: Request,username = Depends(obtener_usuario_actual)):
@@ -25,7 +25,8 @@ def listar_escuelas(request: Request,username = Depends(obtener_usuario_actual))
         request=request,
         name="escuelas/escuelas.html",
         context={
-            "escuelas": escuelas
+            "escuelas": escuelas,
+            'username':username
         }
     )
    

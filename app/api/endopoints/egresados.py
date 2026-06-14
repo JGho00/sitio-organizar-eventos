@@ -1,7 +1,7 @@
-from fastapi import APIRouter
-from fastapi import Request
+from fastapi import APIRouter,Request,Depends
 from fastapi.templating import Jinja2Templates
 from models.egresado import egresados
+from api.endopoints.dependencias import obtener_usuario_actual
 import os
 router = APIRouter(
     prefix="/egresados",
@@ -13,12 +13,13 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__fil
 templates = Jinja2Templates(directory=os.path.join(BASE_DIR, "templates"))
 
 @router.get("/")
-async def get_egresados(request:Request):
+async def get_egresados(request:Request,username = Depends(obtener_usuario_actual)):
     return templates.TemplateResponse(
         request=request,
         name="egresados/egresados.html",
         context={
-            "egresados": egresados
+            "egresados": egresados,
+            "username":username
         }
     )
 

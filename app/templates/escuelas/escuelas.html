@@ -5,32 +5,32 @@ Escuelas
 {% endblock %}
 
 {% block styles %}
-<link rel="stylesheet" href="/static/css/escuelas_eventos.css">
+<link rel="stylesheet" href="/static/css/escuelas.css">
 {% endblock %}
 
 {% block content %}
 
-<div class="page-container">
-    <!-- Header con título -->
+<!-- Header con título -->
+ <div class="page-container">
     <div class="page-header">
         <h1>Gestión de Escuelas</h1>
-        <p class="subtitle">Administra las escuelas contratadas</p>
+        <p>Administra las escuelas contratadas</p>
     </div>
 
     <!-- Barra de herramientas: Búsqueda y filtros -->
     <div class="toolbar">
-        <div class="search-section">
+        <div>
             <input 
                 type="text" 
                 id="searchInput" 
-                class="search-input" 
+                
                 placeholder="🔍 Buscar escuela por nombre o ciudad..."
-                onkeyup="filterTable()"
+                onkeyup=""
             >
         </div>
         
-        <div class="actions-section">
-            <button class="btn-primary" onclick="openAddModal()">
+        <div>
+            <button class="btn-primary" onclick="">
                 ➕ Agregar Escuela
             </button>
         </div>
@@ -38,7 +38,7 @@ Escuelas
 
     <!-- Tabla de escuelas -->
     <div class="table-container">
-        <table class="escuelas-table">
+        <table class="escuela-table">
             <thead>
                 <tr>
                     <th>Nombre de Escuela</th>
@@ -56,10 +56,10 @@ Escuelas
                     <td class="cell-ciudad">{{ escuela.ciudad }}</td>
                     <td class="cell-anio">{{ escuela.anio }}</td>
                     <td class="cell-acciones">
-                        <button class="btn-small btn-edit" onclick="editEscuela('{{ escuela.id }}')">
+                        <button class="btn-small btn-edit">
                             ✏️ Editar
                         </button>
-                        <button class="btn-small btn-delete" onclick="deleteEscuela('{{ escuela.id }}')">
+                        <button class="btn-small btn-delete">
                             🗑️ Eliminar
                         </button>
                     </td>
@@ -69,114 +69,63 @@ Escuelas
         </table>
         
         {% if not escuelas %}
-        <div class="empty-state">
+        <div class="empty-state" >
             <p>📭 No hay escuelas registradas</p>
-            <button class="btn-primary" onclick="openAddModal()">Agregar Primera Escuela</button>
+            <button >Agregar Primera Escuela</button>
         </div>
         {% endif %}
     </div>
-</div>
 
-<!-- Modal para agregar/editar escuela -->
-<div id="escuelaModal" class="modal">
-    <div class="modal-content">
-        <div class="modal-header">
-            <h2 id="modalTitle">Agregar Nueva Escuela</h2>
-            <button class="close-btn" onclick="closeModal()">&times;</button>
+    <!-- Modal para agregar/editar escuela -->
+    <div id="escuelaModal" >
+        <div >
+            <div >
+                <h2 id="modalTitle">Agregar Nueva Escuela</h2>
+                <button>&times;</button>
+            </div>
+            <form id="escuelaForm" >
+                <div >
+                    <label for="nombreEscuela">Nombre de la Escuela</label>
+                    <input 
+                        type="text" 
+                        id="nombreEscuela" 
+                        name="nombre" 
+                        required
+                        placeholder="Ej: Instituto San José"
+                    >
+                </div>
+                
+                <div >
+                    <label for="ciudadEscuela">Ciudad</label>
+                    <input 
+                        type="text" 
+                        id="ciudadEscuela" 
+                        name="ciudad" 
+                        required
+                        placeholder="Ej: Buenos Aires"
+                    >
+                </div>
+                
+                <div >
+                    <label for="anioEscuela">Año</label>
+                    <input 
+                        type="number" 
+                        id="anioEscuela" 
+                        name="anio" 
+                        required
+                        placeholder="Ej: 2024"
+                    >
+                </div>
+                
+                <div >
+                    <button class="btn-primary" type="submit" >Guardar</button>
+                    <button class="btn-secondary" type="button">Cancelar</button>
+                </div>
+            </form>
         </div>
-        <form id="escuelaForm" class="form-escuela">
-            <div class="form-group">
-                <label for="nombreEscuela">Nombre de la Escuela</label>
-                <input 
-                    type="text" 
-                    id="nombreEscuela" 
-                    name="nombre" 
-                    required
-                    placeholder="Ej: Instituto San José"
-                >
-            </div>
-            
-            <div class="form-group">
-                <label for="ciudadEscuela">Ciudad</label>
-                <input 
-                    type="text" 
-                    id="ciudadEscuela" 
-                    name="ciudad" 
-                    required
-                    placeholder="Ej: Buenos Aires"
-                >
-            </div>
-            
-            <div class="form-group">
-                <label for="anioEscuela">Año</label>
-                <input 
-                    type="number" 
-                    id="anioEscuela" 
-                    name="anio" 
-                    required
-                    placeholder="Ej: 2024"
-                >
-            </div>
-            
-            <div class="form-actions">
-                <button type="submit" class="btn-primary">Guardar</button>
-                <button type="button" class="btn-secondary" onclick="closeModal()">Cancelar</button>
-            </div>
-        </form>
     </div>
-</div>
 
-<script>
-function filterTable() {
-    const input = document.getElementById('searchInput').value.toLowerCase();
-    const tableRows = document.querySelectorAll('#escuelasTableBody .table-row');
-    
-    tableRows.forEach(row => {
-        const searchData = row.getAttribute('data-search');
-        if (searchData.includes(input)) {
-            row.style.display = '';
-        } else {
-            row.style.display = 'none';
-        }
-    });
-}
+ </div>
 
-function openAddModal() {
-    document.getElementById('modalTitle').textContent = 'Agregar Nueva Escuela';
-    document.getElementById('escuelaForm').reset();
-    document.getElementById('escuelaModal').style.display = 'block';
-}
-
-function closeModal() {
-    document.getElementById('escuelaModal').style.display = 'none';
-}
-
-function editEscuela(id) {
-    alert('Función de edición en desarrollo: Escuela ID ' + id);
-    // TODO: Implementar edición de escuela
-}
-
-function deleteEscuela(id) {
-    if (confirm('¿Está seguro de que desea eliminar esta escuela?')) {
-        alert('Función de eliminación en desarrollo: Escuela ID ' + id);
-        // TODO: Implementar eliminación de escuela
-    }
-}
-
-// Cerrar modal al hacer clic fuera de él
-window.onclick = function(event) {
-    const modal = document.getElementById('escuelaModal');
-    if (event.target === modal) {
-        modal.style.display = 'none';
-    }
-}
-
-// Enviar formulario
-document.getElementById('escuelaForm').addEventListener('submit', function(e) {
-    e.preventDefault();
-    alert('Formulario en desarrollo');
-    // TODO: Enviar datos al servidor
-});
-</script>
 
 {% endblock %}

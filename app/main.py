@@ -27,7 +27,7 @@ async def logout():
 # Ruta raíz (GET)
 @app.get("/")
 def leer_raiz():
-    return {"mensaje": "¡Hola del mundo real desde FastAPI!"}
+    return RedirectResponse(url="/dashboard")
 
 # Ruta con parámetros (GET)
 @app.get("/items/{item_id}")

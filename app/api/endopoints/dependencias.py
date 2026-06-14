@@ -1,5 +1,7 @@
 # api/dependencies.py
 from fastapi import Request, HTTPException, status
+cod_1_token = "ajshdajshdjhasdkjhaskdjhaskjdhakd"
+cod_2_token = "32423HJSDJFHSAJHMNASMNDASDasdjhajdjahsdas"
 
 async def obtener_usuario_actual(request: Request) -> str:
     """
@@ -19,7 +21,9 @@ async def obtener_usuario_actual(request: Request) -> str:
         # Lógica temporal de limpieza del token ficticio
         token_limpio = token.replace("Bearer ", "")
         username = token_limpio.replace("fake-jwt-token-for-", "")
+        username = username.replace(cod_1_token,'').replace(cod_2_token,'').strip()
         print(username)
+        
         return username
     except Exception:
         raise HTTPException(

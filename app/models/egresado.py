@@ -1,8 +1,8 @@
 egresados = [
-    {"id": 1, "nombre": "Juan Pérez", "carrera": "Ingeniería en Sistemas"},
-    {"id": 2, "nombre": "María Gómez", "carrera":"Licenciatura en Administración de Empresas"},
-    {"id": 3, "nombre": "Carlos Rodríguez", "carrera": "Arquitectura"},
-    {"id": 4, "nombre": "Ana Martínez", "carrera": "Medicina"}
+    {"id": 1, "nombre": "Juan Pérez", "escuela": "Colegio Nacional"},
+    {"id": 2, "nombre": "María Gómez", "escuela":"Escuela Comercial"},
+    {"id": 3, "nombre": "Carlos Rodríguez", "escuela": "Escuela Provincial"},
+    {"id": 4, "nombre": "Ana Martínez", "escuela": "Colegio Nacional"}
 ]
 
 class Egresado:
