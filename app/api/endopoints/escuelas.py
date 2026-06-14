@@ -1,12 +1,15 @@
-from urllib import request
 from models.escuela import escuelas
-from fastapi import APIRouter
+from fastapi import APIRouter,Depends
 from fastapi import Request
 from fastapi.templating import Jinja2Templates
 from fastapi.responses import HTMLResponse
+from api.endopoints.dependencias import obtener_usuario_actual
 import os
 
-router = APIRouter()
+router = APIRouter(
+    prefix="/escuelas",
+    tags=["escuelas"]
+)
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 templates = Jinja2Templates(directory=os.path.join(BASE_DIR, "templates"))
@@ -14,9 +17,8 @@ templates = Jinja2Templates(directory=os.path.join(BASE_DIR, "templates"))
 
 print(os.path.join(BASE_DIR, "templates"))
 
-@router.get("/escuelas",response_class=HTMLResponse)
-
-def listar_escuelas(request: Request):
+@router.get("/",response_class=HTMLResponse)
+def listar_escuelas(request: Request,username = Depends(obtener_usuario_actual)):
 
     
     return templates.TemplateResponse(
@@ -32,7 +34,7 @@ def obtener_escuela_por_id(id: int, request: Request):
     
     
     for escuela in escuelas:
-        if escuela["id"] == id:
+        if escuela.id == id:
             return templates.TemplateResponse(
                 request=request,
                 name="escuelas/escuela.html",
