@@ -1,5 +1,5 @@
-from models.escuela import escuelas
-from fastapi import APIRouter,Depends
+import models.escuela as escuela_model
+from fastapi import APIRouter,Depends,Form,HTTPException
 from fastapi import Request
 from fastapi.templating import Jinja2Templates
 from fastapi.responses import HTMLResponse
@@ -8,11 +8,8 @@ import os
 
 router = APIRouter(
     prefix="/escuelas",
-    tags=["escuelas"]
+    tags=["Escuelas"]
 )
-
-#BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-#templates = Jinja2Templates(directory=os.path.join(BASE_DIR, "templates"))
 
 
 templates = Jinja2Templates(directory=os.path.join("templates"))
@@ -25,16 +22,31 @@ def listar_escuelas(request: Request,username = Depends(obtener_usuario_actual))
         request=request,
         name="escuelas/escuelas.html",
         context={
-            "escuelas": escuelas,
+            "escuelas": escuela_model.escuelas,
             'username':username
         }
     )
-   
-@router.get("/escuelas/{id}")
+
+@router.get("/agregar-escuela")
+def agregar_escuela(request: Request,username = Depends(obtener_usuario_actual),
+                    ):
+    
+    return templates.TemplateResponse(
+        request=request,
+        name="escuelas/cargar_escuela.html",
+        context={
+            "escuelas": escuela_model.escuelas,
+            "username": username
+        }
+    )
+
+
+
+@router.get("/{id}")
 def obtener_escuela_por_id(id: int, request: Request):
     
     
-    for escuela in escuelas:
+    for escuela in escuela_model.escuelas:
         if escuela.id == id:
             return templates.TemplateResponse(
                 request=request,
@@ -47,32 +59,67 @@ def obtener_escuela_por_id(id: int, request: Request):
     return {"error": "Escuela no encontrada"}
 
 
-@router.post("/escuelas/{id}")
-def agregar_escuela(escuela: dict,request: Request):
-    try:
-        escuela["id"] = len(escuelas) + 1
-    except Exception as e:
-        return {"error": str(e)}
-    escuelas.append(escuela)
+
+
+@router.post("/agregar-escuela")
+def agregar_escuela(request: Request,
+                    nombre:str = Form(...),
+                    direccion:str= Form(...),
+                    ciudad:str = Form(...),
+                    telefono:str = Form(...)
+                    ):
+    
+    escuela_nueva = escuela_model.Escuela(44,nombre,ciudad,direccion,telefono)
+    escuela_model.escuelas.append(escuela_nueva)
+
     return templates.TemplateResponse(
         request=request,
         name="escuelas/escuelas.html",
         context={
-            "escuelas": escuelas
+            "escuelas": escuela_model.escuelas
         }
     )
 
-@router.delete("/escuelas/{id}")
-def eliminar_escuela(id: int,request: Request):
-    print(id)
-    for escuela in escuelas:
-        if escuela["id"] == id:
-            escuelas.remove(escuela)
+@router.post("/actualizar-escuela/{id_escuela}")
+def actualizar_escuela(
+                    request:Request,
+                    id_escuela:int,
+                    direccion:str = Form(...),
+                    telefono:str = Form(...)
+                       ):
+    
+    existe_escuela:bool = False
+    
+    for escuela in escuela_model.escuelas:
+        if escuela.id == id_escuela:
+            existe_escuela = True
+            escuela.direccion = direccion
+            escuela.telefono = telefono
+        
+        
+    if not existe_escuela:
+        raise HTTPException(status_code=404,detail="No existe escuela")
+    print("existe escuela")
+    
+    return templates.TemplateResponse(
+        request=request,
+        name="escuelas/escuelas.html",
+        context={
+            "escuelas": escuela_model.escuelas
+        }
+    )
+
+@router.post("/eliminar-escuela/{id_escuela}")
+def eliminar_escuela(id_escuela: int,request: Request):
+    print(id_escuela)
+    for escuela in escuela_model.escuelas:
+        if escuela.id == id_escuela:
+            escuela_model.escuelas.remove(escuela)
             return templates.TemplateResponse(
                 request=request,
                 name="escuelas/escuelas.html",
                 context={
-                    "escuelas": escuelas
+                    "escuelas": escuela_model.escuelas
                 }
             )
     return {"error": "Escuela no encontrada"}

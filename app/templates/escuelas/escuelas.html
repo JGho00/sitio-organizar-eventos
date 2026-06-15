@@ -29,10 +29,12 @@ Escuelas
             >
         </div>
         
-        <div>
+        <div><a href="/escuelas/agregar-escuela">
             <button class="btn-primary" onclick="">
                 ➕ Agregar Escuela
             </button>
+        </a>
+            
         </div>
     </div>
 
@@ -42,8 +44,9 @@ Escuelas
             <thead>
                 <tr>
                     <th>Nombre de Escuela</th>
+                    <th>Dirección</th>
                     <th>Ciudad</th>
-                    <th>Año</th>
+                    <th>Teléfono</th>
                     <th>Acciones</th>
                 </tr>
             </thead>
@@ -53,15 +56,20 @@ Escuelas
                     <td class="cell-nombre">
                         <strong>{{ escuela.nombre }}</strong>
                     </td>
+                    <td class="cell-direccion">{{ escuela.direccion }}</td>
                     <td class="cell-ciudad">{{ escuela.ciudad }}</td>
-                    <td class="cell-anio">{{ escuela.anio }}</td>
+                    <td class="cell-anio">{{ escuela.telefono}}</td>
                     <td class="cell-acciones">
-                        <button class="btn-small btn-edit">
-                            ✏️ Editar
-                        </button>
-                        <button class="btn-small btn-delete">
-                            🗑️ Eliminar
-                        </button>
+                        <a href="/escuelas/{{escuela.id}}">
+                            <button class="btn-small btn-edit">✏️ Editar</button>
+                        </a>
+                        <form  action="/escuelas/eliminar-escuela/{{escuela.id}}" method="post">
+                            <button class="btn-small btn-delete">
+                                🗑️ Eliminar
+                            </button>
+                        </form>
+                        
+                        
                     </td>
                 </tr>
                 {% endfor %}
@@ -71,59 +79,11 @@ Escuelas
         {% if not escuelas %}
         <div class="empty-state" >
             <p>📭 No hay escuelas registradas</p>
-            <button >Agregar Primera Escuela</button>
         </div>
         {% endif %}
     </div>
 
-    <!-- Modal para agregar/editar escuela -->
-    <div id="escuelaModal" >
-        <div >
-            <div >
-                <h2 id="modalTitle">Agregar Nueva Escuela</h2>
-                <button>&times;</button>
-            </div>
-            <form id="escuelaForm" >
-                <div >
-                    <label for="nombreEscuela">Nombre de la Escuela</label>
-                    <input 
-                        type="text" 
-                        id="nombreEscuela" 
-                        name="nombre" 
-                        required
-                        placeholder="Ej: Instituto San José"
-                    >
-                </div>
-                
-                <div >
-                    <label for="ciudadEscuela">Ciudad</label>
-                    <input 
-                        type="text" 
-                        id="ciudadEscuela" 
-                        name="ciudad" 
-                        required
-                        placeholder="Ej: Buenos Aires"
-                    >
-                </div>
-                
-                <div >
-                    <label for="anioEscuela">Año</label>
-                    <input 
-                        type="number" 
-                        id="anioEscuela" 
-                        name="anio" 
-                        required
-                        placeholder="Ej: 2024"
-                    >
-                </div>
-                
-                <div >
-                    <button class="btn-primary" type="submit" >Guardar</button>
-                    <button class="btn-secondary" type="button">Cancelar</button>
-                </div>
-            </form>
-        </div>
-    </div>
+    
 
  </div>
 

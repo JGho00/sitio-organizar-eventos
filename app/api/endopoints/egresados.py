@@ -8,9 +8,8 @@ router = APIRouter(
     tags =["Egresados"],
 )
 
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-templates = Jinja2Templates(directory=os.path.join(BASE_DIR, "templates"))
+templates = Jinja2Templates( "templates")
 
 @router.get("/")
 async def get_egresados(request:Request,username = Depends(obtener_usuario_actual)):

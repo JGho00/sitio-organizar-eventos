@@ -9,8 +9,42 @@ Escuelas
 {% endblock %}
 
 {% block content %}
-    <h1>Detalles de la Escuela</h1>
-    <p><strong>Nombre:</strong> {{ escuela.nombre }}</p>
-    <p><strong>Ciudad:</strong> {{ escuela.ciudad }}</p>
-    <p><strong>Año:</strong> {{ escuela.anio }}</p>
+    <div>
+        <div>
+            <h1>Detalles de la Escuela</h1>
+            <form action="/escuelas/actualizar-escuela/{{escuela.id}}" method="post">
+                <div>
+                    <p>Escuela:</p>
+                    <input type="text" placeholder="" value="{{escuela.nombre}}" name="nombre">
+                </div>
+                <div>
+                    <p>Dirección:</p>
+                    <input type="text" placeholder="" value="{{escuela.direccion}}" name="direccion">
+                </div>
+                <div>
+                    <p>Ciudad:</p>
+                    <input type="text" placeholder="" value="{{escuela.ciudad}}" name="ciudad" disabled>
+                </div>
+                <div>
+                    <p>Teléfono:</p>
+                    <input type="text" placeholder="" value="{{escuela.telefono}}" name="telefono">
+                </div>
+                <div>
+                    <button>Guardar cambios</button>
+                </div>
+                
+                
+            </form>
+            <div>
+                <a href="/escuelas"><button>Cancelar</button></a>
+                
+            </div>
+        </div>
+
+        <div>
+            <div><button></button></div>
+        </div>
+        
+    </div>
+    
 {% endblock %}

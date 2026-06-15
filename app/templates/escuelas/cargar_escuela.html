@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+
+{% block title %}
+Escuelas
+{% endblock %}
+
+{% block styles %}
+<link rel="stylesheet" href="/static/css/escuelas.css">
+{% endblock %}
+
+{% block content %}
+
+<div>
+    <div>
+        <h1>Agregar escuela</h1>
+    </div>
+    <div>
+        <form action="/escuelas/agregar-escuela" method="post">
+            <input type="text" name="nombre" placeholder="Ingresar nombre">
+            <input type="text" name="direccion" placeholder="Ingresar direccion">
+            <input type="text" name="ciudad" placeholder="Ingresar ciudad">
+            <input type="text" name="telefono" placeholder="Ingresar telefono">
+            <button type="submit">Agregar</button>
+        </form>
+        
+        <div>
+
+            <a href="/escuelas"><button>Cancelar</button></a>
+
+        </div>
+    </div>
+</div>
+
+{% endblock %}
