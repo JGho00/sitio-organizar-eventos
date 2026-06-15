@@ -125,3 +125,10 @@ def eliminar_escuela(id_escuela: int,request: Request):
     return {"error": "Escuela no encontrada"}
 
 
+
+
+
+
+
+
+

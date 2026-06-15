@@ -6,8 +6,21 @@
 {% endblock %}
 
 {% block content %}
-    <h1>Home</h1>
-{% endblock %}
+    <div>
+        <h1>Dashboard</h1>
+    </div>
+    <div>
+        <h2>Próximos eventos</h2>
+        <div>
+            {% for evento in eventos %}
+            <h3>{{evento.nombre}}</h3>
+            {% endfor %}
+        </div>
+    </div>
+    <div>
+        <h2>Recordatorio: Próximos vencimientos</h2>
+    </div>
+{% endblock content%}
 
 {% block scripts %}
 <script src="/static/js/dashboard.js"></script>
