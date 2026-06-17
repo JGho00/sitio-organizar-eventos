@@ -1,9 +1,15 @@
 import models.escuela as escuela_model
 from fastapi import APIRouter,Depends,Form,HTTPException
-from fastapi import Request
+from fastapi import Request,Depends
 from fastapi.templating import Jinja2Templates
 from fastapi.responses import HTMLResponse
 from api.endopoints.dependencias import obtener_usuario_actual
+
+#IMPORT MODELOS
+from sqlmodel import Session
+from core.config import obterner_sesion
+from models.model_escuela import Escuela
+
 import os
 
 router = APIRouter(
@@ -66,11 +72,31 @@ def agregar_escuela(request: Request,
                     nombre:str = Form(...),
                     direccion:str= Form(...),
                     ciudad:str = Form(...),
-                    telefono:str = Form(...)
+                    telefono:str = Form(...),
+                    # 1. AGREGAR LA SESIÓN AQUÍ COMO PARÁMETRO
+                    sesion_bd: Session = Depends(obterner_sesion) 
                     ):
     
-    escuela_nueva = escuela_model.Escuela(44,nombre,ciudad,direccion,telefono)
+
+    escuela_nueva = Escuela(nombre=nombre,ciudad=ciudad,direccion=direccion,telefono=telefono)
     escuela_model.escuelas.append(escuela_nueva)
+
+
+
+    #################### Creacion del modelo en BD ####################
+    escuela_nueva = Escuela(
+        nombre=nombre,
+        direccion=direccion,
+        ciudad=ciudad,
+        telefono=telefono,
+        año=2026  # Agrega campos obligatorios faltantes si tu modelo los pide
+    )
+    
+    # 3. GUARDAR EN LA BASE DE DATOS
+    sesion_bd.add(escuela_nueva)
+    sesion_bd.commit()
+    sesion_bd.refresh(escuela_nueva)
+
 
     return templates.TemplateResponse(
         request=request,
