@@ -1,4 +1,4 @@
-from sqlmodel import Field,SQLModel,Session
+from sqlmodel import Field,SQLModel,select
 
 class Escuela(SQLModel,table=True):
     id: int | None = Field(default=None, primary_key=True)
@@ -8,19 +8,44 @@ class Escuela(SQLModel,table=True):
     año:int = Field()
 
 
+async def obtener_escuelas_bd(sesion):
+    consulta = select(Escuela)
+    escuelas = sesion.exec(consulta).all()
+    return escuelas
+
+async def obtener_escuela_id(sesion,id):
+    consulta = select(Escuela).where(Escuela.id == id)
+    escuela = sesion.exec(consulta).first()
+    return escuela
+
+async def editar_escuela_id_bd(sesion_bd,id,campos_valores:dict):
+    consulta = select(Escuela).where(Escuela.id == id)
+    resultado = sesion_bd.exec(consulta)
+    escuela:Escuela = resultado.one()
+    print(campos_valores)
+    for llave, valor in campos_valores.items():
+        if llave == 'direccion':
+            escuela.direccion = valor
+        if llave == 'telefono':
+            escuela.telefono = valor
+
+
+    sesion_bd.add(escuela)
+    sesion_bd.commit()
+    sesion_bd.refresh(escuela)
+
+
+
+async def eliminar_escuela_bd(sesion_bd,id:int):
+    consulta = select(Escuela).where(Escuela.id == id)
+    resultados = sesion_bd.exec(consulta)
+    escuela = resultados.one()
+
+    sesion_bd.delete(escuela)
+    sesion_bd.commit()
+
+    print(f'Objeto borrado',escuela)
     
-
-#escuela_1 = Escuela(nombre = 'Colegio 1',direccion='calle',telefono='4444',año=2027)
-#escuela_2 = Escuela(nombre = 'Colegio 2',direccion='calle',telefono='4444',año=2027)
-#escuela_3 = Escuela(nombre = 'Colegio 3',direccion='calle',telefono='4444',año=2027)
-
-
-#SQLModel.metadata.create_all(engine)
-
-#with Session(engine) as bd_sesion:
-#    bd_sesion.add(escuela_1)
-#    bd_sesion.add(escuela_2)
-#    bd_sesion.add(escuela_3)
-
-
-#   bd_sesion.commit() 
+    return escuela
+    
+    

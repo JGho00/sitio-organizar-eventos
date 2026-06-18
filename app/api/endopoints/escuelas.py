@@ -8,7 +8,7 @@ from api.endopoints.dependencias import obtener_usuario_actual
 #IMPORT MODELOS
 from sqlmodel import Session
 from core.config import obterner_sesion
-from models.model_escuela import Escuela
+from models.model_escuela import Escuela,obtener_escuelas_bd,obtener_escuela_id,editar_escuela_id_bd,eliminar_escuela_bd
 
 import os
 
@@ -21,14 +21,15 @@ router = APIRouter(
 templates = Jinja2Templates(directory=os.path.join("templates"))
 
 @router.get("/",response_class=HTMLResponse)
-def listar_escuelas(request: Request,username = Depends(obtener_usuario_actual)):
+async def listar_escuelas(request: Request,username = Depends(obtener_usuario_actual),sesion_bd: Session = Depends(obterner_sesion)):
 
-    
+    escuelas_bd= await obtener_escuelas_bd(sesion_bd)
+    print("Escuelas de bd",escuelas_bd)
     return templates.TemplateResponse(
         request=request,
         name="escuelas/escuelas.html",
         context={
-            "escuelas": escuela_model.escuelas,
+            "escuelas": escuelas_bd,
             'username':username
         }
     )
@@ -49,20 +50,24 @@ def agregar_escuela(request: Request,username = Depends(obtener_usuario_actual),
 
 
 @router.get("/{id}")
-def obtener_escuela_por_id(id: int, request: Request):
+async def obtener_escuela_por_id(id: int, request: Request,sesion_bd: Session = Depends(obterner_sesion)):
+    
+    escuela_bd = await obtener_escuela_id(sesion_bd,id=id)
+    if not escuela_bd:
+        return {"error": "Escuela no encontrada"}
     
     
-    for escuela in escuela_model.escuelas:
-        if escuela.id == id:
-            return templates.TemplateResponse(
+    print("Escuela id",escuela_bd)
+    print(type(escuela_bd))
+    return templates.TemplateResponse(
                 request=request,
                 name="escuelas/escuela.html",
                 context={
-                    "escuela": escuela
+                    "escuela": escuela_bd
                 }
             )
 
-    return {"error": "Escuela no encontrada"}
+    
 
 
 
@@ -73,7 +78,6 @@ def agregar_escuela(request: Request,
                     direccion:str= Form(...),
                     ciudad:str = Form(...),
                     telefono:str = Form(...),
-                    # 1. AGREGAR LA SESIÓN AQUÍ COMO PARÁMETRO
                     sesion_bd: Session = Depends(obterner_sesion) 
                     ):
     
@@ -107,13 +111,21 @@ def agregar_escuela(request: Request,
     )
 
 @router.post("/actualizar-escuela/{id_escuela}")
-def actualizar_escuela(
+async def actualizar_escuela(
                     request:Request,
                     id_escuela:int,
                     direccion:str = Form(...),
-                    telefono:str = Form(...)
+                    telefono:str = Form(...),
+                    sesion_bd: Session = Depends(obterner_sesion)
                        ):
     
+    campos_valores = {
+        'direccion':direccion,
+        'telefono':telefono
+    }
+    
+    await editar_escuela_id_bd(sesion_bd,id_escuela,campos_valores)
+
     existe_escuela:bool = False
     
     for escuela in escuela_model.escuelas:
@@ -136,8 +148,11 @@ def actualizar_escuela(
     )
 
 @router.post("/eliminar-escuela/{id_escuela}")
-def eliminar_escuela(id_escuela: int,request: Request):
+async def eliminar_escuela(id_escuela: int,request: Request,sesion_bd: Session = Depends(obterner_sesion) ):
     print(id_escuela)
+
+    await eliminar_escuela_bd(sesion_bd,id_escuela)
+
     for escuela in escuela_model.escuelas:
         if escuela.id == id_escuela:
             escuela_model.escuelas.remove(escuela)
