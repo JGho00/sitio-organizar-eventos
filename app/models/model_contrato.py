@@ -1,5 +1,5 @@
 from sqlmodel import SQLModel,Field
-from datetime import datetime
+
 class Contrato(SQLModel,table=True):
     id:int = Field(primary_key=True)
     nombre:str = Field()

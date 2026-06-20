@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block title %}
+Escuelas
+{% endblock %}
+
+{% block styles %}
+<link rel="stylesheet" href="/static/css/escuelas.css">
+{% endblock %}
+
+{% block content %}
+
+<div>
+    <div>
+        <h1>Agregar egresado</h1>
+    </div>
+    <div>
+        <form action="/egresados/agregar-egresado" method="post">
+            <input type="text" name="dni" placeholder="Ingresar dni">
+            <input type="text" name="nombre" placeholder="Ingresar nombre">
+            <input type="text" name="direccion" placeholder="Ingresar direccion">
+            <input type="text" name="edad" placeholder="Ingresar edad">
+            <input type="text" name="telefono" placeholder="Ingresar telefono">
+            <button type="submit">Agregar</button>
+        </form>
+        
+        <div>
+
+            <a href="/egresados"><button>Cancelar</button></a>
+
+        </div>
+    </div>
+</div>
+
+{% endblock %}

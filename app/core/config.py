@@ -20,6 +20,6 @@ engine = create_engine(
     #return engine
     )
 
-def obterner_sesion() -> Generator[Session, None, None]:
+def obtener_sesion() -> Generator[Session, None, None]:
     with Session(engine) as session:
         yield session
