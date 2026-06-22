@@ -11,13 +11,13 @@ async def obtener_egresados_bd(sesion:Session):
 
 async def obtener_egresado_dni_bd(sesion:Session,dni:int):
     consulta = select(Egresado).where(Egresado.dni == dni)
-    egresado = sesion.exec(consulta)
+    egresado = sesion.exec(consulta).first()
     return egresado
 
 
 async def agregar_egresado_bd(sesion:Session,nombre:str,dni:int,direccion:str,edad:int,id_escuela:int,id_curso:int,estado_cuenta:str,telefono:str):
     
-    egresado = Egresado(nombre=nombre,edad=edad,direccion=direccion,telefono=telefono,id_escuela=id_escuela,id_curso=id_curso,estado_cuenta=estado_cuenta)
+    egresado = Egresado(nombre=nombre,edad=edad,direccion=direccion,telefono=telefono,id_escuela=id_escuela,id_curso=id_curso,estado_cuenta=estado_cuenta,dni=dni)
     sesion.add(egresado)
     sesion.commit()
     sesion.refresh(egresado)
@@ -25,17 +25,14 @@ async def agregar_egresado_bd(sesion:Session,nombre:str,dni:int,direccion:str,ed
     return egresado
 
 
-async def actualizar_egresado_dni_bd(sesion:Session,dni:int,campos_valores:dict):
+async def actualizar_egresado_dni_bd(sesion:Session,dni:int,nombre:str,telefono:str,direccion:str):
     consulta = select(Egresado).where(Egresado.dni == dni)
-    resultados = sesion.exec(consulta)
-    egresado:Egresado = resultados.one()
+    egresado = sesion.exec(consulta).first()
 
-    print(campos_valores)
-    for llave, valor in campos_valores.items():
-        if llave == 'direccion':
-            Egresado.direccion = valor
-        if llave == 'telefono':
-            Egresado.telefono = valor
+
+    egresado.nombre = nombre
+    egresado.direccion = direccion
+    egresado.telefono = telefono
 
     sesion.add(egresado)
     sesion.commit()

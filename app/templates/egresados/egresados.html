@@ -46,7 +46,7 @@ Egresados
         </div>
         
         <div class="actions-section">
-            <a href="/egresados/agregar-egresado">
+            <a href="/egresados/cargar-egresado">
                 <button class="btn-primary" onclick="openAddModal()">
                 ➕ Agregar Egresado
                 </button>
@@ -80,15 +80,18 @@ Egresados
                     <td class="cell-direccion">{{ egresado.direccion }}</td>
                     <td class="cell-telefono">{{ egresado.telefono }}</td>
                     <td class="cell-acciones">
-                        <form action="/egresados/{{ egresado.dni }}" method="POST" style="display:inline;">
+                        <form action="/egresados/dni/{{ egresado.dni }}" method="POST" style="display:inline;">
                             <button type="submit">Consultar</button>
                         </form>
                         <button class="btn-small btn-edit" onclick="editEgresado('{{ egresado.dni }}')">
                             ✏️ Editar
                         </button>
-                        <button class="btn-small btn-delete" onclick="deleteEgresado('{{ egresado.dni }}')">
+                        <form action="/egresados/eliminar-egresado/{{egresado.dni}}" method="POST" style="display:inline;">
+                            <button class="btn-small btn-delete" onclick="deleteEgresado('{{ egresado.dni }}')">
                             🗑️ Eliminar
-                        </button>
+                            </button>
+                        </form>
+                        
                     </td>
                 </tr>
                 {% endfor %}

@@ -2,24 +2,115 @@
 
 
 {% block styles %}
-<link rel="stylesheet" href="">
+<link rel="stylesheet" href="/static/css/dashboard.css">
 {% endblock %}
 
 {% block content %}
-    <div>
-        <h1>Dashboard</h1>
-    </div>
-    <div>
-        <h2>Próximos eventos</h2>
-        <div>
-            {% for evento in eventos %}
-            <h3>{{evento.nombre}}</h3>
-            {% endfor %}
-        </div>
-    </div>
-    <div>
-        <h2>Recordatorio: Próximos vencimientos</h2>
-    </div>
+    <main class="main-content">
+        <header class="header">
+            <h1>Control de Pagos</h1>
+            <button class="btn btn-primary">+ Registrar Pago</button>
+        </header>
+
+        <!-- Tarjetas de Resumen Financiero -->
+        <section class="metrics-grid">
+            <div class="card shadow">
+                <h3>Total Cobrado</h3>
+                <p class="metric-value text-success">$14,250</p>
+            </div>
+            <div class="card shadow">
+                <h3>Total Adeudado</h3>
+                <p class="metric-value text-warning">$3,840</p>
+            </div>
+            <div class="card shadow">
+                <h3>Cuotas Vencidas</h3>
+                <p class="metric-value text-danger">8</p>
+            </div>
+        </section>
+
+        <!-- Bloque de Alertas de Morosidad (Sección Crítica) -->
+        <section class="section-container shadow border-danger">
+            <div class="section-header-inline">
+                <h2>⚠️ Alertas de Morosidad</h2>
+                <span class="badge badge-danger">Atención requerida</span>
+            </div>
+            <div class="alerts-list">
+                <div class="alert-item">
+                    <div class="alert-info">
+                        <strong>Carlos Mendoza</strong>
+                        <span>Evento: Conferencia Tech 2026</span>
+                    </div>
+                    <div class="alert-meta">
+                        <span class="text-danger font-bold">$150.00</span>
+                        <span class="days-ago">Hace 15 días</span>
+                    </div>
+                    <button class="btn btn-sm btn-delete">Notificar</button>
+                </div>
+                <div class="alert-item">
+                    <div class="alert-info">
+                        <strong>Clara Gómez</strong>
+                        <span>Evento: Taller de SQLModel</span>
+                    </div>
+                    <div class="alert-meta">
+                        <span class="text-danger font-bold">$85.00</span>
+                        <span class="days-ago">Hace 7 días</span>
+                    </div>
+                    <button class="btn btn-sm btn-delete">Notificar</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Tabla de Próximos Vencimientos -->
+        <section class="section-container shadow">
+            <h2>📆 Próximos Vencimientos (Siguientes 15 días)</h2>
+            <div class="table-responsive">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Cliente / Asistente</th>
+                            <th>Concepto / Evento</th>
+                            <th>Monto</th>
+                            <th>Fecha Vencimiento</th>
+                            <th>Estado</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Lucas Silva</strong></td>
+                            <td>Inscripción VIP - Tech 2026</td>
+                            <td><strong>$200.00</strong></td>
+                            <td>28 Jun, 2026</td>
+                            <td><span class="badge badge-warning">Por Vencer</span></td>
+                            <td>
+                                <button class="btn btn-sm btn-edit">Cobrar</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><strong>María Fernández</strong></td>
+                            <td>Stand Comercial - Expo Empresa</td>
+                            <td><strong>$500.00</strong></td>
+                            <td>02 Jul, 2026</td>
+                            <td><span class="badge badge-warning">Por Vencer</span></td>
+                            <td>
+                                <button class="btn btn-sm btn-edit">Cobrar</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><strong>Jorge Peralta</strong></td>
+                            <td>Pase General - Taller UX</td>
+                            <td><strong>$50.00</strong></td>
+                            <td>05 Jul, 2026</td>
+                            <td><span class="badge badge-warning">Por Vencer</span></td>
+                            <td>
+                                <button class="btn btn-sm btn-edit">Cobrar</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+    </main>
 {% endblock content%}
 
 {% block scripts %}

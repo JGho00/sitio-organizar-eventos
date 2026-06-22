@@ -1,0 +1,115 @@
+{% extends "base.html" %}
+
+{% block styles %}
+<link rel="stylesheet" href="/static/css/cuotas.css">
+{% endblock %}
+
+{% block content %}
+    <main class="main-content">
+        <header class="header">
+            <h1>Control de Cuotas</h1>
+            <div class="header-actions">
+                <button class="btn btn-secondary">Generar Cuotas Masivas</button>
+                <button class="btn btn-primary">+ Nueva Cuota</button>
+            </div>
+        </header>
+
+        <!-- Tarjetas de Control de Cuotas -->
+        <section class="metrics-grid">
+            <div class="card shadow border-left-blue">
+                <h3>Cuotas Emitidas (Mes)</h3>
+                <p class="metric-value">150</p>
+                <span class="metric-subtext">Total programado para cobrar</span>
+            </div>
+            <div class="card shadow border-left-green">
+                <h3>Cuotas Cobradas</h3>
+                <p class="metric-value">92</p>
+                <span class="metric-subtext">61.3% de efectividad de cobro</span>
+            </div>
+            <div class="card shadow border-left-amber">
+                <h3>Cuotas Pendientes</h3>
+                <p class="metric-value">50</p>
+                <span class="metric-subtext">Dentro del plazo legal</span>
+            </div>
+            <div class="card shadow border-left-red">
+                <h3>Cuotas Vencidas</h3>
+                <p class="metric-value">8</p>
+                <span class="metric-subtext">Requieren acción inmediata</span>
+            </div>
+        </section>
+
+        <!-- Tabla de Listado de Cuotas -->
+        <section class="section-container shadow">
+            <div class="section-header-filters">
+                <h2>Listado General de Cuotas</h2>
+                <!-- Espacio preparado para futuros filtros dinámicos con FastAPI -->
+                <div class="filters-placeholder">
+                    <small>Filtrado por: Todas las cuotas</small>
+                </div>
+            </div>
+            
+            <div class="table-responsive">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ID Cuota</th>
+                            <th>Asistente / Cliente</th>
+                            <th>N° Cuota</th>
+                            <th>Monto Base</th>
+                            <th>Recargo Morosidad</th>
+                            <th>Monto Total</th>
+                            <th>Vencimiento</th>
+                            <th>Estado</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>CUO-1092</strong></td>
+                            <td><strong>Esteban Quito</strong><br><small>Contrato: CTR-2026-001</small></td>
+                            <td><span class="badge-info">02 / 05</span></td>
+                            <td>$50.00</td>
+                            <td class="text-muted">$0.00</td>
+                            <td><strong>$50.00</strong></td>
+                            <td>25 Jun, 2026</td>
+                            <td><span class="badge badge-warning">Pendiente</span></td>
+                            <td>
+                                <button class="btn btn-sm btn-edit">Registrar Pago</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><strong>CUO-1093</strong></td>
+                            <td><strong>Laura Martínez</strong><br><small>Contrato: CTR-2026-001</small></td>
+                            <td><span class="badge-info">02 / 05</span></td>
+                            <td>$50.00</td>
+                            <td class="text-muted">$0.00</td>
+                            <td><strong>$50.00</strong></td>
+                            <td>25 Jun, 2026</td>
+                            <td><span class="badge badge-success">Pagada</span></td>
+                            <td>
+                                <button class="btn btn-sm btn-disabled" disabled>Comprobante</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><strong>CUO-1054</strong></td>
+                            <td><strong>Andrés Pérez</strong><br><small>Contrato: CTR-2026-003</small></td>
+                            <td><span class="badge-info">01 / 03</span></td>
+                            <td>$110.00</td>
+                            <td class="text-danger">+$6.60 (6%)</td>
+                            <td class="text-danger font-bold">$116.60</td>
+                            <td>10 Jun, 2026</td>
+                            <td><span class="badge badge-danger">Vencida</span></td>
+                            <td>
+                                <button class="btn btn-sm btn-delete">Reclamar</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+    </main>
+{% endblock content%}
+
+{% block scripts %}
+<script src="/static/js/.js"></script>
+{% endblock %}

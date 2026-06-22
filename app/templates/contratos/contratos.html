@@ -1,0 +1,100 @@
+{% extends "base.html" %}
+
+{% block styles %}
+<link rel="stylesheet" href="/static/css/contratos.css">
+{% endblock %}
+
+{% block content %}
+    <!-- Contenido Principal -->
+    <main class="main-content">
+        <header class="header">
+            <h1>Gestión de Contratos</h1>
+            <button class="btn btn-primary">+ Redactar Contrato</button>
+        </header>
+
+        <!-- Sección de Estadísticas Consolidadas -->
+        <section class="metrics-grid">
+            <div class="card shadow border-left-blue">
+                <h3>Contratos Vigentes</h3>
+                <p class="metric-value">24</p>
+                <span class="metric-subtext">4 próximos a caducar</span>
+            </div>
+            <div class="card shadow border-left-green">
+                <h3>Volumen Total Contratado</h3>
+                <p class="metric-value">$48,500</p>
+                <span class="metric-subtext">Valor acumulado global</span>
+            </div>
+            <div class="card shadow border-left-purple">
+                <h3>Monto Promedio por Persona</h3>
+                <p class="metric-value">$120.00</p>
+                <span class="metric-subtext">Calculado sobre base total</span>
+            </div>
+        </section>
+
+        <!-- Tabla Principal de Contratos -->
+        <section class="section-container shadow">
+            <h2>Listado General de Contratos</h2>
+            <div class="table-responsive">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ID / Cliente</th>
+                            <th>Fecha Contrato</th>
+                            <th>Monto Total</th>
+                            <th>Monto x Persona</th>
+                            <th>Interés Morosidad</th>
+                            <th>Fecha Caducidad</th>
+                            <th>Estado</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>CTR-2026-001</strong><br><small>Corporate Tech Sl.</small></td>
+                            <td>15 Ene, 2026</td>
+                            <td><strong>$15,000.00</strong></td>
+                            <td>$150.00 <span class="text-light">(100 pax)</span></td>
+                            <td class="text-danger font-bold">5.5% / mes</td>
+                            <td>15 Dic, 2026</td>
+                            <td><span class="badge badge-success">Activo</span></td>
+                            <td>
+                                <button class="btn btn-sm btn-edit">Ver</button>
+                                <button class="btn btn-sm btn-delete">PDF</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><strong>CTR-2026-002</strong><br><small>Asociación de PyMES</small></td>
+                            <td>02 Mar, 2026</td>
+                            <td><strong>$8,000.00</strong></td>
+                            <td>$100.00 <span class="text-light">(80 pax)</span></td>
+                            <td class="text-danger font-bold">4.0% / mes</td>
+                            <td>02 Sep, 2026</td>
+                            <td><span class="badge badge-success">Activo</span></td>
+                            <td>
+                                <button class="btn btn-sm btn-edit">Ver</button>
+                                <button class="btn btn-sm btn-delete">PDF</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><strong>CTR-2026-003</strong><br><small>Universidad del Valle</small></td>
+                            <td>10 May, 2026</td>
+                            <td><strong>$25,500.00</strong></td>
+                            <td>$110.00 <span class="text-light">(231 pax)</span></td>
+                            <td class="text-danger font-bold">6.0% / mes</td>
+                            <td>10 Jul, 2026</td>
+                            <td><span class="badge badge-warning">Por Caducar</span></td>
+                            <td>
+                                <button class="btn btn-sm btn-edit">Ver</button>
+                                <button class="btn btn-sm btn-delete">PDF</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+    </main>
+{% endblock content%}
+
+{% block scripts %}
+<script src="/static/js/contratos.js"></script>
+{% endblock %}
