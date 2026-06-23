@@ -7,6 +7,7 @@ from api.endopoints.auth import router as auth_router
 from api.endopoints.dashboard import router as dashboard_router
 from api.endopoints.contratos import router as contratos_router
 from api.endopoints.cuotas import router as cuotas_router
+from api.endopoints.usuarios import router as usuarios_router
 from fastapi.staticfiles import StaticFiles
 from sqlmodel import SQLModel
 from core.config import engine
@@ -27,6 +28,7 @@ app.include_router(auth_router)
 app.include_router(dashboard_router)
 app.include_router(contratos_router)
 app.include_router(cuotas_router)
+app.include_router(usuarios_router)
 
 # Ruta de logout global - Redirecciona a /login
 @app.get("/logout")

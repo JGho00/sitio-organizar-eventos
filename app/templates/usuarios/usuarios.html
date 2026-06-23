@@ -1,11 +1,90 @@
 {% extends "base.html" %}
 
-{% block title %}Dashboard - Sistema de Organización de Eventos{% endblock %}
+{% block title %}
+Usuarios
+{% endblock %}
 
 {% block styles %}
-<link rel="stylesheet" href="">
+<link rel="stylesheet" href="/static/css/usuarios.css">
 {% endblock %}
 
 {% block content %}
-<h1>prueba</h1>
-{% endblock content %}
+
+<!-- Header con título -->
+ <div class="page-container">
+    <div class="page-header">
+        <h1>Gestión de Usuarios</h1>
+        <p>Administra los Usuarios del sitio</p>
+    </div>
+
+    <!-- Barra de herramientas: Búsqueda y filtros -->
+    <div class="toolbar">
+        <div>
+            <input 
+                type="text" 
+                id="searchInput" 
+                
+                placeholder="🔍 Buscar usuario por nombre o ciudad..."
+                onkeyup=""
+            >
+        </div>
+        
+        <div><a href="/users/agregar-usuario">
+            <button class="btn-primary" onclick="">
+                ➕ Agregar usuario
+            </button>
+        </a>
+            
+        </div>
+    </div>
+
+    <!-- Tabla de Usuarios -->
+    <div class="table-container">
+        <table class="usuario-table">
+            <thead>
+                <tr>
+                    <th>Nombre de usuario</th>
+                    <th>Email</th>
+                    <th>Rol</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody id="UsuariosTableBody">
+                {% for usuario in usuarios %}
+                <tr class="table-row" data-search="{{ (usuario.username|lower) }} {{ (usuario.ciudad|lower) }}">
+                    <td class="cell-nombre">
+                        <strong>{{ usuario.nombre }}</strong>
+                    </td>
+                    <td class="cell-direccion">{{ usuario.username }}</td>
+                    <td class="cell-ciudad">{{ usuario.email }}</td>
+                    <td class="cell-anio">{{ usuario.rol}}</td>
+                    <td class="cell-acciones">
+                        <a href="/users/actualizar-usuario/{{usuario.id}}">
+                            <button class="btn-small btn-edit">✏️ Editar</button>
+                        </a>
+                        <form  action="/users/eliminar-usuario/{{usuario.id}}" method="post">
+                            <button class="btn-small btn-delete">
+                                🗑️ Eliminar
+                            </button>
+                        </form>
+                        
+                        
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        
+        {% if not usuarios %}
+        <div class="empty-state" >
+            <p>📭 No hay Usuarios registradas</p>
+        </div>
+        {% endif %}
+    </div>
+
+    
+
+ </div>
+
+
+{% endblock %}

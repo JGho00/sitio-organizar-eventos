@@ -80,12 +80,10 @@ Egresados
                     <td class="cell-direccion">{{ egresado.direccion }}</td>
                     <td class="cell-telefono">{{ egresado.telefono }}</td>
                     <td class="cell-acciones">
-                        <form action="/egresados/dni/{{ egresado.dni }}" method="POST" style="display:inline;">
-                            <button type="submit">Consultar</button>
+                        <form action="/egresados/dni/{{ egresado.dni }}"  method="POST" style="display:inline;">
+                            <button type="submit" class="btn-small btn-edit">Consultar</button>
                         </form>
-                        <button class="btn-small btn-edit" onclick="editEgresado('{{ egresado.dni }}')">
-                            ✏️ Editar
-                        </button>
+                        
                         <form action="/egresados/eliminar-egresado/{{egresado.dni}}" method="POST" style="display:inline;">
                             <button class="btn-small btn-delete" onclick="deleteEgresado('{{ egresado.dni }}')">
                             🗑️ Eliminar
@@ -107,65 +105,6 @@ Egresados
     </div>
 </div>
 
-<!-- Modal para agregar/editar egresado -->
-<div id="egresadoModal" class="modal">
-    <div class="modal-content">
-        <div class="modal-header">
-            <h2 id="modalTitle">Agregar Nuevo Egresado</h2>
-            <button class="close-btn" onclick="closeModal()">&times;</button>
-        </div>
-        <form id="egresadoForm" class="form-egresado">
-            <div class="form-group">
-                <label for="nombreEgresado">Nombre Completo</label>
-                <input 
-                    type="text" 
-                    id="nombreEgresado" 
-                    name="nombre" 
-                    required
-                    placeholder="Ej: Juan Pérez García"
-                >
-            </div>
-            
-            <div class="form-group">
-                <label for="dniEgresado">DNI</label>
-                <input 
-                    type="text" 
-                    id="dniEgresado" 
-                    name="dni" 
-                    required
-                    placeholder="Ej: 12345678"
-                >
-            </div>
-            
-            <div class="form-group">
-                <label for="escuelaEgresado">Escuela</label>
-                <input 
-                    type="text" 
-                    id="escuelaEgresado" 
-                    name="escuela" 
-                    required
-                    placeholder="Ej: Instituto San José"
-                >
-            </div>
-            
-            <div class="form-group">
-                <label for="carreraEgresado">Carrera</label>
-                <input 
-                    type="text" 
-                    id="carreraEgresado" 
-                    name="carrera" 
-                    required
-                    placeholder="Ej: Ingeniería en Sistemas"
-                >
-            </div>
-            
-            <div class="form-actions">
-                <button type="submit" class="btn-primary">Guardar</button>
-                <button type="button" class="btn-secondary" onclick="closeModal()">Cancelar</button>
-            </div>
-        </form>
-    </div>
-</div>
 
 <script>
 function filterTable() {
@@ -199,12 +138,6 @@ function closeModal() {
     document.getElementById('egresadoModal').style.display = 'none';
 }
 
-function editEgresado(id) {
-    document.getElementById('modalTitle').textContent = 'Editar Egresado';
-    document.getElementById('egresadoModal').style.display = 'block';
-    alert('Función de edición en desarrollo: Egresado ID ' + id);
-    // TODO: Implementar edición de egresado
-}
 
 function deleteEgresado(id) {
     if (confirm('¿Está seguro de que desea eliminar este egresado?')) {
