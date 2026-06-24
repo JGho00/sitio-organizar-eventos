@@ -3,7 +3,8 @@ from fastapi.responses import RedirectResponse
 from api.endopoints.egresados import router as egresados_router
 from api.endopoints.escuelas import router as escuelas_router
 from api.endopoints.eventos import router as eventos_router
-from api.endopoints.auth import router as auth_router
+#from api.endopoints.auth import router as auth_router
+from api.endopoints.autenticacion import router as auth_router
 from api.endopoints.dashboard import router as dashboard_router
 from api.endopoints.contratos import router as contratos_router
 from api.endopoints.cuotas import router as cuotas_router

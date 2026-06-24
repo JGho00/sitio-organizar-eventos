@@ -52,3 +52,19 @@ async def eliminar_usuario_bd(sesion:Session,id_usuario:int):
         sesion.delete(usuario)
         sesion.commit()
         return usuario
+
+
+def crear_hash_usuario(password:str):
+    return password
+
+
+def consultar_hash(password:int,password_hash:str):
+    #BD
+    usuario_enontrado:False
+
+    return usuario_enontrado 
+
+def obtener_usuario(db,username):
+     if username in db:
+        user_dict = db[username]
+        return UserInDB(**user_dict)

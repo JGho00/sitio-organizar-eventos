@@ -1,4 +1,5 @@
-from fastapi import APIRouter, Depends, HTTPException, status, Response
+from fastapi import APIRouter, Depends, HTTPException, status
+from typing import Annotated
 from fastapi.security import OAuth2PasswordRequestForm, OAuth2PasswordBearer
 from fastapi.templating import Jinja2Templates
 from fastapi import Request
@@ -18,6 +19,17 @@ oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/login/token")
 @router.get("/")
 async def login(request:Request):
     
+    return templates.TemplateResponse(
+        request=request,
+        name="login/login.html",
+        context={
+            "request": request
+        }
+    )
+
+@router.get("/items")
+async def login(token:Annotated[str,Depends(oauth2_scheme)]):
+    return token
     return templates.TemplateResponse(
         request=request,
         name="login/login.html",
@@ -53,11 +65,12 @@ async def login(request: Request, form_data: OAuth2PasswordRequestForm = Depends
     print(token_access)
     response = RedirectResponse(url="/", status_code=status.HTTP_303_SEE_OTHER)
 
+
     response.set_cookie(
         key="access_token", 
         value=f"Bearer {token_access}", # El estándar OAuth2 requiere la palabra Bearer
         httponly=True,                    # Protege contra robos por JavaScript
-        max_age=1800,                     # Tiempo de vida: 30 minutos (en segundos)
+        max_age=600,                     # Tiempo de vida: 10 minutos (en segundos)
         secure=False,                     # Cambia a True en producción (solo HTTPS)
         samesite="lax" 
     )
