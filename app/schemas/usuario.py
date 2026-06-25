@@ -1,8 +1,37 @@
 from sqlmodel import SQLModel,Session,select
-from fastapi import Depends
+from fastapi import Depends,HTTPException,status
+from datetime import datetime, timedelta, timezone
+
+from fastapi.security import OAuth2PasswordBearer
 
 from models.model_usuario import Usuario
+from core.config import oauth2_scheme
+from core.config import SECRET_KEY,ALGORITHM
+from pydantic import BaseModel
+from core.config import obtener_sesion
 
+import jwt
+from jwt.exceptions import InvalidTokenError
+
+
+class Token(BaseModel):
+    access_token: str
+    token_type: str
+
+
+class TokenData(BaseModel):
+    username: str | None = None
+
+
+class User(BaseModel):
+    username: str
+    email: str | None = None
+    full_name: str | None = None
+    disabled: bool | None = None
+
+
+class UserInDB(User):
+    hashed_password: str
 
 
 async def obtener_usuarios_bd(sesion:Session):
@@ -10,8 +39,6 @@ async def obtener_usuarios_bd(sesion:Session):
     usuarios = sesion.exec(consulta).all()
     return usuarios
     
-
-
 async def obtener_usuario_id_bd(sesion:Session,id_usuario:int):
     
     consulta = select(Usuario).where(Usuario.id_usuario== id_usuario)
@@ -54,17 +81,70 @@ async def eliminar_usuario_bd(sesion:Session,id_usuario:int):
         return usuario
 
 
-def crear_hash_usuario(password:str):
-    return password
 
 
-def consultar_hash(password:int,password_hash:str):
-    #BD
-    usuario_enontrado:False
+     
+async def get_current_user(token: str = Depends(oauth2_scheme)):
+    credentials_exception = HTTPException(
+        status_code=status.HTTP_401_UNAUTHORIZED,
+        detail="Could not validate credentials",
+        headers={"WWW-Authenticate": "Bearer"},
+    )
+    try:
+        payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
+        username = payload.get("sub")
+        if username is None:
+            raise credentials_exception
+        token_data = TokenData(username=username)
+    except InvalidTokenError:
+        raise credentials_exception
+    user = get_user(usuarios = obtener_usuarios_bd(), username=token_data.username)
+    if user is None:
+        raise credentials_exception
+    return user
 
-    return usuario_enontrado 
 
-def obtener_usuario(db,username):
-     if username in db:
-        user_dict = db[username]
-        return UserInDB(**user_dict)
+
+
+def get_user(db_user, username: str):
+    usuario = None
+    
+    for user in db_user:
+        if user.username == username:
+            usuario = user
+    return usuario
+
+
+def authenticate_user(user_bd, username: str, password: str):
+    user:Usuario = get_user(user_bd, username)
+    print(f"User {user} tipó {type(user)}")
+    if not user:
+        return False
+    print(f"User correcto")
+    if user.password_hash != password:
+        print(f"Pass incorrecta")
+        return False
+    print(f"Ingresé")
+    
+    
+    return user
+
+
+def create_access_token(data: dict, expires_delta: timedelta | None = None):
+    to_encode = data.copy()
+    if expires_delta:
+        expire = datetime.now(timezone.utc) + expires_delta
+    else:
+        expire = datetime.now(timezone.utc) + timedelta(minutes=15)
+    to_encode.update({"exp": expire})
+    encoded_jwt = jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
+    return encoded_jwt
+
+
+
+
+
+async def get_current_active_user(current_user: User = Depends(get_current_user)):
+    if current_user.disabled:
+        raise HTTPException(status_code=400, detail="Inactive user")
+    return current_user
