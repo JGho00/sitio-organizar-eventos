@@ -11,7 +11,7 @@
         <div class="login-box">
             <h1>Gestor de Eventos</h1>
             
-            <form method="POST" action="/login/token">
+            <form method="POST" action="/auth/token" id="formulario-login">
                 <div class="form-group">
                     <label for="username">Usuario</label>
                     <input 
@@ -38,11 +38,15 @@
 
                 <button type="submit" class="btn-ingresar">Ingresar</button>
             </form>
-
+            <!-- Contenedor del error controlado por JavaScript -->
+            <div id="cartel-error" class="alerta-error"></div>
             <div class="footer-link">
                 <a href="#">¿Olvidaste tu contraseña?</a>
             </div>
         </div>
     </div>
 </body>
+
+<script src="{{ url_for('static', path='js/login.js') }}"></script>
+
 </html>

@@ -1,32 +1,25 @@
 # api/dependencies.py
 from fastapi import Request, HTTPException, status
-cod_1_token = "ajshdajshdjhasdkjhaskdjhaskjdhakd"
-cod_2_token = "32423HJSDJFHSAJHMNASMNDASDasdjhajdjahsdas"
+import jwt
+
+from core.config import SECRET_KEY,ALGORITHM
 
 async def obtener_usuario_actual(request: Request) -> str:
     """
     Dependencia global. Revisa la cookie 'access_token'.
     Si no existe o es inválida, redirige al usuario a la página de login.
     """
-    token = request.cookies.get("access_token")
+    cookie_token = request.cookies.get("access_token")
     
-    if not token:
-        # Lanzamos una redirección HTTP 303 hacia la página de login
-        raise HTTPException(
-            status_code=status.HTTP_303_SEE_OTHER,
-            headers={"Location": "/login"}
-        )
+    if not cookie_token:
+        return None
     
     try:
-        # Lógica temporal de limpieza del token ficticio
-        token_limpio = token.replace("Bearer ", "")
-        username = token_limpio.replace("fake-jwt-token-for-", "")
-        username = username.replace(cod_1_token,'').replace(cod_2_token,'').strip()
-        print(username)
-        
+        # Quitamos la palabra 'Bearer ' para quedarnos solo con el string del token
+        token = cookie_token.replace("Bearer ", "")
+        payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
+        username: str = payload.get("sub")
         return username
     except Exception:
-        raise HTTPException(
-            status_code=status.HTTP_303_SEE_OTHER,
-            headers={"Location": "/login"}
-        )
+        return None
+    

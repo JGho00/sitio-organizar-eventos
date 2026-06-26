@@ -133,14 +133,13 @@ def authenticate_user(user_bd, username: str, password: str):
 def create_access_token(data: dict, expires_delta: timedelta | None = None):
     to_encode = data.copy()
     if expires_delta:
-        expire = datetime.now(timezone.utc) + expires_delta
+        expire:datetime = datetime.now(timezone.utc) + expires_delta
     else:
         expire = datetime.now(timezone.utc) + timedelta(minutes=15)
     to_encode.update({"exp": expire})
-    encoded_jwt = jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
+    encoded_jwt:jwt = jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
+    print(f'TOKEN\n{encoded_jwt}')
     return encoded_jwt
-
-
 
 
 

@@ -1,5 +1,6 @@
-from fastapi import APIRouter,Request,Depends,Form
+from fastapi import APIRouter,Request,Depends,Form,status
 from fastapi.templating import Jinja2Templates
+from fastapi.responses import RedirectResponse
 from sqlmodel import Session
 
 from schemas.egresado import obtener_egresados_bd,obtener_egresado_dni_bd,agregar_egresado_bd,eliminar_egresado_bd,actualizar_egresado_dni_bd
@@ -17,6 +18,12 @@ templates = Jinja2Templates( "templates")
 
 @router.get("/")
 async def get_egresados(request:Request,username = Depends(obtener_usuario_actual),sesion:Session = Depends(obtener_sesion)):
+    
+    if not username:
+        response = RedirectResponse(url="/login", status_code=status.HTTP_303_SEE_OTHER)
+        response.delete_cookie("access_token")
+        return response
+    
 
     egresados = await obtener_egresados_bd(sesion)
     return templates.TemplateResponse(
