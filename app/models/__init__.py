@@ -5,3 +5,4 @@ from models.model_contrato import Contrato
 from models.model_cuota import Cuota
 from models.model_curso import Curso
 from models.model_usuario import Usuario
+from models.model_pago import Pago

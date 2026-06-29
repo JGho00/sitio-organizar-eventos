@@ -1,20 +1,14 @@
-from fastapi import APIRouter, Depends, HTTPException, status
-from typing import Annotated
-from fastapi.security import OAuth2PasswordRequestForm, OAuth2PasswordBearer
+from fastapi import APIRouter, Depends
 from fastapi.templating import Jinja2Templates
 from fastapi import Request
 from fastapi.responses import RedirectResponse
-from models.usuario import usuarios_db
 
 templates = Jinja2Templates("templates")
-token:str = "ajshdajshdjhasdkjhaskdjhaskjdhakdUSER32423HJSDJFHSAJHMNASMNDASDasdjhajdjahsdas"
 
 router = APIRouter(
     prefix="/login",
     tags=["Login"],
 )
-
-oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/login/token")
 
 @router.get("/")
 async def login(request:Request):

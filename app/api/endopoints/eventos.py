@@ -1,7 +1,7 @@
-from fastapi import APIRouter,Depends,Request
+from fastapi import APIRouter,Depends,Request,status
 from fastapi.templating import Jinja2Templates
 from api.endopoints.dependencias import obtener_usuario_actual
-from models.evento import eventos
+from fastapi.responses import RedirectResponse
 
 #IMPORT MODELOS
 from sqlmodel import Session
@@ -19,6 +19,11 @@ templates = Jinja2Templates("templates")
 @router.get("/")
 async def get_eventos(request:Request,username = Depends(obtener_usuario_actual),sesion = Depends(obtener_sesion)):
     
+    if not username:
+        response = RedirectResponse(url="/login", status_code=status.HTTP_303_SEE_OTHER)
+        response.delete_cookie("access_token")
+        return response
+    
     eventos = await obtener_eventos_bd(sesion)
     print(eventos)
     return templates.TemplateResponse(
@@ -33,6 +38,11 @@ async def get_eventos(request:Request,username = Depends(obtener_usuario_actual)
 @router.post("/id/{id}")
 async def get_evento_id(request:Request,id:int,username = Depends(obtener_usuario_actual),sesion = Depends(obtener_sesion)):
     
+    if not username:
+        response = RedirectResponse(url="/login", status_code=status.HTTP_303_SEE_OTHER)
+        response.delete_cookie("access_token")
+        return response
+
     eventos = await obtener_evento_id_bd(sesion,id)
 
     return templates.TemplateResponse(

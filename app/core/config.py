@@ -1,6 +1,6 @@
 import os
 from fastapi.security import OAuth2PasswordBearer
-from sqlmodel import SQLModel,create_engine,Session
+from sqlmodel import create_engine,Session
 from typing import Generator
 from dotenv import load_dotenv
 

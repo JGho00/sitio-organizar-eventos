@@ -5,72 +5,73 @@ eventos
 {% endblock %}
 
 {% block styles %}
-<link rel="stylesheet" href="/static/css/eventos.css">
+<link rel="stylesheet" href="/static/css/evento.css">
 {% endblock %}
 
 {% block content %}
 
     <!-- Contenido Principal -->
-    <main class="main-content">
-        <header class="header">
+    <main class="">
+        <header class="">
             <h1>Panel de Eventos</h1>
-            <button class="btn btn-primary">+ Nuevo Evento</button>
         </header>
 
-        <!-- 1. Tarjetas de Resumen -->
-        <section class="metrics-grid">
-            <div class="card shadow">
-                <h3>Eventos Activos</h3>
-                <p class="metric-value">12</p>
+        <!-- 1. Próximo evento -->
+        <section class="">
+            <div class="">
+                <h3>Próximo evento</h3>
+                <p class="">Curso</p>
+                <p class="">Estado</p>
+                <p class="">Fecha</p>
+                <p class="">Lugar</p>
             </div>
-            <div class="card shadow">
-                <h3>Total Registrados</h3>
-                <p class="metric-value">1,245</p>
-            </div>
-            <div class="card shadow">
-                <h3>Capacidad Promedio</h3>
-                <p class="metric-value">78%</p>
-            </div>
-            <div class="card shadow">
-                <h3>Ingresos Totales</h3>
-                <p class="metric-value">$4,850</p>
+        </section>
+
+         <!-- 1. Últimos finalizados -->
+        <section class="">
+            <div class="">
+                <h3>Ultimos finalizados</h3>
+                <p class="">Curso</p>
+                <p class="">Estado</p>
+                <p class="">Fecha</p>
+                <p class="">Lugar</p>
             </div>
         </section>
 
         <!-- 2. Vista de Calendario (Mockup Operativo) -->
-        <section class="section-container shadow">
-            <h2>Agenda Mensual</h2>
-            <div class="calendar-wrapper">
-                <div class="calendar-header">
-                    <button class="btn btn-secondary">&lt; Anterior</button>
+        <section class="">
+            <h2>Calendario</h2>
+            <div class="">
+                <div class="">
+                    <button class="">&lt; Anterior</button>
                     <h3>Junio 2026</h3>
-                    <button class="btn btn-secondary">Siguiente &gt;</button>
+                    <button class="">Siguiente &gt;</button>
                 </div>
-                <div class="calendar-grid">
+                <div class="">
                     <!-- Días de la semana -->
-                    <div class="day-name">Lun</div><div class="day-name">Mar</div><div class="day-name">Mié</div>
-                    <div class="day-name">Jue</div><div class="day-name">Vie</div><div class="day-name">Sáb</div>
-                    <div class="day-name">Dom</div>
+                    <div class="">Lun</div><div class="">Mar</div><div class="">Mié</div>
+                    <div class="">Jue</div><div class="">Vie</div><div class="">Sáb</div>
+                    <div class="">Dom</div>
                     
                     <!-- Ejemplo de días vacíos y con eventos -->
-                    <div class="day empty"></div><div class="day empty"></div><div class="day empty"></div>
-                    <div class="day">1</div><div class="day">2</div><div class="day">3</div><div class="day">4</div>
-                    <div class="day">5
-                        <span class="event-tag tag-blue">Conf. Tech</span>
+                    <div class=""></div><div class=""></div><div class=""></div>
+                    <div class="">1</div><div class="">2</div><div class="">3</div><div class="">4</div>
+                    <div class="">5
+                        <span class="">Conf. Tech</span>
                     </div>
-                    <div class="day">6</div><div class="day">7</div><div class="day">8</div>
-                    <div class="day">9
-                        <span class="event-tag tag-green">Taller UX</span>
+                    <div class="">6</div><div class="">7</div><div class="">8</div>
+                    <div class="">9
+                        <span class="">Taller UX</span>
                     </div>
-                    <div class="day">10</div><div class="day">11</div><div class="day">12</div>
+                    <div class="">10</div><div class="">11</div><div class="">12</div>
                 </div>
             </div>
         </section>
 
         <!-- 4. Tabla Principal -->
-        <section class="section-container shadow">
+        <section class="">
             <h2>Listado Detallado de Eventos</h2>
-            <div class="table-responsive">
+            <div class="">
                 <table>
                     <thead>
                         <tr>
@@ -88,15 +89,15 @@ eventos
                             <td>25 Jun, 2026 - 19:00</td>
                             <td>Auditorio Central</td>
                             <td>
-                                <div class="progress-container">
-                                    <div class="progress-bar" style="width: 85%;"></div>
+                                <div class="">
+                                    <div class=""></div>
                                     <span>85/100</span>
                                 </div>
                             </td>
-                            <td><span class="badge badge-success">Publicado</span></td>
+                            <td><span class="">Publicado</span></td>
                             <td>
-                                <button class="btn btn-sm btn-edit">Editar</button>
-                                <button class="btn btn-sm btn-delete">Eliminar</button>
+                                <button class="">Editar</button>
+                                <button class="">Eliminar</button>
                             </td>
                         </tr>
                         <tr>
@@ -104,15 +105,15 @@ eventos
                             <td>02 Jul, 2026 - 15:00</td>
                             <td>Sala Virtual B</td>
                             <td>
-                                <div class="progress-container">
-                                    <div class="progress-bar" style="width: 40%;"></div>
+                                <div class="">
+                                    <div class=""></div>
                                     <span>20/50</span>
                                 </div>
                             </td>
-                            <td><span class="badge badge-warning">Borrador</span></td>
+                            <td><span class="">Borrador</span></td>
                             <td>
-                                <button class="btn btn-sm btn-edit">Editar</button>
-                                <button class="btn btn-sm btn-delete">Eliminar</button>
+                                <button class="">Editar</button>
+                                <button class="">Eliminar</button>
                             </td>
                         </tr>
                     </tbody>

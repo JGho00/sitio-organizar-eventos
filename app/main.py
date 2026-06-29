@@ -35,10 +35,6 @@ app.include_router(usuarios_router)
 
 app.add_middleware(SessionMiddleware, secret_key=SECRET_KEY)
 
-# Ruta de logout global - Redirecciona a /login
-@app.get("/logout")
-async def logout():
-    return RedirectResponse(url="/login", status_code=302)
 
 # Ruta raíz (GET)
 @app.get("/")

@@ -2,7 +2,7 @@ from sqlmodel import SQLModel,Field
 
 class Cuota(SQLModel,table = True):
     id_cuota:int = Field(primary_key=True)
-    id_egresado:int = Field()
+    id_contrato:int = Field()
     numero_cuota:int = Field()
     monto_original:float = Field()
     monto_retrasado:float = Field()

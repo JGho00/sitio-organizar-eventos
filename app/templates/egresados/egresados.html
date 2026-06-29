@@ -45,13 +45,7 @@ Egresados
             </div>
         </div>
         
-        <div class="actions-section">
-            <a href="/egresados/cargar-egresado">
-                <button class="btn-primary" onclick="openAddModal()">
-                ➕ Agregar Egresado
-                </button>
-            </a>
-        </div>
+        
     </div>
 
     <!-- Tabla de egresados -->
@@ -61,10 +55,10 @@ Egresados
                 <tr>
                     <th>Nombre</th>
                     <th>DNI</th>
-                    <th>Edad</th>
                     <th>Escuela</th>
-                    <th>Direccion</th>
-                    <th>Telefono</th>
+                    <th>Division</th>
+                    <th>Año</th>
+                    <th>Estado</th>
                     <th>Acciones</th>
                 </tr>
             </thead>
@@ -102,6 +96,32 @@ Egresados
             <button class="btn-primary" onclick="openAddModal()">Agregar Primer Egresado</button>
         </div>
         {% endif %}
+    </div>
+
+    <div>
+        <h2>Carga de egresados</h2>
+        <div>
+            <div>
+                <h3>Carga Manual</h3>
+                <div class="actions-section">
+                    <a href="/egresados/cargar-egresado">
+                        <button class="btn-primary" onclick="openAddModal()">
+                             ➕ Agregar Egresado
+                        </button>
+                    </a>
+                </div>
+            </div>
+            <div>
+                <h3>Carga Masiva</h3>
+                <div class="actions-section">
+                    <a href="">
+                        <button class="btn-primary" onclick="openAddModal()">
+                             ➕ Subir archivo
+                        </button>
+                    </a>
+                </div>
+            </div>
+        </div>        
     </div>
 </div>
 

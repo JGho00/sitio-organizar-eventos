@@ -1,14 +1,14 @@
-import models.escuela as escuela_model
-from fastapi import APIRouter,Depends,Form,HTTPException
+from models.model_escuela import Escuela as escuela_model
+from fastapi import APIRouter,Depends,Form,HTTPException,status
 from fastapi import Request,Depends
 from fastapi.templating import Jinja2Templates
-from fastapi.responses import HTMLResponse
+from fastapi.responses import HTMLResponse,RedirectResponse
 from api.endopoints.dependencias import obtener_usuario_actual
 
 #IMPORT MODELOS
 from sqlmodel import Session
 from core.config import obtener_sesion
-from models.model_escuela import Escuela,obtener_escuelas_bd,obtener_escuela_id,editar_escuela_id_bd,eliminar_escuela_bd,crear_escuela
+from schemas.escuela import obtener_escuelas_bd,obtener_escuela_id,editar_escuela_id_bd,eliminar_escuela_bd,crear_escuela
 
 import os
 
@@ -20,9 +20,14 @@ router = APIRouter(
 
 templates = Jinja2Templates(directory=os.path.join("templates"))
 
-@router.get("/",response_class=HTMLResponse)
+@router.get("/")
 async def listar_escuelas(request: Request,username = Depends(obtener_usuario_actual),sesion_bd: Session = Depends(obtener_sesion)):
 
+    if not username:
+        response = RedirectResponse(url="/login", status_code=status.HTTP_303_SEE_OTHER)
+        response.delete_cookie("access_token")
+        return response
+    
     escuelas_bd= await obtener_escuelas_bd(sesion_bd)
     print("Escuelas de bd",escuelas_bd)
     return templates.TemplateResponse(
@@ -37,6 +42,11 @@ async def listar_escuelas(request: Request,username = Depends(obtener_usuario_ac
 @router.get("/agregar-escuela")
 def agregar_escuela(request: Request,username = Depends(obtener_usuario_actual),sesion = Depends(obtener_sesion)):
     
+    if not username:
+        response = RedirectResponse(url="/login", status_code=status.HTTP_303_SEE_OTHER)
+        response.delete_cookie("access_token")
+        return response
+    
     return templates.TemplateResponse(
         request=request,
         name="escuelas/cargar_escuela.html",
@@ -48,8 +58,13 @@ def agregar_escuela(request: Request,username = Depends(obtener_usuario_actual),
 
 
 @router.get("/{id}")
-async def obtener_escuela_por_id(id: int, request: Request,sesion: Session = Depends(obtener_sesion)):
+async def obtener_escuela_por_id(id: int, request: Request,username = Depends(obtener_usuario_actual),sesion: Session = Depends(obtener_sesion)):
     
+    if not username:
+        response = RedirectResponse(url="/login", status_code=status.HTTP_303_SEE_OTHER)
+        response.delete_cookie("access_token")
+        return response
+
     escuela_bd = await obtener_escuela_id(sesion,id=id)
     if not escuela_bd:
         return {"error": "Escuela no encontrada"}
@@ -71,14 +86,19 @@ async def obtener_escuela_por_id(id: int, request: Request,sesion: Session = Dep
 
 
 @router.post("/agregar-escuela")
+
 async def agregar_escuela(request: Request,
                     nombre:str = Form(...),
                     direccion:str= Form(...),
-                    ciudad:str = Form(...),
                     telefono:str = Form(...),
-                    sesion: Session = Depends(obtener_sesion)
+                    sesion: Session = Depends(obtener_sesion),
+                    username = Depends(obtener_usuario_actual)
                     ):
     
+    if not username:
+        response = RedirectResponse(url="/login", status_code=status.HTTP_303_SEE_OTHER)
+        response.delete_cookie("access_token")
+        return response
     #################### Creacion del modelo en BD ####################
     await crear_escuela(sesion,nombre,direccion,telefono)
 
@@ -99,9 +119,15 @@ async def actualizar_escuela(
                     id_escuela:int,
                     direccion:str = Form(...),
                     telefono:str = Form(...),
-                    sesion_bd: Session = Depends(obtener_sesion)
+                    sesion_bd: Session = Depends(obtener_sesion),
+                    username = Depends(obtener_usuario_actual)
                        ):
     
+    if not username:
+        response = RedirectResponse(url="/login", status_code=status.HTTP_303_SEE_OTHER)
+        response.delete_cookie("access_token")
+        return response
+
     campos_valores = {
         'direccion':direccion,
         'telefono':telefono
@@ -131,8 +157,13 @@ async def actualizar_escuela(
     )
 
 @router.post("/eliminar-escuela/{id_escuela}")
-async def eliminar_escuela(id_escuela: int,request: Request,sesion_bd: Session = Depends(obtener_sesion) ):
+async def eliminar_escuela(id_escuela: int,request: Request,sesion_bd: Session = Depends(obtener_sesion),username = Depends(obtener_usuario_actual)):
     print(id_escuela)
+
+    if not username:
+        response = RedirectResponse(url="/login", status_code=status.HTTP_303_SEE_OTHER)
+        response.delete_cookie("access_token")
+        return response
 
     await eliminar_escuela_bd(sesion_bd,id_escuela)
 

@@ -1,40 +1,115 @@
 {% extends "base.html" %}
 
 {% block styles %}
-<link rel="stylesheet" href="/static/css/contratos.css">
+<link rel="stylesheet" href="/static/css/contrato.css">
 {% endblock %}
 
 {% block content %}
     <!-- Contenido Principal -->
-    <main class="main-content">
-        <header class="header">
-            <h1>Gestión de Contratos</h1>
-            <button class="btn btn-primary">+ Redactar Contrato</button>
-        </header>
+    <div class="">
 
-        <!-- Sección de Estadísticas Consolidadas -->
-        <section class="metrics-grid">
-            <div class="card shadow border-left-blue">
-                <h3>Contratos Vigentes</h3>
-                <p class="metric-value">24</p>
-                <span class="metric-subtext">4 próximos a caducar</span>
-            </div>
-            <div class="card shadow border-left-green">
-                <h3>Volumen Total Contratado</h3>
-                <p class="metric-value">$48,500</p>
-                <span class="metric-subtext">Valor acumulado global</span>
-            </div>
-            <div class="card shadow border-left-purple">
-                <h3>Monto Promedio por Persona</h3>
-                <p class="metric-value">$120.00</p>
-                <span class="metric-subtext">Calculado sobre base total</span>
-            </div>
-        </section>
+        <div class="contenedor-contratos">
+    <h1 class="titulo-principal">Contratos</h1>
+    
+    <div class="fila-tarjetas">
+        <!-- Tarjeta: Activos -->
+        <div class="tarjeta tarjeta-activos">
+            <p class="numero">140</p>
+            <h3>Contratos activos</h3>
+        </div>
 
+        <!-- Tarjeta: Finalizados -->
+        <div class="tarjeta tarjeta-finalizados">
+            <p class="numero">140</p>
+            <h3>Contratos finalizados</h3>
+        </div>
+
+        <!-- Tarjeta: Proyecciones -->
+        <div class="tarjeta tarjeta-proyecciones">
+            <p class="numero">140</p>
+            <h3>Proyecciones</h3>
+        </div>
+    </div>
+</div>
+
+        <div class="actions-section">
+            <h2>Formulario de alta de Contrato</h2>
+            <form action="" method="POST">
+                <div>
+                    <div>
+                        <p>Nombre</p>
+                        <input type="text" placeholder="">
+                    </div>
+                    <div>
+                        <p>Escuela</p>
+                        <input type="text" placeholder="">
+                    </div>
+                    <div>
+                        <p>Año</p>
+                        <input type="text" placeholder="">
+                    </div>
+                    <div>
+                        <p>Curso</p>
+                        <input type="text" placeholder="">
+                    </div>
+                    <div>
+                        <p>Monto total</p>
+                        <input type="text" placeholder="">
+                    </div>
+                    <div>
+                        <p>Interés por mora</p>
+                        <input type="text" placeholder="">
+                    </div>
+                    <div>
+                        <p>Lugar</p>
+                        <input type="text" placeholder="">
+                    </div>
+                    <p>
+                        ajuntar planilla de excel con datos de alumnos
+                    </p>
+                </div>
+                <div>
+                    <button class="btn btn-primary">Crear</button>
+                    <button class="btn btn-delete btn-secondary">Cancelar</button>
+                </div>
+                
+            </form>
+
+            
+        </div>
         <!-- Tabla Principal de Contratos -->
-        <section class="section-container shadow">
+        <div class="contratos-general">
             <h2>Listado General de Contratos</h2>
-            <div class="table-responsive">
+            <div class="toolbar">
+        <div class="search-section">
+            <div class="search-group">
+                <input 
+                    type="text" 
+                    id="searchInput" 
+                    class="search-input" 
+                    placeholder="🔍 Buscar por nombre..."
+                    onkeyup="filterTable()"
+                >
+                <input 
+                    type="text" 
+                    id="dniInput" 
+                    class="search-input" 
+                    placeholder="🔍 Buscar por año..."
+                    onkeyup="filterTable()"
+                >
+                <input 
+                    type="text" 
+                    id="escuelaInput" 
+                    class="search-input" 
+                    placeholder="🔍 Buscar por escuela..."
+                    onkeyup="filterTable()"
+                >
+            </div>
+        </div>
+        
+        
+    </div>
+            <div class="">
                 <table>
                     <thead>
                         <tr>
@@ -49,50 +124,27 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td><strong>CTR-2026-001</strong><br><small>Corporate Tech Sl.</small></td>
+                        {%for contrato in contratos%}
+                            <tr>
+                            <td><strong>contrato.id</strong><br><small>contrato.nombre</small></td>
                             <td>15 Ene, 2026</td>
                             <td><strong>$15,000.00</strong></td>
-                            <td>$150.00 <span class="text-light">(100 pax)</span></td>
-                            <td class="text-danger font-bold">5.5% / mes</td>
+                            <td>$150.00 <span class="">(100 pax)</span></td>
+                            <td class="">5.5% / mes</td>
                             <td>15 Dic, 2026</td>
-                            <td><span class="badge badge-success">Activo</span></td>
+                            <td><span class="">Activo</span></td>
                             <td>
-                                <button class="btn btn-sm btn-edit">Ver</button>
-                                <button class="btn btn-sm btn-delete">PDF</button>
+                                <button class="btn btn-edit">Ver</button>
                             </td>
                         </tr>
-                        <tr>
-                            <td><strong>CTR-2026-002</strong><br><small>Asociación de PyMES</small></td>
-                            <td>02 Mar, 2026</td>
-                            <td><strong>$8,000.00</strong></td>
-                            <td>$100.00 <span class="text-light">(80 pax)</span></td>
-                            <td class="text-danger font-bold">4.0% / mes</td>
-                            <td>02 Sep, 2026</td>
-                            <td><span class="badge badge-success">Activo</span></td>
-                            <td>
-                                <button class="btn btn-sm btn-edit">Ver</button>
-                                <button class="btn btn-sm btn-delete">PDF</button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td><strong>CTR-2026-003</strong><br><small>Universidad del Valle</small></td>
-                            <td>10 May, 2026</td>
-                            <td><strong>$25,500.00</strong></td>
-                            <td>$110.00 <span class="text-light">(231 pax)</span></td>
-                            <td class="text-danger font-bold">6.0% / mes</td>
-                            <td>10 Jul, 2026</td>
-                            <td><span class="badge badge-warning">Por Caducar</span></td>
-                            <td>
-                                <button class="btn btn-sm btn-edit">Ver</button>
-                                <button class="btn btn-sm btn-delete">PDF</button>
-                            </td>
-                        </tr>
+                        
+                        {%endfor%}
+                        
                     </tbody>
                 </table>
             </div>
-        </section>
-    </main>
+        </div>
+    </div>
 {% endblock content%}
 
 {% block scripts %}

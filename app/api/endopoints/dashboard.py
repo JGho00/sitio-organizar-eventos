@@ -2,7 +2,6 @@ from fastapi import APIRouter, Depends
 from fastapi.templating import Jinja2Templates
 from fastapi import Request
 from api.endopoints.dependencias import obtener_usuario_actual
-from models.evento import eventos
 templates = Jinja2Templates("templates")
 
 router = APIRouter(
@@ -22,7 +21,7 @@ async def cargar_dashboard(request:Request,username = Depends(obtener_usuario_ac
         context= {
             "request":request,
             "username": username,
-            "eventos":eventos
+            
                 }
             
     )

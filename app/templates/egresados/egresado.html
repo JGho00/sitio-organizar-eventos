@@ -11,38 +11,97 @@ Escuelas
 {% block content %}
     <div>
         <div>
-            <h1>Detalles de la Escuela</h1>
-            <form action="/egresados/actualizar-egresado/{{egresado.dni}}" method="post">
-                <div>
-                    <p>Egresado:</p>
-                    <input type="text" placeholder="" value="{{egresado.nombre}}" name="nombre">
-                </div>
-                <div>
-                    <p>Dirección:</p>
-                    <input type="text" placeholder="" value="{{egresado.direccion}}" name="direccion">
-                </div>
-                <div>
-                    <p>Edad:</p>
-                    <input type="text" placeholder="" value="{{egresado.edad}}" name="edad" disabled>
-                </div>
-                <div>
-                    <p>Teléfono:</p>
-                    <input type="text" placeholder="" value="{{egresado.telefono}}" name="telefono">
-                </div>
-                <div>
-                    <p>Dni:</p>
-                    <input type="text" placeholder="" value="{{egresado.dni}}" name="dni">
-                </div>
-                <div>
-                    <button type="submit">Guardar cambios</button>
-                </div>
-                
-                
-            </form>
+            <h1>Detalles del Egresado</h1>
             <div>
-                <a href="/egresados"><button>Cancelar</button></a>
-                
+                <h2>Información general</h2>
+                <div>
+                    <p>nombre completo</p>
+                    <p>dni</p>
+                    <p>direccion</p>
+                    <p>telefono</p>
+                    <p>Escuela</p>
+                    <p>Division</p>
+                    <p>Año</p>
+                </div>
             </div>
+            <div>
+                <h2>Estado de cuenta</h2>
+                <div>
+                    <p>Total pagado</p>
+                    <p>Total por pagar</p>
+                    <p>cantidad cuotas restantes</p>
+                    <p>monto cuota</p>
+                    <p>Estado de cuenta</p>
+                    <p>intereses acumulados por morosidad</p>
+                </div>
+            </div>
+
+            <div>
+                <h2>Historial de cuotas pagos</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Nro de cuota</th>
+                            <th>Monto</th>
+                            <th>Monto_recargo</th>
+                            <th>Fecha de pago</th>
+                            <th>Estado</th>
+                            <th>Accion</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>1</td>
+                            <td>$3333</td>
+                            <td><strong>$0.00</strong></td>
+                            <td>28 Jun, 2026</td>
+                            <td>Pagado</td>
+                            <td><button>Adelantar pago</button></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div>
+                <h2>Acciones</h2>
+                <button>Recordatorio</button>
+                <button>Generar Informe</button>
+                <button>Adelantar pago</button>
+                <button>Eliminar</button>
+            </div>
+
+
+            <div>
+                <form action="/egresados/actualizar-egresado/{{egresado.dni}}" method="post">
+                    <div>
+                        <p>Egresado:</p>
+                        <input type="text" placeholder="" value="{{egresado.nombre}}" name="nombre">
+                    </div>
+                    <div>
+                        <p>Dirección:</p>
+                        <input type="text" placeholder="" value="{{egresado.direccion}}" name="direccion">
+                    </div>
+                    <div>
+                        <p>Edad:</p>
+                        <input type="text" placeholder="" value="{{egresado.edad}}" name="edad" disabled>
+                    </div>
+                    <div>
+                        <p>Teléfono:</p>
+                        <input type="text" placeholder="" value="{{egresado.telefono}}" name="telefono">
+                    </div>
+                    <div>
+                        <p>Dni:</p>
+                        <input type="text" placeholder="" value="{{egresado.dni}}" name="dni">
+                    </div>
+                    <div>
+                        <button type="submit">Guardar cambios</button>
+                        <a href="/egresados"><button>Cancelar</button></a>
+                    </div>
+                    
+                    
+                </form>
+            </div>
+           
         </div>
 
         <div>

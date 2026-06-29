@@ -1,118 +1,155 @@
 {% extends "base.html" %}
 
-
 {% block styles %}
-<link rel="stylesheet" href="/static/css/dashboard.css">
 {% endblock %}
 
 {% block content %}
-    <main class="main-content">
-        <header class="header">
-            <h1>Control de Pagos</h1>
-            <button class="btn btn-primary">+ Registrar Pago</button>
-        </header>
+<div>
+    <h1>Control de Pagos</h1>
 
-        <!-- Tarjetas de Resumen Financiero -->
-        <section class="metrics-grid">
-            <div class="card shadow">
-                <h3>Total Cobrado</h3>
-                <p class="metric-value text-success">$14,250</p>
-            </div>
-            <div class="card shadow">
-                <h3>Total Adeudado</h3>
-                <p class="metric-value text-warning">$3,840</p>
-            </div>
-            <div class="card shadow">
-                <h3>Cuotas Vencidas</h3>
-                <p class="metric-value text-danger">8</p>
-            </div>
-        </section>
+    <div>
+        <h2>General</h2>
+        <div>
+            <p>Contratos activos</p>
+        </div>
+        <div>
+            <p>Ingreso mensual proyeccion</p>
+        </div>
+        <div>
+            <p>Ingreso mensual actual</p>
+        </div>
+        <div>
+            <p>Morosidad</p>
+        </div>
+    </div>
 
-        <!-- Bloque de Alertas de Morosidad (Sección Crítica) -->
-        <section class="section-container shadow border-danger">
-            <div class="section-header-inline">
-                <h2>⚠️ Alertas de Morosidad</h2>
-                <span class="badge badge-danger">Atención requerida</span>
+    <div>
+        <h2>Alerta de Morosidad</h2>
+        <p>mostrar 5 morosos ordenados por el que más debe primero</p>
+        <table>
+            <tr>
+                <thead>
+                    <td>Alumno</td>
+                    <td>Nro de cuota</td>
+                    <td>Monto</td>
+                    <td>Estado</td>
+                    <td>Acciones</td>
+                </thead>
+                <tbody>
+                    <td>A1</td>
+                    <td>3</td>
+                    <td>$33.44</td>
+                    <td>Vencida</td>
+                    <td>
+                        <button>Consultar</button>
+                        <button>Recordatorio</button>
+                    </td>
+                </tbody>
+            </tr>
+        </table>
+    </div>
+
+
+    <div>
+        <h2>Ultimos pagos recibidos</h2>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Alumno</th>
+                    <th>Escuela</th>
+                    <th>Año</th>
+                    <th>Pago</th>
+                    <th>Cuota</th>
+                    <th>Fecha de pago</th>
+                    <th>Accion</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>Lucas Silva</strong></td>
+                    <td>Inscripción VIP - Tech 2026</td>
+                    <td>2026</td>
+                    <td><strong>$200.00</strong></td>
+                    <td>5/12</td>
+                    <td>28 Jun, 2026</td>
+                    <td><button type="button">Cobrar</button></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div>
+
+        <h2>Próximos Vencimientos (Siguientes 15 días)</h2>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Cliente / Asistente</th>
+                    <th>Concepto / Evento</th>
+                    <th>Monto</th>
+                    <th>Fecha Vencimiento</th>
+                    <th>Estado</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>Lucas Silva</strong></td>
+                    <td>Inscripción VIP - Tech 2026</td>
+                    <td><strong>$200.00</strong></td>
+                    <td>28 Jun, 2026</td>
+                    <td>Por Vencer</td>
+                    <td>
+                        <button type="button">Cobrar</button>
+                        <button type="button">Recordatorio</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div>
+        <h2>Registrar pago</h2>
+        <div>
+            <div>
+                <h3>Buscador</h3>
+                <p>Dni:</p>
+                <input type="text" placeholder="Ingrese nro de documento">
+                <button><a href="">Buscar</a></button>
             </div>
-            <div class="alerts-list">
-                <div class="alert-item">
-                    <div class="alert-info">
-                        <strong>Carlos Mendoza</strong>
-                        <span>Evento: Conferencia Tech 2026</span>
-                    </div>
-                    <div class="alert-meta">
-                        <span class="text-danger font-bold">$150.00</span>
-                        <span class="days-ago">Hace 15 días</span>
-                    </div>
-                    <button class="btn btn-sm btn-delete">Notificar</button>
+
+        </div>
+        <div>
+            <form action="">
+                <div>
+                    <p>Egresado</p>
+                    <input type="text">
                 </div>
-                <div class="alert-item">
-                    <div class="alert-info">
-                        <strong>Clara Gómez</strong>
-                        <span>Evento: Taller de SQLModel</span>
-                    </div>
-                    <div class="alert-meta">
-                        <span class="text-danger font-bold">$85.00</span>
-                        <span class="days-ago">Hace 7 días</span>
-                    </div>
-                    <button class="btn btn-sm btn-delete">Notificar</button>
+                        
+                <div>
+                    <p>Cuota</p>
+                    <input type="text">
                 </div>
-            </div>
-        </section>
 
-        <!-- Tabla de Próximos Vencimientos -->
-        <section class="section-container shadow">
-            <h2>📆 Próximos Vencimientos (Siguientes 15 días)</h2>
-            <div class="table-responsive">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Cliente / Asistente</th>
-                            <th>Concepto / Evento</th>
-                            <th>Monto</th>
-                            <th>Fecha Vencimiento</th>
-                            <th>Estado</th>
-                            <th>Acciones</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td><strong>Lucas Silva</strong></td>
-                            <td>Inscripción VIP - Tech 2026</td>
-                            <td><strong>$200.00</strong></td>
-                            <td>28 Jun, 2026</td>
-                            <td><span class="badge badge-warning">Por Vencer</span></td>
-                            <td>
-                                <button class="btn btn-sm btn-edit">Cobrar</button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td><strong>María Fernández</strong></td>
-                            <td>Stand Comercial - Expo Empresa</td>
-                            <td><strong>$500.00</strong></td>
-                            <td>02 Jul, 2026</td>
-                            <td><span class="badge badge-warning">Por Vencer</span></td>
-                            <td>
-                                <button class="btn btn-sm btn-edit">Cobrar</button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td><strong>Jorge Peralta</strong></td>
-                            <td>Pase General - Taller UX</td>
-                            <td><strong>$50.00</strong></td>
-                            <td>05 Jul, 2026</td>
-                            <td><span class="badge badge-warning">Por Vencer</span></td>
-                            <td>
-                                <button class="btn btn-sm btn-edit">Cobrar</button>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </section>
-    </main>
-{% endblock content%}
+                <div>
+                    <p>Monto</p>
+                    <input type="text">
+                </div>
+
+                <div>
+                    <button class="btn btn-delete btn-secundary">Vaciar</button>
+                    <button class="btn btn-primary">Registrar</button>
+                </div>
+            </form>
+        </div>
+       
+    </div>
+    
+</div>
+
+{% endblock content %}
 
 {% block scripts %}
-<script src="/static/js/dashboard.js"></script>
 {% endblock %}
