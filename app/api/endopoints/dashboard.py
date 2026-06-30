@@ -1,6 +1,7 @@
 from fastapi import APIRouter, Depends
 from fastapi.templating import Jinja2Templates
-from fastapi import Request
+from fastapi import Request,status
+from fastapi.responses import RedirectResponse
 from api.endopoints.dependencias import obtener_usuario_actual
 templates = Jinja2Templates("templates")
 
@@ -13,7 +14,10 @@ router = APIRouter(
 @router.get("/")
 async def cargar_dashboard(request:Request,username = Depends(obtener_usuario_actual)):
     
-
+    if not username:
+        response = RedirectResponse(url="/login", status_code=status.HTTP_303_SEE_OTHER)
+        response.delete_cookie("access_token")
+        return response
     
     response =  templates.TemplateResponse(
         request=request,
