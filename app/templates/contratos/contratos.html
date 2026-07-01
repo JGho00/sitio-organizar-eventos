@@ -42,15 +42,37 @@
                     </div>
                     <div>
                         <p>Escuela</p>
-                        <input type="text" placeholder="">
+                        <select name="escuela_id" id="escuela-select">
+                            <option value="">-- Por favor, elige una opción --</option>
+            
+                            # Bucles de Jinja2 para renderizar las opciones dinámicamente
+                            {% for escuela in escuelas %}
+                                <option value="{{ escuela.id }}">{{ escuela.nombre }}</option>
+                            {% endfor %}
+            
+                        </select>
                     </div>
                     <div>
                         <p>Año</p>
-                        <input type="text" placeholder="">
+                        <select name="anio" id="anio-select">
+                            <option value="">-- Por favor, elige una opción --</option>
+            
+                            # Bucles de Jinja2 para renderizar las opciones dinámicamente
+                            {% for anio in anios %}
+                                <option value="{{ anio }}">{{ anio }}</option>
+                            {% endfor %}
+                        </select>
                     </div>
                     <div>
                         <p>Curso</p>
-                        <input type="text" placeholder="">
+                        <select name="division" id="division-select">
+                            <option value="">-- Por favor, elige una opción --</option>
+            
+                            # Bucles de Jinja2 para renderizar las opciones dinámicamente
+                            {% for clave, valor in divisiones.items() %}
+                                <option value="{{ clave }}">{{ valor }}</option>
+                            {% endfor %}
+                        </select>
                     </div>
                     <div>
                         <p>Monto total</p>
@@ -58,7 +80,14 @@
                     </div>
                     <div>
                         <p>Interés por mora</p>
-                        <input type="text" placeholder="">
+                        <select name="interes_mora" id="interes_mora-select">
+                            <option value="">-- Por favor, elige una opción --</option>
+            
+                            # Bucles de Jinja2 para renderizar las opciones dinámicamente
+                            {% for interes in interes_mora %}
+                                <option value="{{ interes }}">{{ interes }}%</option>
+                            {% endfor %}
+                        </select>
                     </div>
                     <div>
                         <p>Lugar</p>

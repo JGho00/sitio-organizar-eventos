@@ -4,7 +4,7 @@ from datetime import datetime,timezone
 class Contrato(SQLModel,table=True):
     id:int = Field(primary_key=True)
     nombre:str = Field()
-    id_egresado:int = Field()
+    id_curso:int = Field(foreign_key="curso.id")
     fecha_inicio:datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
     fecha_fin:datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
     monto_total:float = Field()

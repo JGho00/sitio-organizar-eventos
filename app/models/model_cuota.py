@@ -5,6 +5,6 @@ class Cuota(SQLModel,table = True):
     id_contrato:int = Field(foreign_key="contrato.id")
     numero_cuota:int = Field()
     monto_original:float = Field()
-    monto_retrasado:float = Field()
+    monto_pago:float = Field()
     fecha_vencimiento:str = Field()
     estado_pago: str = Field()
