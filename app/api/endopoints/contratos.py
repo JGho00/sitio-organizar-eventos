@@ -1,15 +1,16 @@
-from fastapi import APIRouter, Depends,Request,status,UploadFile,File
+from fastapi import APIRouter, Depends, Form, HTTPException,Request,status,UploadFile,File
 from fastapi.templating import Jinja2Templates
 from fastapi.responses import RedirectResponse
 from api.endopoints.dependencias import obtener_usuario_actual
 import os
-from sqlmodel import Session
+from sqlmodel import  Session
 from core.config import obtener_sesion
 
-from schemas.contrato import obtener_contratos_bd
+
+from schemas.contrato import obtener_contratos_bd,obtener_estadisticas_contratos_bd
 from schemas.escuela import obtener_escuelas_bd
 
-from services import contrato_service
+from services import dependencias
 templates = Jinja2Templates("templates")
 
 router = APIRouter(
@@ -31,6 +32,8 @@ async def consultar_contratos(request: Request,username = Depends(obtener_usuari
         return response
     
     contratos = await obtener_contratos_bd(sesion)
+    print(type(contratos))
+    contratos_estadisticas = await obtener_estadisticas_contratos_bd(sesion)
 
     escuelas = await obtener_escuelas_bd(sesion)
     
@@ -39,40 +42,14 @@ async def consultar_contratos(request: Request,username = Depends(obtener_usuari
         request=request,
         name="contratos/contratos.html",
         context={
-            'anios':contrato_service.anios,
+            'anios':dependencias.anios,
             'username':username,
             'contratos':contratos,
-            'escuelas':escuelas,
-            'divisiones':contrato_service.divisiones,
-            'interes_mora':contrato_service.interes_mora
+            'contratos_estadisticas':contratos_estadisticas,
+            'escuelas':escuelas
         }
     )
 
-
-@router.post('/carga-masiva-excel')
-async def carga_masiva(request:Request,
-                       contrato_nombre:str,
-                       escuela:str,
-                       division:str,
-                       monto:float,
-                       cantidad_cuotas:int,
-                       interes_mora:float,
-                       ultimo_dia_pago:str,
-                       archivo_egresados:UploadFile = File(...),
-                       sesion:Session = Depends(obtener_sesion)):
+    
 
 
-    ##Validar escuela
-    escuelas = await obtener_escuelas_bd(sesion=sesion)
-    for escuela_bd in escuelas:
-        if escuela_bd.nombre == escuela:
-            break
-    else:
-        return {"error": "La escuela no existe en la base de datos"}
-
-    archivo =await contrato_service.decodificar_archivo_egresados(archivo_egresados)
-    df =contrato_service.obtener_df_egresados(archivo)
-
-    print("tabla egresados",df)
-
-    return contrato_nombre,escuela,division,monto,cantidad_cuotas,interes_mora,ultimo_dia_pago

@@ -14,98 +14,25 @@
     <div class="fila-tarjetas">
         <!-- Tarjeta: Activos -->
         <div class="tarjeta tarjeta-activos">
-            <p class="numero">140</p>
+            <p class="numero">{{ contratos_estadisticas.total_contratos_activos }}</p>
             <h3>Contratos activos</h3>
         </div>
 
         <!-- Tarjeta: Finalizados -->
         <div class="tarjeta tarjeta-finalizados">
-            <p class="numero">140</p>
+            <p class="numero">{{ contratos_estadisticas.total_contratos_finalizados }}</p>
             <h3>Contratos finalizados</h3>
         </div>
 
         <!-- Tarjeta: Proyecciones -->
         <div class="tarjeta tarjeta-proyecciones">
-            <p class="numero">140</p>
-            <h3>Proyecciones</h3>
+            <p class="numero">{{ contratos_estadisticas.total_contratos }}</p>
+            <h3>Contratos totales</h3>
         </div>
     </div>
 </div>
 
-        <div class="actions-section">
-            <h2>Formulario de alta de Contrato</h2>
-            <form action="" method="POST">
-                <div>
-                    <div>
-                        <p>Nombre</p>
-                        <input type="text" placeholder="">
-                    </div>
-                    <div>
-                        <p>Escuela</p>
-                        <select name="escuela_id" id="escuela-select">
-                            <option value="">-- Por favor, elige una opción --</option>
-            
-                            # Bucles de Jinja2 para renderizar las opciones dinámicamente
-                            {% for escuela in escuelas %}
-                                <option value="{{ escuela.id }}">{{ escuela.nombre }}</option>
-                            {% endfor %}
-            
-                        </select>
-                    </div>
-                    <div>
-                        <p>Año</p>
-                        <select name="anio" id="anio-select">
-                            <option value="">-- Por favor, elige una opción --</option>
-            
-                            # Bucles de Jinja2 para renderizar las opciones dinámicamente
-                            {% for anio in anios %}
-                                <option value="{{ anio }}">{{ anio }}</option>
-                            {% endfor %}
-                        </select>
-                    </div>
-                    <div>
-                        <p>Curso</p>
-                        <select name="division" id="division-select">
-                            <option value="">-- Por favor, elige una opción --</option>
-            
-                            # Bucles de Jinja2 para renderizar las opciones dinámicamente
-                            {% for clave, valor in divisiones.items() %}
-                                <option value="{{ clave }}">{{ valor }}</option>
-                            {% endfor %}
-                        </select>
-                    </div>
-                    <div>
-                        <p>Monto total</p>
-                        <input type="text" placeholder="">
-                    </div>
-                    <div>
-                        <p>Interés por mora</p>
-                        <select name="interes_mora" id="interes_mora-select">
-                            <option value="">-- Por favor, elige una opción --</option>
-            
-                            # Bucles de Jinja2 para renderizar las opciones dinámicamente
-                            {% for interes in interes_mora %}
-                                <option value="{{ interes }}">{{ interes }}%</option>
-                            {% endfor %}
-                        </select>
-                    </div>
-                    <div>
-                        <p>Lugar</p>
-                        <input type="text" placeholder="">
-                    </div>
-                    <p>
-                        ajuntar planilla de excel con datos de alumnos
-                    </p>
-                </div>
-                <div>
-                    <button class="btn btn-primary">Crear</button>
-                    <button class="btn btn-delete btn-secondary">Cancelar</button>
-                </div>
-                
-            </form>
-
-            
-        </div>
+        
         <!-- Tabla Principal de Contratos -->
         <div class="contratos-general">
             <h2>Listado General de Contratos</h2>
@@ -142,26 +69,28 @@
                 <table>
                     <thead>
                         <tr>
-                            <th>ID / Cliente</th>
-                            <th>Fecha Contrato</th>
-                            <th>Monto Total</th>
-                            <th>Monto x Persona</th>
-                            <th>Interés Morosidad</th>
-                            <th>Fecha Caducidad</th>
-                            <th>Estado</th>
+                            
+                            <th>Fecha_Contrato</th>
+                            <th>Escuela</th>
+                            <th>Monto_Total</th>
+                            <th>Monto_x_Persona</th>
+                            <th>Interés_Mora</th>
+                            <th>Dia_Vto_Mensual</th>
+                            <th>Fecha_Caducidad</th>
                             <th>Acciones</th>
                         </tr>
                     </thead>
                     <tbody>
                         {%for contrato in contratos%}
                             <tr>
-                            <td><strong>contrato.id</strong><br><small>contrato.nombre</small></td>
-                            <td>15 Ene, 2026</td>
-                            <td><strong>$15,000.00</strong></td>
-                            <td>$150.00 <span class="">(100 pax)</span></td>
-                            <td class="">5.5% / mes</td>
-                            <td>15 Dic, 2026</td>
-                            <td><span class="">Activo</span></td>
+                            
+                            <td>{{contrato.fecha_inicio}}</td>
+                            <td><strong>{{ contrato.curso.escuela.nombre }}</strong></td>
+                            <td><strong>{{ contrato.monto_total }}</strong></td>
+                            <td>Calcular</td>
+                            <td class="">{{contrato.interes_mora}} %</td>
+                            <td>{{ contrato.dia_vencimiento_mensual}}</td>
+                            <td>{{ contrato.fecha_fin }}</td>
                             <td>
                                 <button class="btn btn-edit">Ver</button>
                             </td>

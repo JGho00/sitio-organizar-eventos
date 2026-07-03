@@ -68,6 +68,85 @@ eventos
             </div>
         </section>
 
+
+        <section>
+            <div class="actions-section">
+                <h2>Formulario de alta de Evento</h2>
+                <form action="/eventos/carga-masiva-excel" method="POST" enctype="multipart/form-data">
+                    <div>
+                        <div>
+                            <p>Nombre</p>
+                            <input type="text" name="evento_nombre">
+                        </div>
+                        <div>
+                            <p>Escuela</p>
+                            <select name="escuela_id" id="escuela-select">
+                                <option value="">-- Por favor, elige una opción --</option>
+                                {% for escuela in escuelas %}
+                                    <option value="{{ escuela.id }}">{{ escuela.nombre }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div>
+                            <p>Año</p>
+                            <select name="anio" id="anio-select">
+                                <option value="">-- Por favor, elige una opción --</option>
+                                {% for anio in anios %}
+                                    <option value="{{ anio }}">{{ anio }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div>
+                            <p>Curso</p>
+                            <select name="division" id="division-select">
+                                <option value="">-- Por favor, elige una opción --</option>
+                                {% for clave, valor in divisiones.items() %}
+                                    <option value="{{ clave }}">{{ valor }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div>
+                            <p>Monto total</p>
+                            <input type="text" name="monto_total">
+                        </div>
+                        <div>
+                            <p>Interés por mora</p>
+                            <select name="interes_mora" id="interes_mora-select">
+                                <option value="">-- Por favor, elige una opción --</option>
+                                {% for interes in interes_mora %}
+                                    <option value="{{ interes }}">{{ interes }}%</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div>
+                            <p>Fecha ultimo pago</p>
+                            <input type="text" name="ultimo_dia_pago">
+                        </div>
+                        <div>
+                            <p>Lugar</p>
+                            <select name="id_establecimiento" id="id_establecimiento-select">
+                                <option value="">-- Por favor, elige una opción --</option>
+                                
+                                {% for establecimiento in establecimientos %}
+                                    <option value="{{ establecimiento.id }}">{{ establecimiento.nombre }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div>
+                            <p>Adjuntar planilla de excel con datos de alumnos</p>
+                            <input type="file" name="archivo_egresados" accept=".xlsx, .xls">
+                        </div>
+                    </div>
+                    <div>
+                        <button class="btn btn-primary" type="submit">Crear</button>
+                        <button type="button" class="btn btn-delete btn-secondary">Cancelar</button>
+                    </div>
+                </form>
+
+            
+            </div>
+        </section>
+
         <!-- 4. Tabla Principal -->
         <section class="">
             <h2>Listado Detallado de Eventos</h2>

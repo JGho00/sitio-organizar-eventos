@@ -18,10 +18,21 @@ async def obtener_evento_id_bd(sesion:Session,id_evento:int):
 
     return evento
 
-
-async def agregar_evento_bd(sesion:Session,nombre:str,descripcion:str,id_curso:int,fecha_evento:str,salon:str,estado:str):
+async def obtener_evento_bd(sesion:Session,campo:str,valor:any):
     
-    evento = Evento(nombre=nombre,descripcion=descripcion,id_curso=id_curso,fecha_evento=fecha_evento,salon_lugar=salon,estado=estado)
+    if 'id' in campo:
+        consulta = select(Evento).where(Evento.id == valor)
+    elif 'nombre' in campo:
+        consulta = select(Evento).where(Evento.nombre == valor)
+    
+    evento = sesion.exec(consulta).first()
+
+    return evento
+
+
+async def agregar_evento_bd(sesion:Session,nombre:str,descripcion:str,id_curso:int,fecha_evento:str,id_establecimiento:int,estado:str):
+    
+    evento = Evento(nombre=nombre,descripcion=descripcion,id_curso=id_curso,fecha_evento=fecha_evento,id_establecimiento=id_establecimiento,estado=estado)
     sesion.add(evento)
     sesion.commit()
     sesion.refresh(evento)
@@ -29,13 +40,13 @@ async def agregar_evento_bd(sesion:Session,nombre:str,descripcion:str,id_curso:i
     return evento
 
 
-async def actualizar_evento_id_bd(sesion:Session,id_evento:int,nombre:str,descripcion:str,salon:str,fecha:str,estado:str):
+async def actualizar_evento_id_bd(sesion:Session,id_evento:int,nombre:str,descripcion:str,id_establecimiento:int,fecha:str,estado:str):
     evento:Evento = obtener_evento_id_bd(sesion,id_evento)
 
 
     evento.nombre = nombre
     evento.descripcion = descripcion
-    evento.salon_lugar = salon
+    evento.id_establecimiento = id_establecimiento
     evento.fecha_evento = fecha
     evento.estado = estado
     
