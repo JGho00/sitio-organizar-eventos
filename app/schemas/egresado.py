@@ -19,8 +19,9 @@ async def agregar_egresado_bd(sesion:Session,nombre:str,dni:int,direccion:str,ed
     
     egresado = Egresado(nombre=nombre,edad=edad,direccion=direccion,telefono=telefono,id_escuela=id_escuela,id_curso=id_curso,estado_cuenta=estado_cuenta,dni=dni)
     sesion.add(egresado)
-    sesion.commit()
-    sesion.refresh(egresado)
+    #sesion.commit()
+    #sesion.refresh(egresado)
+    sesion.flush()
 
     return egresado
 
@@ -35,8 +36,9 @@ async def actualizar_egresado_dni_bd(sesion:Session,dni:int,nombre:str,telefono:
     egresado.telefono = telefono
 
     sesion.add(egresado)
-    sesion.commit()
-    sesion.refresh(egresado)
+    #sesion.commit()
+    #sesion.refresh(egresado)
+    sesion.flush()
 
     return egresado
 
@@ -45,8 +47,8 @@ async def eliminar_egresado_bd(sesion:Session,dni:int):
     resultados = sesion.exec(consulta)
     egresado = resultados.one()
 
-    sesion.delete(egresado)
-    sesion.commit()
-
+    #sesion.delete(egresado)
+    #sesion.commit()
+    sesion.flush()
     
     return egresado

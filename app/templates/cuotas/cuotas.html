@@ -18,7 +18,7 @@
         <section class="">
             <div class="">
                 <h3>Cuotas Emitidas (Mes)</h3>
-                <p class="">150</p>
+                <p class="">{{estadisticas.total_cuotas}}</p>
                 <span class="">Total programado para cobrar</span>
             </div>
             <div class="">
@@ -28,12 +28,12 @@
             </div>
             <div class="">
                 <h3>Cuotas Pendientes</h3>
-                <p class="">50</p>
+                <p class="">{{estadisticas.total_cuotas_pendientes}}</p>
                 <span class="">Dentro del plazo legal</span>
             </div>
             <div class="">
                 <h3>Cuotas Vencidas</h3>
-                <p class="">8</p>
+                <p class="">{{estadisticas.total_cuotas_vencidas}}</p>
                 <span class="">Requieren acción inmediata</span>
             </div>
         </section>
@@ -47,62 +47,46 @@
                     <small>Filtrado por: Todas las cuotas</small>
                 </div>
             </div>
+
+            <div>
+                <div>
+                    <input type="text" placeholder="Búsqueda por Dni">
+                </div>
+                <div>
+                    <input type="text" placeholder="Búsqueda por Estado">
+                </div>
+            </div>
             
             <div class="">
                 <table>
                     <thead>
                         <tr>
-                            <th>ID Cuota</th>
-                            <th>Asistente / Cliente</th>
                             <th>N° Cuota</th>
-                            <th>Monto Base</th>
-                            <th>Recargo Morosidad</th>
-                            <th>Monto Total</th>
+                            <th>Egresado</th>
+                            <th>Monto</th>
+                            <th>Monto Pagado</th>
                             <th>Vencimiento</th>
                             <th>Estado</th>
                             <th>Acciones</th>
                         </tr>
                     </thead>
                     <tbody>
+
+                        {%for cuota in cuotas%}
                         <tr>
-                            <td><strong>CUO-1092</strong></td>
-                            <td><strong>Esteban Quito</strong><br><small>Contrato: CTR-2026-001</small></td>
-                            <td><span class="">02 / 05</span></td>
-                            <td>$50.00</td>
-                            <td class="">$0.00</td>
-                            <td><strong>$50.00</strong></td>
-                            <td>25 Jun, 2026</td>
-                            <td><span class="">Pendiente</span></td>
+                            <td>{{cuota.numero_cuota}}</td>
+                            <td>{{cuota.egresado.nombre}}</td>
+                            <td>${{cuota.monto_original}}</td>
+                            <td>${{cuota.monto_pago}}</td>
+                            <td>{{cuota.fecha_vencimiento}}</td>
+                            <td><span class="">{{cuota.estado_pago}}</span></td>
                             <td>
                                 <button class="">Registrar Pago</button>
                             </td>
                         </tr>
-                        <tr>
-                            <td><strong>CUO-1093</strong></td>
-                            <td><strong>Laura Martínez</strong><br><small>Contrato: CTR-2026-001</small></td>
-                            <td><span class="">02 / 05</span></td>
-                            <td>$50.00</td>
-                            <td class="">$0.00</td>
-                            <td><strong>$50.00</strong></td>
-                            <td>25 Jun, 2026</td>
-                            <td><span class="">Pagada</span></td>
-                            <td>
-                                <button class="" disabled>Comprobante</button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td><strong>CUO-1054</strong></td>
-                            <td><strong>Andrés Pérez</strong><br><small>Contrato: CTR-2026-003</small></td>
-                            <td><span class="">01 / 03</span></td>
-                            <td>$110.00</td>
-                            <td class="">+$6.60 (6%)</td>
-                            <td class="">$116.60</td>
-                            <td>10 Jun, 2026</td>
-                            <td><span class="">Vencida</span></td>
-                            <td>
-                                <button class="">Reclamar</button>
-                            </td>
-                        </tr>
+                       
+                        {%endfor%}
+                       
                     </tbody>
                 </table>
             </div>

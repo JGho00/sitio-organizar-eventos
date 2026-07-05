@@ -34,7 +34,9 @@ async def obtener_curso_bd(sesion:Session, campo: str,valor:any):
 
 async def crear_curso_bd(sesion:Session,curso:Curso):
     sesion.add(curso)
-    sesion.commit()
-    sesion.refresh(curso)
+    #sesion.commit()
+    #sesion.refresh(curso)
+    sesion.flush()
+
     return curso
 

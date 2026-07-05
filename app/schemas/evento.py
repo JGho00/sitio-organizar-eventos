@@ -34,8 +34,9 @@ async def agregar_evento_bd(sesion:Session,nombre:str,descripcion:str,id_curso:i
     
     evento = Evento(nombre=nombre,descripcion=descripcion,id_curso=id_curso,fecha_evento=fecha_evento,id_establecimiento=id_establecimiento,estado=estado)
     sesion.add(evento)
-    sesion.commit()
-    sesion.refresh(evento)
+    #sesion.commit()
+    #sesion.refresh(evento)
+    sesion.flush()
 
     return evento
 
@@ -52,17 +53,17 @@ async def actualizar_evento_id_bd(sesion:Session,id_evento:int,nombre:str,descri
     
 
     sesion.add(evento)
-    sesion.commit()
-    sesion.refresh(evento)
-
+    #sesion.commit()
+    #sesion.refresh(evento)
+    sesion.flush()
     return evento
 
 async def eliminar_evento_bd(sesion:Session,id_evento:int):
     evento = obtener_evento_id_bd(sesion,id_evento)
 
     sesion.delete(evento)
-    sesion.commit()
-
+    #sesion.commit()
+    sesion.flush()
     
     return evento
 

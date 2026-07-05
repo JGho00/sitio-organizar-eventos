@@ -16,8 +16,9 @@ async def obtener_contratos_bd(sesion:Session):
 
 async def crear_contrato_bd(sesion:Session,contrato:Contrato):
     sesion.add(contrato)
-    sesion.commit()
-    sesion.refresh(contrato)
+    #sesion.commit()
+    #sesion.refresh(contrato)
+    sesion.flush()
     return contrato
 
 
