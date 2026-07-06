@@ -7,7 +7,7 @@ from sqlmodel import  Session
 from core.config import obtener_sesion
 
 
-from schemas.contrato import obtener_contratos_bd,obtener_estadisticas_contratos_bd
+from services.contrato_service import obtener_contratos_bd,estadisticas_contratos
 from schemas.escuela import obtener_escuelas_bd
 
 from services import dependencias
@@ -33,7 +33,7 @@ async def consultar_contratos(request: Request,username = Depends(obtener_usuari
     
     contratos = await obtener_contratos_bd(sesion)
     print(type(contratos))
-    contratos_estadisticas = await obtener_estadisticas_contratos_bd(sesion)
+    contratos_estadisticas = await estadisticas_contratos(sesion)
 
     escuelas = await obtener_escuelas_bd(sesion)
     

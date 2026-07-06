@@ -4,6 +4,7 @@ from sqlmodel import Relationship
 
 if TYPE_CHECKING:
     from .model_curso import Curso 
+    from models.model_egresado import Egresado
 
 class Escuela(SQLModel,table=True):
     id: int | None = Field(default=None, primary_key=True)
@@ -11,5 +12,6 @@ class Escuela(SQLModel,table=True):
     direccion:str= Field()
     telefono: str = Field()
 
+    #Relaciones
     cursos: List["Curso"] = Relationship(back_populates="escuela")
 

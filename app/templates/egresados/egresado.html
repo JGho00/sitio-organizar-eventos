@@ -15,24 +15,24 @@ Escuelas
             <div>
                 <h2>Información general</h2>
                 <div>
-                    <p>nombre completo</p>
-                    <p>dni</p>
-                    <p>direccion</p>
-                    <p>telefono</p>
-                    <p>Escuela</p>
-                    <p>Division</p>
+                    <p>Nombre: {{egresado.nombre}}</p>
+                    <p>Dni: {{egresado.dni}}</p>
+                    <p>Dirección:{{egresado.dirección}}</p>
+                    <p>Telefono: {{egresado.telefono}}</p>
+                    <p>Escuela: {{egresado.curso.escuela.nombre}}</p>
+                    <p>Division:{{egresado.curso.division}}</p>
                     <p>Año</p>
                 </div>
             </div>
             <div>
                 <h2>Estado de cuenta</h2>
                 <div>
-                    <p>Total pagado</p>
-                    <p>Total por pagar</p>
-                    <p>cantidad cuotas restantes</p>
-                    <p>monto cuota</p>
-                    <p>Estado de cuenta</p>
-                    <p>intereses acumulados por morosidad</p>
+                    <p>Total pagado:{{estadisticas.total_pagado}}</p>
+                    <p>Total por pagar:{{estadisticas.total_no_pagado}}</p>
+                    <p>cantidad cuotas restantes: {{estadisticas.cant_cuotas_impagas}}</p>
+                    <p>Cuotas vencidas: {{estadisticas.cant_cuotas_vencidas}}</p>
+                    <p>Estado de cuenta: {{estadisticas.estado_cuenta}}</p>
+                    <p>intereses acumulados por morosidad CALCULAR</p>
                 </div>
             </div>
 
@@ -43,21 +43,23 @@ Escuelas
                         <tr>
                             <th>Nro de cuota</th>
                             <th>Monto</th>
-                            <th>Monto_recargo</th>
+                            <th>Monto Recargo</th>
                             <th>Fecha de pago</th>
                             <th>Estado</th>
                             <th>Accion</th>
                         </tr>
                     </thead>
                     <tbody>
+                        {%for cuota in egresado.cuotas%}
                         <tr>
-                            <td>1</td>
-                            <td>$3333</td>
-                            <td><strong>$0.00</strong></td>
-                            <td>28 Jun, 2026</td>
-                            <td>Pagado</td>
+                            <td>{{cuota.numero_cuota}}</td>
+                            <td>{{cuota.monto_original}}</td>
+                            <td>{{cuota.monto_pago}}</td>
+                            <td>{{cuota.fecha_vencimiento}}</td>
+                            <td>{{cuota.estado_pago}}</td>
                             <td><button>Adelantar pago</button></td>
                         </tr>
+                        {%endfor%}
                     </tbody>
                 </table>
             </div>

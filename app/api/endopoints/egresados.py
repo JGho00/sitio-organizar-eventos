@@ -3,10 +3,12 @@ from fastapi.templating import Jinja2Templates
 from fastapi.responses import RedirectResponse
 from sqlmodel import Session
 
-from schemas.egresado import obtener_egresados_bd,obtener_egresado_dni_bd,agregar_egresado_bd,eliminar_egresado_bd,actualizar_egresado_dni_bd
+from schemas.egresado import obtener_egresados_bd,agregar_egresado_bd,eliminar_egresado_bd,actualizar_egresado_dni_bd
 from api.endopoints.dependencias import obtener_usuario_actual
 
 from core.config import obtener_sesion
+
+from services.egresado_service import obtener_egresado_con_cuotas,estadisticas_egresado
 
 router = APIRouter(
     prefix="/egresados",
@@ -106,15 +108,24 @@ async def get_egresado_dni(request:Request,dni:int,nombre:str =Form(...),telefon
 
 @router.post("/dni/{dni}")
 async def get_egresado_dni(request:Request,dni:int,sesion:Session = Depends(obtener_sesion),username = Depends(obtener_usuario_actual)):
-    print("Editar")
-    egresado = await obtener_egresado_dni_bd(sesion,dni)
-    print(egresado)
+    
+    if not username:
+        response = RedirectResponse(url="/login", status_code=status.HTTP_303_SEE_OTHER)
+        response.delete_cookie("access_token")
+        return response
+
+    
+    egresado = await obtener_egresado_con_cuotas(sesion,dni)
+
+    estadisticas= await estadisticas_egresado(egresado)
+
     return templates.TemplateResponse(
         request=request,
         name = "egresados/egresado.html",
         context={
             "egresado": egresado,
-            "username":username
+            "username":username,
+            "estadisticas":estadisticas
             }
     )
 

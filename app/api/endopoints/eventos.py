@@ -18,9 +18,9 @@ from models.model_egresado import Egresado
 from models.model_establecimiento import Establecimiento
 
 from schemas.escuela import obtener_escuelas_bd
-from schemas.evento import obtener_eventos_bd,obtener_evento_id_bd,obtener_evento_bd,agregar_evento_bd,actualizar_evento_id_bd,eliminar_evento_bd
+from schemas.evento import obtener_eventos_bd,obtener_evento_id_bd,obtener_evento_bd,agregar_evento_bd
 from schemas.curso import crear_curso_bd
-from schemas.contrato import crear_contrato_bd
+from services.contrato_service import crear_contrato_bd
 from schemas.establecimiento import obtener_establecimientos_bd
 
 from services import dependencias
@@ -176,10 +176,14 @@ async def carga_masiva(
         sesion.commit()
 
         
-        print("tabla egresados",df)
-
+        
+    
     except Exception as excepcion_sistema:
         print(f'Error en carga masiva: {excepcion_sistema}. Linea: {excepcion_sistema.__traceback__.tb_lineno}')
         if sesion:
             #Por algún error se vuelve atrás la transacción
             sesion.rollback()
+
+    finally:
+        response = RedirectResponse(url="/eventos", status_code=status.HTTP_303_SEE_OTHER)
+        return response

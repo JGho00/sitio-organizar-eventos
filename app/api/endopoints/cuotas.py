@@ -27,7 +27,9 @@ async def consultar_cuotas(request: Request,username = Depends(obtener_usuario_a
 
     cuotas:List[Cuota] = await consultar_cuotas_bd(sesion_bd)
 
-    estadisticas:dict = await estadisticas_cuotas(cuotas)
+    estadisticas:dict = None
+    if cuotas:
+        estadisticas = await estadisticas_cuotas(cuotas)
 
     return templates.TemplateResponse(
         request=request,

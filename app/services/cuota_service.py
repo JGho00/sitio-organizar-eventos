@@ -20,6 +20,8 @@ async def consultar_cuotas_bd(sesion:Session):
 
 async def estadisticas_cuotas(cuotas:List[Cuota]):
 
+    fecha_actual = datetime.now()
+
     #Limpiar listado cuotas
     cuotas = [c.model_dump() for c in cuotas]
 
@@ -33,8 +35,6 @@ async def estadisticas_cuotas(cuotas:List[Cuota]):
     #Convierto fecha_vencimiento a date
     df_cuotas['fecha_vencimiento'] = pd.to_datetime(df_cuotas['fecha_vencimiento'])
     
-    fecha_actual = datetime.now()
-
     df_cuotas_vencidas = df_cuotas[
         (df_cuotas['estado_pago'] == 'PENDIENTE') & 
         (df_cuotas['fecha_vencimiento'] < fecha_actual)
@@ -43,8 +43,9 @@ async def estadisticas_cuotas(cuotas:List[Cuota]):
 
     total_cuotas_vencidas:int = len(df_cuotas_vencidas)
 
+
     total_cuotas_pendientes:int  =len(df_cuotas[df_cuotas['estado_pago'] == 'PENDIENTE'])
-    total_cuotas_finalizadas:int = len(df_cuotas[df_cuotas['estado_pago'] == 'PAGAGO'])
+    total_cuotas_finalizadas:int = len(df_cuotas[df_cuotas['estado_pago'] == 'PAGADO'])
 
     estadisticas:dict = {
         'total_cuotas':total_cuotas,
@@ -76,7 +77,7 @@ async def generar_plan_cuotas_egresado(
     hoy = date.today()
     
     for i in range(1, cantidad_cuotas + 1):
-        monto_final_cuota = monto_cuota_base + (monto_cuota_base if i == 1 else 0)
+        
         
         # Calculamos el año y mes objetivo sumando 'i' meses a la fecha actual
         mes_objetivo = hoy + relativedelta(months=i)
@@ -88,7 +89,7 @@ async def generar_plan_cuotas_egresado(
 
         nueva_cuota = Cuota(
             id_contrato=id_contrato,
-            monto_original=monto_final_cuota,
+            monto_original=monto_cuota_base,
             monto_pago=None,
             id_egresado=egresado,
             numero_cuota=i,

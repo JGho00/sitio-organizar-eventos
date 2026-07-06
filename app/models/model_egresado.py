@@ -1,8 +1,12 @@
 from sqlmodel import SQLModel,Field, Relationship
 from typing import TYPE_CHECKING
+from sqlalchemy import asc,text
+
+
 if TYPE_CHECKING:
     from models.model_curso import Curso
     from models.model_cuota import Cuota
+    from models.model_escuela import Escuela
 
 class Persona(SQLModel):
     dni:int = Field(primary_key=True)
@@ -17,4 +21,11 @@ class Egresado(Persona,table = True):
     #Relaciones
     curso: "Curso" = Relationship(back_populates="egresados")
 
-    cuotas: list["Cuota"] = Relationship(back_populates="egresado")
+
+    cuotas: list["Cuota"] = Relationship(
+        back_populates="egresado",
+        sa_relationship_kwargs={
+            # Queda explícito que va de menor a mayor
+           "order_by": "Cuota.numero_cuota"
+        }
+    )
