@@ -1,5 +1,6 @@
 from models.model_egresado import Egresado
 from sqlmodel import Session,select
+from typing import List
 from sqlalchemy.orm import selectinload
 
 from datetime import datetime
@@ -10,6 +11,13 @@ async def obtener_egresado_con_cuotas(sesion: Session, dni: int):
     consulta = select(Egresado).where(Egresado.dni == dni).options(selectinload(Egresado.cuotas))
     egresado_cuotas:Egresado = sesion.exec(consulta).first()
     return egresado_cuotas
+
+
+async def estadisticas_egresado_generales(egresados:List[Egresado]):
+    pass
+    
+
+    
 
 
 async def estadisticas_egresado(egresado:Egresado):

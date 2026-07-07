@@ -1,7 +1,7 @@
 from io import BytesIO
 import pandas as pd
 from fastapi import UploadFile
-
+from datetime import datetime
 
 async def decodificar_archivo_egresados(archivo:UploadFile):
     contenido = await archivo.read()
@@ -11,6 +11,31 @@ async def decodificar_archivo_egresados(archivo:UploadFile):
 def obtener_df_egresados(archivo_bytes:BytesIO):
     df:pd.DataFrame = pd.read_excel(archivo_bytes)
     return df
+
+def obtener_fecha(fecha_str: str = None) -> dict:
+    """
+    Valida una fecha en formato 'mm-yyyy' (o toma la actual si es None/vacía)
+    y retorna un diccionario con la fecha en diferentes formatos.
+    """
+    # Validar entrada
+    if not fecha_str or str(fecha_str).strip() == "":
+        fecha_obj = datetime.now()
+    else:
+        # 2. Validar y parsear el formato string "mm-yyyy"
+        try:
+            fecha_obj = datetime.strptime(fecha_str.strip(), "%m-%Y")
+        except ValueError:
+            raise ValueError("El formato de fecha debe ser 'mm-yyyy' (ejemplo: '07-2026').")
+
+    formatos_fechas:dict = {
+        "dd_mm_yyyy_hh_mm_ss": fecha_obj.strftime("%d_%m_%Y_%H_%M_%S"),
+        "dd_mm_yyyy_hh_mm": fecha_obj.strftime("%d_%m_%Y_%H_%M"),
+        "dd_mm_yyyy": fecha_obj.strftime("%d_%m_%Y"),
+        "mm_yyyy": fecha_obj.strftime("%m_%Y")
+    }
+
+    return formatos_fechas
+
 
 
 
@@ -61,6 +86,7 @@ interes_mora = {
         "19": "19%",
         "20": "20%"
 }
+
 
 
 
