@@ -5,6 +5,7 @@ from typing import TYPE_CHECKING
 if TYPE_CHECKING:
     from models.model_contrato import Contrato
     from models.model_egresado import Egresado
+    from models.model_pago import Pago
 
 class Cuota(SQLModel,table = True):
     id_cuota:int = Field(primary_key=True)
@@ -21,3 +22,4 @@ class Cuota(SQLModel,table = True):
     egresado: "Egresado" = Relationship(back_populates="cuotas")
     #Relacion una cuota pertenece a un contrato
     contrato: "Contrato" = Relationship(back_populates="cuotas")
+    pagos: list["Pago"] = Relationship(back_populates="cuota")

@@ -1,10 +1,10 @@
 from sqlmodel import Session
-
+import pandas as pd
 from services.egresado_service import estadisticas_egresado
 from services.contrato_service import estadisticas_contratos
-from services.cuota_service import consultar_cuotas_bd,estadisticas_cuotas
+from services.cuota_service import consultar_cuotas_bd,estadisticas_cuotas,consultar_cuotas_vencidas
 from services.evento_service import estadisticas_eventos
-
+from services.pago_service import consultar_pagos_bd,estadisticas_pagos
 
 async def obtener_estadisticas_generales(sesion:Session):
 
@@ -17,12 +17,25 @@ async def obtener_estadisticas_generales(sesion:Session):
 
     resumen_eventos = await estadisticas_eventos(sesion)
 
+    #5 morosos ordenados por fecha de vencimiento y monto_pago
+    df_cuotas:pd.DataFrame = await consultar_cuotas_bd(sesion) 
+    df_cuotas_vencidas:pd.Dataframe= consultar_cuotas_vencidas(df_cuotas)
+    #df_cuotas_vencidas = df_cuotas_vencidas.head(5)#Test
+    dict_cuotas_vencidas:dict = df_cuotas_vencidas.to_dict(orient='records') if not df_cuotas_vencidas.empty else []
+    print("CUOTAS VENCIDAS",df_cuotas_vencidas)
+
+
+    #Ultimos pagos
+    df_pagos = await consultar_pagos_bd(sesion)
+    estadisticas_pagos(df_pagos)
+
     estadisticas_globales:dict = {
 
         'contratos': resumen_contratos,
         #'egresados': resumen_egresados,
         'cuotas':resumen_cuotas,
-        'eventos':resumen_eventos
+        'eventos':resumen_eventos,
+        'egresados_morosidad': dict_cuotas_vencidas
     }
 
     return estadisticas_globales

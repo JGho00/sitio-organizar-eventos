@@ -8,20 +8,33 @@ from dateutil.relativedelta import relativedelta
 from datetime import datetime
 
 from models.model_cuota import Cuota
-
+from models.model_egresado import Egresado
 from services.dependencias import obtener_fecha
 
 
 async def consultar_cuotas_bd(sesion:Session):
 
-    consulta = select(Cuota)
-    cuotas:Cuota = sesion.exec(consulta).all()
+    consulta = select(
+        Cuota.id_cuota,
+        Cuota.id_egresado,
+        Cuota.fecha_vencimiento,
+        Cuota.numero_cuota,
+        Cuota.monto_original,
+        Cuota.monto_pago,
+        Cuota.estado_pago,
+        Cuota.fecha_vencimiento,
+        # Agrega aquí todos los campos de Cuota que necesites...
+        Egresado.nombre.label("nombre_egresado")  # Traemos el nombre desde Egresado
+    ).join(Egresado, Cuota.id_egresado == Egresado.dni)
 
+    cuotas:Cuota = sesion.exec(consulta).all()
+    df_cuotas = pd.DataFrame([r._asdict() for r in cuotas])
     #Convertir los objetos SQLModel a diccionarios
-    cuotas_dict = [cuota.model_dump() for cuota in cuotas]
+    #cuotas_dict = [cuota.model_dump() for cuota in cuotas]
     
     #Crear y retornar el DataFrame
-    df_cuotas = pd.DataFrame(cuotas_dict)
+    #df_cuotas = pd.DataFrame(cuotas_dict)
+    print("ACA",df_cuotas)
     return df_cuotas
 
 def consultar_cuotas_por_periodo(df_cuotas:pd.DataFrame,periodo:str = None):
@@ -64,6 +77,8 @@ def consultar_cuotas_vencidas(df_cuotas:pd.DataFrame):
         (df_cuotas['fecha_vencimiento'] < fecha_actual)
     ]
 
+    df_cuotas_vencidas = df_cuotas_vencidas.sort_values(by=['fecha_vencimiento', 'monto_original'], ascending=False)
+    
     return df_cuotas_vencidas
 
 async def estadisticas_cuotas(sesion:Session):
@@ -79,9 +94,9 @@ async def estadisticas_cuotas(sesion:Session):
     total_proyeccion_mes = df_cuotas_mes['monto_original'].sum()
     
 
-
-    total_cuotas_vencidas:int = len(consultar_cuotas_vencidas(df_cuotas))
-
+    df_cuotas_vencidas = consultar_cuotas_vencidas(df_cuotas)
+    cant_cuotas_vencidas:int = len(consultar_cuotas_vencidas(df_cuotas))
+    monto_total_vencidas:float = df_cuotas_vencidas['monto_original'].sum()
 
     #Ingresos
     df_cuotas_pagas_mes:pd.DataFrame = consultar_cuotas_por_estado_pago(df_cuotas_mes)
@@ -89,19 +104,20 @@ async def estadisticas_cuotas(sesion:Session):
     monto_mes_pagado = (df_cuotas_pagas_mes['monto_pago'].sum())
     print("total",monto_mes_pagado)
 
-    total_cuotas_pendientes:int  =len(df_cuotas[df_cuotas['estado_pago'] == 'PENDIENTE'])
-    total_cuotas_finalizadas:int = len(df_cuotas[df_cuotas['estado_pago'] == 'PAGADO'])
+    cant_cuotas_pendientes:int  =len(df_cuotas[df_cuotas['estado_pago'] == 'PENDIENTE'])
+    cant_cuotas_finalizadas:int = len(df_cuotas[df_cuotas['estado_pago'] == 'PAGADO'])
 
     estadisticas:dict = {
         'total_cuotas':total_cuotas,
         'total_cuotas_mes':total_cuotas_mes,
         'total_proyeccion_mes':total_proyeccion_mes,
-        'total_cuotas_vencidas': total_cuotas_vencidas,
+        'cant_cuotas_vencidas': cant_cuotas_vencidas,
         'total_cuotas_pagas_mes':'',
         'total_cuotas_impagas_mes':'',
-        'total_cuotas_pendientes':total_cuotas_pendientes,
-        'total_cuotas_finalizadas':total_cuotas_finalizadas,
-        'monto_mes_pagado':monto_mes_pagado
+        'cant_cuotas_pendientes':cant_cuotas_pendientes,
+        'cant_cuotas_finalizadas':cant_cuotas_finalizadas,
+        'monto_mes_pagado':monto_mes_pagado,
+        'monto_total_morosidad': monto_total_vencidas
     }
 
     return estadisticas

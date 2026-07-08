@@ -1,5 +1,11 @@
-from sqlmodel import SQLModel,Field
+from sqlmodel import SQLModel,Field,Relationship
 from datetime import datetime,timezone
+from typing import TYPE_CHECKING
+
+
+if TYPE_CHECKING:
+    
+    from models.model_cuota import Cuota
 
 class Pago(SQLModel,table = True):
     id_pago:int = Field(primary_key=True)
@@ -9,3 +15,6 @@ class Pago(SQLModel,table = True):
     metodo_pago:str = Field()
     nro_comprobante:str = Field()
     cobrador:str = Field()
+
+    #Relaciones
+    cuota: "Cuota" = Relationship(back_populates="pagos")

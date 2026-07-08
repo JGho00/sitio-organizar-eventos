@@ -19,7 +19,7 @@
             <p>Ingreso mensual actual: {{resumen.cuotas.monto_mes_pagado}}</p>
         </div>
         <div>
-            <p>Morosidad</p>
+            <p>Morosidad: {{resumen.cuotas.monto_total_morosidad}}</p>
         </div>
     </div>
 
@@ -29,21 +29,30 @@
         <table>
             <tr>
                 <thead>
-                    <td>Alumno</td>
+                    <td>Egresado</td>
                     <td>Nro de cuota</td>
                     <td>Monto</td>
                     <td>Estado</td>
                     <td>Acciones</td>
                 </thead>
                 <tbody>
-                    <td>A1</td>
-                    <td>3</td>
-                    <td>$33.44</td>
-                    <td>Vencida</td>
-                    <td>
-                        <button>Consultar</button>
-                        <button>Recordatorio</button>
-                    </td>
+                    {% for egresado in resumen.egresados_morosidad %}
+                        <tr>
+                            <td>{{egresado.nombre_egresado}}</td>
+                            <td>{{egresado.numero_cuota}}</td>
+                            <td>{{egresado.monto_original}}</td>
+                            <td>Vencida</td>
+                            <td>
+                                <button>Consultar</button>
+                                <button>Recordatorio</button>
+                            </td>
+                        </tr>
+                    {% else %}
+                            <tr>
+                                <!-- El colspan debe coincidir con el número total de columnas -->
+                                <td colspan="2" class="text-center">Sin registros de morosidad</td>
+                            </tr>
+                    {% endfor %}
                 </tbody>
             </tr>
         </table>
@@ -56,7 +65,7 @@
         <table>
             <thead>
                 <tr>
-                    <th>Alumno</th>
+                    <th>Egresado</th>
                     <th>Escuela</th>
                     <th>Año</th>
                     <th>Pago</th>
