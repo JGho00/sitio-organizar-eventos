@@ -65,25 +65,27 @@
         <table>
             <thead>
                 <tr>
+                    <th>Cuota</th>
                     <th>Egresado</th>
                     <th>Escuela</th>
                     <th>Año</th>
                     <th>Pago</th>
-                    <th>Cuota</th>
                     <th>Fecha de pago</th>
                     <th>Accion</th>
                 </tr>
             </thead>
             <tbody>
+                {% for pago in resumen.pagos %}
                 <tr>
-                    <td><strong>Lucas Silva</strong></td>
-                    <td>Inscripción VIP - Tech 2026</td>
-                    <td>2026</td>
-                    <td><strong>$200.00</strong></td>
-                    <td>5/12</td>
-                    <td>28 Jun, 2026</td>
+                    <td>{{pago.numero_cuota}}</td>
+                    <td>escuela</td>
+                    <td>{{pago.nombre_egresado}}</td>
+                    <td>{{pago.monto}}</td>
+                    <td>{{pago.fecha}}</td>
+                    
                     <td><button type="button">Cobrar</button></td>
                 </tr>
+                {% endfor %}
             </tbody>
         </table>
     </div>

@@ -27,15 +27,19 @@ async def obtener_estadisticas_generales(sesion:Session):
 
     #Ultimos pagos
     df_pagos = await consultar_pagos_bd(sesion)
-    estadisticas_pagos(df_pagos)
-
+    resumen_pagos = estadisticas_pagos(df_pagos)
+    print("RESUMEN PAGOS")
+    print(resumen_pagos)
     estadisticas_globales:dict = {
 
         'contratos': resumen_contratos,
         #'egresados': resumen_egresados,
         'cuotas':resumen_cuotas,
         'eventos':resumen_eventos,
-        'egresados_morosidad': dict_cuotas_vencidas
+        'egresados_morosidad': dict_cuotas_vencidas,
+        'pagos':resumen_pagos['ultimos_pagos']
     }
 
+    print("Estadisticas")
+    print(resumen_pagos['ultimos_pagos'])
     return estadisticas_globales

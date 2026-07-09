@@ -10,6 +10,7 @@ from datetime import datetime
 from models.model_cuota import Cuota
 from models.model_egresado import Egresado
 from services.dependencias import obtener_fecha
+from services.pago_service import consultar_pagos_bd
 
 
 async def consultar_cuotas_bd(sesion:Session):
@@ -106,6 +107,9 @@ async def estadisticas_cuotas(sesion:Session):
 
     cant_cuotas_pendientes:int  =len(df_cuotas[df_cuotas['estado_pago'] == 'PENDIENTE'])
     cant_cuotas_finalizadas:int = len(df_cuotas[df_cuotas['estado_pago'] == 'PAGADO'])
+
+
+    
 
     estadisticas:dict = {
         'total_cuotas':total_cuotas,
