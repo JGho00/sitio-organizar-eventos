@@ -25,7 +25,7 @@ from schemas.establecimiento import obtener_establecimientos_bd
 from services import dependencias
 from services.curso_service import validar_existencia_curso
 from services.cuota_service import generar_plan_cuotas_egresado
-
+from services.evento_service import obtener_eventos_bd_service,estadisticas_eventos
 router = APIRouter(
     prefix="/eventos",
     tags =["Eventos"],
@@ -47,6 +47,9 @@ async def get_eventos(request:Request,username = Depends(obtener_usuario_actual)
     print(eventos)
     escuelas:Escuela = await obtener_escuelas_bd(sesion)
 
+    eventos_service = await obtener_eventos_bd_service(sesion)
+    estadisticas = estadisticas_eventos(eventos_service)
+    
     estableticimientos:Establecimiento = await obtener_establecimientos_bd(sesion)
 
     print("eventos",eventos)
@@ -60,7 +63,8 @@ async def get_eventos(request:Request,username = Depends(obtener_usuario_actual)
             "anios": dependencias.anios,
             "interes_mora": dependencias.interes_mora,
             "escuelas": escuelas,
-            "establecimientos": estableticimientos
+            "establecimientos": estableticimientos,
+            'estadisticas':estadisticas
         }
     )
 

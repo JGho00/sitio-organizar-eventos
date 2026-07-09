@@ -20,50 +20,72 @@ eventos
         <section class="">
             <div class="">
                 <h3>Próximo evento</h3>
-                <p class="">Curso</p>
-                <p class="">Estado</p>
-                <p class="">Fecha</p>
-                <p class="">Lugar</p>
+                {%if estadisticas.proximo_evento%}
+                    <p class="">Nombre: {{estadisticas.proximo_evento.nombre}}</p>
+                    <p class="">Fecha: {{estadisticas.proximo_evento.fecha}}</p>
+                    <p class="">Lugar: {{estadisticas.proximo_evento.lugar}}</p>
+                {%else%}
+                    <p>Sin eventos cargados</p>
+                {%endif%}
             </div>
         </section>
 
          <!-- 1. Últimos finalizados -->
         <section class="">
             <div class="">
-                <h3>Ultimos finalizados</h3>
-                <p class="">Curso</p>
-                <p class="">Estado</p>
-                <p class="">Fecha</p>
-                <p class="">Lugar</p>
+                <h3>Ultimos Eventos finalizados</h3>
+                {%if estadisticas.eventos_finalizados%}
+                    {%for evento_finalizado in estadisticas.eventos_finalizados%}
+                    <p class="">Curso: {{evento_finalizado.nombre_curso}}</p>
+                    <p class="">Fecha:{{evento_finalizado.fecha_evento}}</p>
+                    <p class="">Lugar: {{evento_finalizado.nombre_establecimiento}}</p>
+                    {%endfor%}
+                {%else%}
+                    <p class="">Sin eventos finalizados</p>
+                {%endif%}
             </div>
         </section>
 
         <!-- 2. Vista de Calendario (Mockup Operativo) -->
         <section class="">
             <h2>Calendario</h2>
-            <div class="">
-                <div class="">
-                    <button class="">&lt; Anterior</button>
-                    <h3>Junio 2026</h3>
-                    <button class="">Siguiente &gt;</button>
+            <div class="calendar-container">
+                <!-- Cabecera -->
+                <div class="calendar-header">
+                    <h2 class="calendar-month-year">{{ estadisticas.calendario.mes_nombre }} {{ estadisticas.calendario.anio }}</h2>
                 </div>
-                <div class="">
-                    <!-- Días de la semana -->
-                    <div class="">Lun</div><div class="">Mar</div><div class="">Mié</div>
-                    <div class="">Jue</div><div class="">Vie</div><div class="">Sáb</div>
-                    <div class="">Dom</div>
-                    
-                    <!-- Ejemplo de días vacíos y con eventos -->
-                    <div class=""></div><div class=""></div><div class=""></div>
-                    <div class="">1</div><div class="">2</div><div class="">3</div><div class="">4</div>
-                    <div class="">5
-                        <span class="">Conf. Tech</span>
-                    </div>
-                    <div class="">6</div><div class="">7</div><div class="">8</div>
-                    <div class="">9
-                        <span class="">Taller UX</span>
-                    </div>
-                    <div class="">10</div><div class="">11</div><div class="">12</div>
+
+                <!-- Días de la Semana -->
+                <div class="calendar-weekdays">
+                    <div>Dom</div><div>Lun</div><div>Mar</div><div>Mié</div><div>Jue</div><div>Vie</div><div>Sáb</div>
+                </div>
+
+                <!-- Cuadrícula de Días -->
+                <div class="calendar-days">
+                    {% for semana in estadisticas.calendario.semanas %}
+                        {% for dia in estadisticas.semana %}
+                            
+                            {% if estadisticas.calendario.dia == 0 %}
+                                <!-- Día vacío perteneciente al mes anterior o posterior -->
+                                <div class="day empty"></div>
+                            {% else %}
+                                <!-- Día válido del mes actual -->
+                                <div class="day {% if estadisticas.calendario.dia == estadisticas.calendario.dia_actual %}today{% endif %}">
+                                    <span class="day-number">{{ estadisticas.calendario.dia }}</span>
+                                    
+                                    <!-- Buscamos si este día específico tiene eventos asignados -->
+                                    {% if dia in calendario.eventos_por_dia %}
+                                        {% for evento in estadisticas.calendario.eventos_por_dia[dia] %}
+                                            <div class="event-badge" title="{{ evento.descripcion }}">
+                                                {{ evento.nombre }}
+                                            </div>
+                                        {% endfor %}
+                                    {% endif %}
+                                </div>
+                            {% endif %}
+
+                        {% endfor %}
+                    {% endfor %}
                 </div>
             </div>
         </section>

@@ -3,7 +3,7 @@ import pandas as pd
 from services.egresado_service import estadisticas_egresado
 from services.contrato_service import estadisticas_contratos
 from services.cuota_service import consultar_cuotas_bd,estadisticas_cuotas,consultar_cuotas_vencidas
-from services.evento_service import estadisticas_eventos
+from services.evento_service import obtener_eventos_bd_service,estadisticas_eventos
 from services.pago_service import consultar_pagos_bd,estadisticas_pagos
 
 async def obtener_estadisticas_generales(sesion:Session):
@@ -15,7 +15,8 @@ async def obtener_estadisticas_generales(sesion:Session):
     resumen_cuotas = await estadisticas_cuotas(sesion)
     print("RESUMEN Cuotas",resumen_cuotas)
 
-    resumen_eventos = await estadisticas_eventos(sesion)
+    eventos_service = await obtener_eventos_bd_service(sesion)
+    resumen_eventos = estadisticas_eventos(eventos_service)
 
     #5 morosos ordenados por fecha de vencimiento y monto_pago
     df_cuotas:pd.DataFrame = await consultar_cuotas_bd(sesion) 
