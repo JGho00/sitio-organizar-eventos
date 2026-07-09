@@ -1,7 +1,7 @@
 from sqlmodel import SQLModel,Field,Relationship
 from datetime import datetime,timezone
 from typing import TYPE_CHECKING, Optional
-
+from decimal import Decimal
 
 if TYPE_CHECKING:
     from models.model_curso import Curso
@@ -13,7 +13,7 @@ class Contrato(SQLModel,table=True):
     id_curso:int = Field(foreign_key="curso.id")
     fecha_inicio:datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
     fecha_fin:Optional[datetime] = Field(default=None)
-    monto_total:float = Field()
+    monto_total:Decimal= Field(max_digits=12, decimal_places=2)
     interes_mora:float = Field()
     dia_vencimiento_mensual:str = Field()
 

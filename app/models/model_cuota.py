@@ -1,5 +1,5 @@
 from sqlmodel import SQLModel,Field,Relationship
-
+from decimal import Decimal
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
@@ -12,8 +12,8 @@ class Cuota(SQLModel,table = True):
     id_contrato:int = Field(foreign_key="contrato.id")
     id_egresado:int = Field(foreign_key="egresado.dni")
     numero_cuota:int = Field()
-    monto_original:float = Field(default=0.00)
-    monto_pago:float = Field(default=0.00)
+    monto_original:Decimal = Field(default=0.00,decimal_places=2)
+    monto_pago:Decimal = Field(default=0.00,decimal_places=2)
     fecha_vencimiento:str = Field()
     estado_pago: str = Field()
 

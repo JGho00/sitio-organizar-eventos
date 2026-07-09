@@ -3,7 +3,7 @@ from typing import List
 import pandas as pd
 from sqlmodel import Session
 from datetime import date
-from decimal import Decimal
+from decimal import Decimal,ROUND_CEILING
 from dateutil.relativedelta import relativedelta
 from datetime import datetime
 
@@ -29,13 +29,9 @@ async def consultar_cuotas_bd(sesion:Session):
     ).join(Egresado, Cuota.id_egresado == Egresado.dni)
 
     cuotas:Cuota = sesion.exec(consulta).all()
-    df_cuotas = pd.DataFrame([r._asdict() for r in cuotas])
-    #Convertir los objetos SQLModel a diccionarios
-    #cuotas_dict = [cuota.model_dump() for cuota in cuotas]
     
-    #Crear y retornar el DataFrame
-    #df_cuotas = pd.DataFrame(cuotas_dict)
-    print("ACA",df_cuotas)
+    df_cuotas = pd.DataFrame([r._asdict() for r in cuotas])
+    
     return df_cuotas
 
 def consultar_cuotas_por_periodo(df_cuotas:pd.DataFrame,periodo:str = None):
@@ -82,6 +78,26 @@ def consultar_cuotas_vencidas(df_cuotas:pd.DataFrame):
     
     return df_cuotas_vencidas
 
+def consultar_proximos_vencimientos(df_cuotas:pd.DataFrame):
+   
+    #Convertir la columna fecha a datetime
+    df_cuotas['fecha_vencimiento'] = pd.to_datetime(df_cuotas['fecha_vencimiento'])
+
+    #Se filtra por fecha de vencimiento más cercana. Se ordena por fecha. Se obtiene solo los primeros 10 registros
+    hoy:pd.Timestamp = pd.Timestamp.today().normalize()
+    proximos_15_dias:pd.Timestamp = hoy + pd.Timedelta(days=15)
+
+    # 3. Filtrar los registros dentro del rango
+    vencimientos_15_dias:pd.DataFrame = df_cuotas[
+        (df_cuotas['estado_pago']=='PENDIENTE')&
+        (df_cuotas['fecha_vencimiento'] >= hoy) & 
+        (df_cuotas['fecha_vencimiento'] <= proximos_15_dias)
+    ].sort_values(by='fecha_vencimiento')
+        
+    print("PROXIMOS VENCIMIENTOS")
+    print(vencimientos_15_dias)
+    return vencimientos_15_dias.to_dict(orient='records')
+
 async def estadisticas_cuotas(sesion:Session):
 
     df_cuotas:pd.DataFrame = await consultar_cuotas_bd(sesion)
@@ -109,8 +125,9 @@ async def estadisticas_cuotas(sesion:Session):
     cant_cuotas_finalizadas:int = len(df_cuotas[df_cuotas['estado_pago'] == 'PAGADO'])
 
 
+    #Proximos vencimientos del mes
+    proximos_vencimientos:dict = consultar_proximos_vencimientos(df_cuotas)
     
-
     estadisticas:dict = {
         'total_cuotas':total_cuotas,
         'total_cuotas_mes':total_cuotas_mes,
@@ -121,7 +138,8 @@ async def estadisticas_cuotas(sesion:Session):
         'cant_cuotas_pendientes':cant_cuotas_pendientes,
         'cant_cuotas_finalizadas':cant_cuotas_finalizadas,
         'monto_mes_pagado':monto_mes_pagado,
-        'monto_total_morosidad': monto_total_vencidas
+        'monto_total_morosidad': monto_total_vencidas,
+        'proximos_vencimientos': proximos_vencimientos
     }
 
     return estadisticas
@@ -139,8 +157,8 @@ async def generar_plan_cuotas_egresado(
     en el 'dia_vencimiento' de cada mes consecutivo.
     """
     # 1. Cálculos de montos y redondeos
-    monto_cuota_base = (monto_total_deuda / cantidad_cuotas)
-    
+    monto_cuota_base:Decimal = (monto_total_deuda / cantidad_cuotas)
+    monto_cuota_base = monto_cuota_base.quantize(Decimal('0.01'),rounding = ROUND_CEILING)
 
     # 2. Determinar el mes de inicio del plan de pagos
     hoy = date.today()

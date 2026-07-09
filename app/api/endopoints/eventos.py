@@ -1,9 +1,8 @@
-from decimal import Decimal
+from decimal import Decimal,ROUND_CEILING
 
-from fastapi import APIRouter,Depends,Request,status,UploadFile,File,Form,HTTPException
+from fastapi import APIRouter,Depends,Request,status,UploadFile,File,Form
 from fastapi.responses import RedirectResponse
 from fastapi.templating import Jinja2Templates
-from pydantic import BaseModel,Field 
 from api.endopoints.dependencias import obtener_usuario_actual
 
 
@@ -42,7 +41,9 @@ async def get_eventos(request:Request,username = Depends(obtener_usuario_actual)
         response.delete_cookie("access_token")
         return response
     
-    eventos:Evento = await obtener_eventos_bd(sesion)
+    eventos= await obtener_eventos_bd(sesion)
+    eventos = eventos.to_dict(orient='records') 
+    print("EVENTOS")
     print(eventos)
     escuelas:Escuela = await obtener_escuelas_bd(sesion)
 
@@ -88,7 +89,7 @@ async def carga_masiva(
                        evento_nombre:str = Form(...),
                        escuela_id:int = Form(...),
                        division:str = Form(...),
-                       monto_total:float = Form(...),
+                       monto_total:Decimal = Form(...),
                        interes_mora:float = Form(...),
                        ultimo_dia_pago:str = Form(...),
                        anio:int = Form(...),
@@ -120,6 +121,8 @@ async def carga_masiva(
             evento = Evento(nombre=evento_nombre,descripcion="",id_curso=curso.id,id_establecimiento=id_establecimiento,estado="creado")
             evento = await agregar_evento_bd(sesion,evento.nombre,evento.descripcion,evento.id_curso,evento.fecha_evento,evento.id_establecimiento,evento.estado)
 
+        #Formatear monto total para que este redondedo y con dos decimales
+        monto_total = monto_total.quantize(Decimal('0.01'),rounding=ROUND_CEILING)
 
         contrato:Contrato = Contrato(
                                     id_evento=evento.id,
@@ -172,7 +175,7 @@ async def carga_masiva(
             )
 
 
-
+        #Guardo los cambios
         sesion.commit()
 
         

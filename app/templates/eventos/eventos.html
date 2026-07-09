@@ -155,10 +155,9 @@ eventos
                     <thead>
                         <tr>
                             <th>Nombre del Evento</th>
+                            <th>Escuela</th>
                             <th>Fecha y Hora</th>
                             <th>Ubicación</th>
-                            <th>Progreso Capacidad</th>
-                            <th>Estado</th>
                             <th>Acciones</th>
                         </tr>
                     </thead>
@@ -166,15 +165,9 @@ eventos
                         {% for evento in eventos %}
                         <tr>
                             <td><strong>{{ evento.nombre }}</strong></td>
+                            <td><strong>{{ evento.nombre_escuela }}</strong></td>
                             <td>{{ evento.fecha_evento }}</td>
-                            <td>{{ evento.establecimiento.nombre }}</td>
-                            <td>
-                                <div class="">
-                                    <div class=""></div>
-                                    <span>CALCULAR</span>
-                                </div>
-                            </td>
-                            <td><span class="">Publicado</span></td>
+                            <td>{{ evento.nombre_establecimiento }}</td>
                             <td>
                                 <button class="">Editar</button>
                                 <button class="">Eliminar</button>

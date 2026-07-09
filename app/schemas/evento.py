@@ -1,12 +1,31 @@
 from models.model_evento import Evento
 from sqlmodel import select,Session
+import pandas as pd
 
 
-
+from models.model_curso import Curso
+from models.model_establecimiento import Establecimiento
+from models.model_escuela import Escuela
 async def obtener_eventos_bd(sesion:Session):
-    consulta = select(Evento)
+    consulta = (select(Evento.id,
+                      Evento.nombre,
+                      Evento.id_curso,
+                      Evento.fecha_evento,
+                      Evento.id_establecimiento,
+                      Curso.id,
+                      Curso.id_escuela,
+                      Establecimiento.id,
+                      Establecimiento.nombre.label("nombre_establecimiento"),
+                      Escuela.id,
+                      Escuela.nombre.label("nombre_escuela")
+                      ).join(Curso, Evento.id_curso == Curso.id)
+                      .join(Establecimiento,Evento.id_establecimiento == Establecimiento.id)
+                      .join(Escuela,Curso.id_escuela == Escuela.id))
     eventos = sesion.exec(consulta).all()
-    return eventos
+
+    #Transformo objeto lista Eventos en Dataframe
+    df_eventos = pd.DataFrame([r._asdict() for r in eventos])
+    return df_eventos
     
 
 

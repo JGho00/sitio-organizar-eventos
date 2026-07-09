@@ -32,10 +32,12 @@ async def consultar_contratos(request: Request,username = Depends(obtener_usuari
         return response
     
     contratos = await obtener_contratos_bd(sesion)
-    print(type(contratos))
+    
     contratos_estadisticas = await estadisticas_contratos(sesion)
 
     escuelas = await obtener_escuelas_bd(sesion)
+    
+    print("CONTRATOS")
     
     
     return templates.TemplateResponse(

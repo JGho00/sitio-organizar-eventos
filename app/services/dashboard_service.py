@@ -22,24 +22,21 @@ async def obtener_estadisticas_generales(sesion:Session):
     df_cuotas_vencidas:pd.Dataframe= consultar_cuotas_vencidas(df_cuotas)
     #df_cuotas_vencidas = df_cuotas_vencidas.head(5)#Test
     dict_cuotas_vencidas:dict = df_cuotas_vencidas.to_dict(orient='records') if not df_cuotas_vencidas.empty else []
-    print("CUOTAS VENCIDAS",df_cuotas_vencidas)
 
 
     #Ultimos pagos
     df_pagos = await consultar_pagos_bd(sesion)
     resumen_pagos = estadisticas_pagos(df_pagos)
-    print("RESUMEN PAGOS")
     print(resumen_pagos)
     estadisticas_globales:dict = {
 
         'contratos': resumen_contratos,
-        #'egresados': resumen_egresados,
         'cuotas':resumen_cuotas,
         'eventos':resumen_eventos,
         'egresados_morosidad': dict_cuotas_vencidas,
-        'pagos':resumen_pagos['ultimos_pagos']
+        'pagos':resumen_pagos
     }
 
     print("Estadisticas")
-    print(resumen_pagos['ultimos_pagos'])
+    print(estadisticas_globales['cuotas'])
     return estadisticas_globales
