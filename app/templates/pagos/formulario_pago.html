@@ -1,0 +1,22 @@
+<div class="modal-contenido">
+    <!-- Botón de esquina para cerrar que ejecuta tu función del archivo js -->
+    <button onclick="cerrarModal()" class="btn-cerrar-esquina">&times;</button>
+    
+    <h2>Registrar Pago</h2>
+    <p>Cuota ID: <strong>{{ cuota_id }}</strong></p>
+    <p>Monto máximo a abonar: ${{ monto_total }}</p>
+
+    <!-- El formulario ya no tiene atributos hx- ya que JavaScript interceptará el evento submit -->
+    <form>
+        <label for="monto_pagar">Monto a abonar:</label>
+        <input type="text" id="monto_pagar" name="monto_pagar" max="{{ monto_total }}" required>
+        
+        <!-- Aquí la función de JS escribirá las respuestas de éxito o de error -->
+        <div id="mensaje-resultado"></div> 
+
+        <div class="modal-botones">
+            <button type="button" onclick="cerrarModal()" style="background: #ccc; border: none; padding: 8px 15px; cursor: pointer;">Cancelar</button>
+            <button type="submit" style="background: green; color: white; border: none; padding: 8px 15px; cursor: pointer;">Confirmar Pago</button>
+        </div>
+    </form>
+</div>

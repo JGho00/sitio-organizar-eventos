@@ -1,6 +1,7 @@
-async function registrar_pago(numero_cuota) {
+async function registrar_pago(idcuota) {
     try {
-        const respuesta = await fetch(`/pagos/registrar-pago/${numero_cuota}`, {
+        alert(idcuota)
+        const respuesta = await fetch(`/pagos/registrar-pago/${idcuota}`, {
             method: 'POST'
         });
         
@@ -19,8 +20,8 @@ const botones = document.querySelectorAll('.btn_registrar_pago_cuota');
 botones.forEach(boton => {
     boton.addEventListener('click', (evento) => {
         // Obtenemos el ID de la cuota específico de ESTE botón
-        const idCuota = evento.target.dataset.cuota;
-        
+        const idCuota = evento.currentTarget.getAttribute('data-idcuota')
+        console.log("ID capturado en JS:", idCuota); 
         // Ejecutamos la función pasando el ID correcto
         registrar_pago(idCuota);
     });

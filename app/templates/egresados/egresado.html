@@ -6,6 +6,8 @@ Escuelas
 
 {% block styles %}
 <link rel="stylesheet" href="/static/css/egresados.css">
+<link rel="stylesheet" href="/static/css/formulario_pagos.css">
+
 {% endblock %}
 
 {% block content %}
@@ -57,11 +59,11 @@ Escuelas
                             <td>{{cuota.monto_pago}}</td>
                             <td>{{cuota.fecha_vencimiento}}</td>
                             <td>{{cuota.estado_pago}}</td>
+                            <td>{{cuota.id_cuota}}</td>
                             <td>
                                 
                                 <button>Ver comprobante</button>
-                                <button class="btn_registrar_pago_cuota" data-numero_cuota = {{cuota.id_cuota}}>Registrar pago cuota</button>
-                                <button id="btn_reversar_pago_cuota">Reversar pago cuota</button>
+                                <button class="btn_registrar_pago_cuota" data-idcuota="{{cuota.id_cuota}}">Registrar pago cuota</button>
                             </td>
                         </tr>
                         {%endfor%}
@@ -107,14 +109,16 @@ Escuelas
                     
                     
                 </form>
+
             </div>
            
         </div>
-
+        
+        <div id="modal-base" class="modal-backdrop"></div>
         
     </div>
 
 
-    <script src="/static/js/cuotas.js"></script>
+    <script src="/static/js/pagos.js"></script>
     
 {% endblock %}

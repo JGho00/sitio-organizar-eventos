@@ -1,0 +1,54 @@
+/* static/css/estilos.css */
+
+/* Fondo oscuro que cubre toda la pantalla */
+.modal-backdrop {
+    display: none; /* Oculto por defecto */
+    position: fixed;
+    top: 0; 
+    left: 0; 
+    width: 100%; 
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* Opacidad negra */
+    z-index: 1000;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Clase para mostrar el modal (se activa dinámicamente con JS) */
+.modal-backdrop.mostrar {
+    display: flex;
+}
+
+/* La caja blanca del modal centrada */
+.modal-contenido {
+    background-color: white;
+    padding: 25px;
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    width: 90%;
+    max-width: 450px;
+    position: relative;
+}
+
+/* Estilos adicionales para limpiar el diseño del formulario interno */
+.modal-contenido input[type="number"] {
+    width: 100%; 
+    padding: 8px; 
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+.modal-botones {
+    margin-top: 15px; 
+    text-align: right;
+}
+
+.btn-cerrar-esquina {
+    float: right; 
+    cursor: pointer; 
+    border: none; 
+    background: none; 
+    font-size: 20px;
+}

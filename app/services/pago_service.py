@@ -33,6 +33,19 @@ async def consultar_pagos_bd(sesion:Session):
     return df_pagos
 
 
+
+async def generar_pago_bd(sesion:Session,id_cuota:int,monto:Decimal):
+
+    metodo_pago = 'Transferecia'
+    comprobante = 'xxx333'
+    cobrador = 'admin'
+    nuevo_pago:Pago = Pago(id_cuota=id_cuota,monto =monto,metodo_pago=metodo_pago,nro_comprobante=comprobante,cobrador=cobrador)
+
+    sesion.add(nuevo_pago)
+    sesion.flush()
+
+    return nuevo_pago
+
 def estadisticas_pagos(df_pagos:pd.DataFrame):
 
 

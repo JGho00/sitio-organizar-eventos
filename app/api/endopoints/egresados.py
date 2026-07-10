@@ -165,3 +165,29 @@ async def get_egresado_dni(request:Request,dni:int,sesion:Session = Depends(obte
 
 
 
+@router.get("/dni/{dni}")
+async def get_egresado_dni(request:Request,dni:int,sesion:Session = Depends(obtener_sesion),username = Depends(obtener_usuario_actual)):
+    
+    if not username:
+        response = RedirectResponse(url="/login", status_code=status.HTTP_303_SEE_OTHER)
+        response.delete_cookie("access_token")
+        return response
+
+    
+    egresado = await obtener_egresado_con_cuotas(sesion,dni)
+
+    estadisticas= await estadisticas_egresado(egresado)
+
+    return templates.TemplateResponse(
+        request=request,
+        name = "egresados/egresado.html",
+        context={
+            "egresado": egresado,
+            "username":username,
+            "estadisticas":estadisticas
+            }
+    )
+
+
+
+

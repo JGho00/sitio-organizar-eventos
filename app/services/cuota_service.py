@@ -42,6 +42,19 @@ async def consultar_cuota_id_bd(sesion:Session,id_cuota:int):
     
     return cuota
     
+async def actualizar_cuota_bd(sesion:Session,cuota:Cuota,monto_pago:Decimal):
+    #Restar monto original - monto del pago
+    monto_actualizado = Decimal(cuota.monto_original) - monto_pago
+
+    print("MONNTO ACTUALIZADO",monto_actualizado)
+    cuota.monto_original = monto_actualizado
+    cuota.monto_pago = monto_pago
+    if int(monto_actualizado) == 0:
+        cuota.estado_pago = 'PAGADO'
+    
+    sesion.add(cuota)
+    sesion.flush()
+
 
 def consultar_cuotas_por_periodo(df_cuotas:pd.DataFrame,periodo:str = None):
     '''
