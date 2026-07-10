@@ -9,6 +9,7 @@ from api.endopoints.dashboard import router as dashboard_router
 from api.endopoints.contratos import router as contratos_router
 from api.endopoints.cuotas import router as cuotas_router
 from api.endopoints.usuarios import router as usuarios_router
+from api.endopoints.pagos import router as pagos_router
 from fastapi.staticfiles import StaticFiles
 from sqlmodel import SQLModel
 from core.config import engine
@@ -32,6 +33,7 @@ app.include_router(dashboard_router)
 app.include_router(contratos_router)
 app.include_router(cuotas_router)
 app.include_router(usuarios_router)
+app.include_router(pagos_router)
 
 app.add_middleware(SessionMiddleware, secret_key=SECRET_KEY)
 

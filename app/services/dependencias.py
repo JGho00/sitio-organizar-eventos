@@ -31,7 +31,8 @@ def obtener_fecha(fecha_str: str = None) -> dict:
         "dd_mm_yyyy_hh_mm_ss": fecha_obj.strftime("%d_%m_%Y_%H_%M_%S"),
         "dd_mm_yyyy_hh_mm": fecha_obj.strftime("%d_%m_%Y_%H_%M"),
         "dd_mm_yyyy": fecha_obj.strftime("%d_%m_%Y"),
-        "mm_yyyy": fecha_obj.strftime("%m_%Y")
+        "mm_yyyy": fecha_obj.strftime("%m_%Y"),
+        'yyyy':str(fecha_obj.year)
     }
 
     return formatos_fechas

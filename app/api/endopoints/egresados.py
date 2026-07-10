@@ -8,7 +8,16 @@ from api.endopoints.dependencias import obtener_usuario_actual
 
 from core.config import obtener_sesion
 
+from models.model_curso import Curso
+
+from services.dependencias import divisiones,obtener_fecha
+from services.curso_service import validar_existencia_curso
+from schemas.escuela import obtener_escuelas_bd
+from schemas.curso import crear_curso_bd
+
 from services.egresado_service import obtener_egresado_con_cuotas,estadisticas_egresado
+
+formatos_fechas = obtener_fecha()
 
 router = APIRouter(
     prefix="/egresados",
@@ -38,22 +47,47 @@ async def get_egresados(request:Request,username = Depends(obtener_usuario_actua
     )
 
 @router.get("/cargar-egresado")
-def cargar_egresado(request:Request,username = Depends(obtener_usuario_actual)):
+async def cargar_egresado(request:Request,username = Depends(obtener_usuario_actual),sesion:Session = Depends(obtener_sesion)):
     
+    escuelas = await obtener_escuelas_bd(sesion)
+
     return templates.TemplateResponse(
         request=request,
         name="egresados/cargar_egresado.html",
         context={
-            "username":username
+            "username":username,
+            "cursos":divisiones,
+            "escuelas": escuelas
         }
     )
 
 
 @router.post("/agregar-egresado/")
-async def agregar_egresado(request:Request,nombre:str = Form(...),dni:str=Form(...),telefono:str = Form(...),direccion:str = Form(...),edad:str = Form(...),sesion = Depends(obtener_sesion),username = Depends(obtener_usuario_actual)):
-    print("Egresado api",nombre)
-    await agregar_egresado_bd(sesion,nombre,int(dni),direccion,int(edad),1,2,'AL DIA',telefono)
-    
+async def agregar_egresado(request:Request,
+                           nombre:str = Form(...),
+                           dni:str=Form(...),
+                           telefono:str = Form(...),
+                           direccion:str = Form(...),
+                           edad:int = Form(...),
+                           division:str = Form(...),
+                           escuela_id:int = Form(...),
+                           sesion:Session = Depends(obtener_sesion),
+                           username = Depends(obtener_usuario_actual)):
+    print("ENTRE")
+    #Validar existencia del curso sino crearlo
+    print("CURSO",division)
+    print("ESCUELA",escuela_id)
+    curso:Curso = await validar_existencia_curso(sesion,division,escuela_id)
+    if not curso:
+        print("Curso NO existe:")
+        print("CURSO",division)
+        curso = Curso(division=division,id_escuela=escuela_id,año=formatos_fechas['yyyy'])
+        curso = await crear_curso_bd(sesion, curso)
+
+
+
+    await agregar_egresado_bd(sesion,nombre,int(dni),direccion,int(edad),curso.id_escuela,curso.id,telefono)
+    sesion.commit()
     egresados = await obtener_egresados_bd(sesion)
     return templates.TemplateResponse(
         request=request,

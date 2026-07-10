@@ -21,6 +21,16 @@ Escuelas
             <input type="text" name="direccion" placeholder="Ingresar direccion">
             <input type="text" name="edad" placeholder="Ingresar edad">
             <input type="text" name="telefono" placeholder="Ingresar telefono">
+            <select name="division" id="division">
+                {% for curso, division in cursos.items() %}
+                    <option value="{{ division }}">{{ division }}</option>
+                {% endfor %}
+            </select>
+            <select name="escuela_id">
+                {% for escuela in escuelas %}
+                <option value="{{escuela.id}}">{{escuela.nombre}}</option>
+                {% endfor %}
+            </select>
             <button type="submit">Agregar</button>
         </form>
         

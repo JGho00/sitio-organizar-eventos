@@ -46,7 +46,7 @@ Escuelas
                             <th>Monto Recargo</th>
                             <th>Fecha de pago</th>
                             <th>Estado</th>
-                            <th>Accion</th>
+                            <th>Acciones</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -57,7 +57,12 @@ Escuelas
                             <td>{{cuota.monto_pago}}</td>
                             <td>{{cuota.fecha_vencimiento}}</td>
                             <td>{{cuota.estado_pago}}</td>
-                            <td><button>Ver comprobante</button></td>
+                            <td>
+                                
+                                <button>Ver comprobante</button>
+                                <button class="btn_registrar_pago_cuota" data-numero_cuota = {{cuota.id_cuota}}>Registrar pago cuota</button>
+                                <button id="btn_reversar_pago_cuota">Reversar pago cuota</button>
+                            </td>
                         </tr>
                         {%endfor%}
                     </tbody>
@@ -106,10 +111,10 @@ Escuelas
            
         </div>
 
-        <div>
-            <div><button></button></div>
-        </div>
         
     </div>
+
+
+    <script src="/static/js/cuotas.js"></script>
     
 {% endblock %}

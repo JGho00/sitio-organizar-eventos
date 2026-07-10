@@ -1,24 +1,27 @@
-from fastapi import APIRouter,Request,Depends,Form,status
+from fastapi import APIRouter,Request,Depends,status,Form
 from fastapi.templating import Jinja2Templates
 from fastapi.responses import RedirectResponse
 from sqlmodel import Session
-from models.model_pago import Pago
+import pandas as pd
 
-from schemas.egresado import obtener_egresados_bd,obtener_egresado_dni_bd,agregar_egresado_bd,eliminar_egresado_bd,actualizar_egresado_dni_bd
+from models.model_pago import Pago
+from models.model_cuota import Cuota
+from services.pago_service import consultar_pagos_bd
+from services.cuota_service import consultar_cuotas_bd,consultar_cuota_id_bd
 from api.endopoints.dependencias import obtener_usuario_actual
 
 from core.config import obtener_sesion
 
 router = APIRouter(
-    prefix="/egresados",
-    tags =["Egresados"],
+    prefix="/pagos",
+    tags =["pagos"],
 )
 
 
 templates = Jinja2Templates( "templates")
 
 @router.get("/")
-async def get_egresados(request:Request,username = Depends(obtener_usuario_actual),sesion:Session = Depends(obtener_sesion)):
+async def get_pagos(request:Request,username = Depends(obtener_usuario_actual),sesion:Session = Depends(obtener_sesion)):
     
     if not username:
         response = RedirectResponse(url="/login", status_code=status.HTTP_303_SEE_OTHER)
@@ -26,98 +29,35 @@ async def get_egresados(request:Request,username = Depends(obtener_usuario_actua
         return response
     
 
-    egresados = await obtener_egresados_bd(sesion)
-    return templates.TemplateResponse(
-        request=request,
-        name="egresados/egresados.html",
-        context={
-            "egresados": egresados,
-            "username":username
-        }
-    )
+    pagos:pd.DataFrame = await consultar_pagos_bd(sesion)
 
-@router.get("/cargar-egresado")
-def cargar_egresado(request:Request,username = Depends(obtener_usuario_actual)):
+
     
-    return templates.TemplateResponse(
-        request=request,
-        name="egresados/cargar_egresado.html",
-        context={
-            "username":username
-        }
-    )
+    return pagos.to_dict(orient='records')
 
 
-@router.post("/agregar-egresado/")
-async def agregar_egresado(request:Request,nombre:str = Form(...),dni:str=Form(...),telefono:str = Form(...),direccion:str = Form(...),edad:str = Form(...),sesion = Depends(obtener_sesion),username = Depends(obtener_usuario_actual)):
-    print("Egresado api",nombre)
-    await agregar_egresado_bd(sesion,nombre,int(dni),direccion,int(edad),1,2,'AL DIA',telefono)
+
+@router.post("/registrar-pago/{id_cuota}")
+async def registrar_pago_cuota(request:Request,id_cuota:int,username = Depends(obtener_usuario_actual),sesion:Session = Depends(obtener_sesion)):
     
-    egresados = await obtener_egresados_bd(sesion)
-    return templates.TemplateResponse(
-        request=request,
-        name="egresados/egresados.html",
-        context={
-            "egresados": egresados,
-            "username":username
-        }
-    )
-
-
-
-
-
-@router.post("/eliminar-egresado/{dni}")
-async def eliminar_egresado(request:Request,dni:int,username = Depends(obtener_usuario_actual),sesion:Session = Depends(obtener_sesion)):
-
-    await eliminar_egresado_bd(sesion,dni)
-
-    egresados = await obtener_egresados_bd(sesion)
-
-
-    return templates.TemplateResponse(
-        request=request,
-        name="egresados/egresados.html",
-        context={
-            "egresados": egresados,
-            "username":username
-        }
-    )
-
-
-@router.post("/actualizar-egresado/{dni}")
-async def get_egresado_dni(request:Request,dni:int,nombre:str =Form(...),telefono:str = Form(...),direccion:str = Form(...), username = Depends(obtener_usuario_actual),sesion:Session = Depends(obtener_sesion)):
-    print("Dni",dni)
+    if not username:
+        response = RedirectResponse(url="/login", status_code=status.HTTP_303_SEE_OTHER)
+        response.delete_cookie("access_token")
+        return response
     
-    await actualizar_egresado_dni_bd(sesion,dni,nombre,telefono,direccion)
-
-    egresados = await obtener_egresados_bd(sesion)
+    print("Numero_cuota",id_cuota)
 
 
-    return templates.TemplateResponse(
-        request=request,
-        name="egresados/egresados.html",
-        context={
-            "egresados": egresados,
-            "username":username
-        }
-    )
+    #Validacion si existe la cuota
+    cuota:Cuota = await consultar_cuota_id_bd(sesion,id_cuota)
+    
+    if not cuota:
+        return "No existe la cuota"
+    
+    print("Cuota existe",id_cuota)
+    
+    
+    
 
 
-
-@router.post("/dni/{dni}")
-async def get_egresado_dni(request:Request,dni:int,sesion:Session = Depends(obtener_sesion),username = Depends(obtener_usuario_actual)):
-    print("Editar")
-    egresado = await obtener_egresado_dni_bd(sesion,dni)
-    print(egresado)
-    return templates.TemplateResponse(
-        request=request,
-        name = "egresados/egresado.html",
-        context={
-            "egresado": egresado,
-            "username":username
-            }
-    )
-
-
-
+    

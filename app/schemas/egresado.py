@@ -15,9 +15,9 @@ async def obtener_egresado_dni_bd(sesion:Session,dni:int):
     return egresado
 
 
-async def agregar_egresado_bd(sesion:Session,nombre:str,dni:int,direccion:str,edad:int,id_escuela:int,id_curso:int,estado_cuenta:str,telefono:str):
+async def agregar_egresado_bd(sesion:Session,nombre:str,dni:int,direccion:str,edad:int,id_escuela:int,id_curso:int,telefono:str):
     
-    egresado = Egresado(nombre=nombre,edad=edad,direccion=direccion,telefono=telefono,id_escuela=id_escuela,id_curso=id_curso,estado_cuenta=estado_cuenta,dni=dni)
+    egresado = Egresado(nombre=nombre,edad=edad,direccion=direccion,telefono=telefono,id_escuela=id_escuela,id_curso=id_curso,dni=dni)
     sesion.add(egresado)
     #sesion.commit()
     #sesion.refresh(egresado)

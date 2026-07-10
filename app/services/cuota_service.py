@@ -34,6 +34,15 @@ async def consultar_cuotas_bd(sesion:Session):
     
     return df_cuotas
 
+async def consultar_cuota_id_bd(sesion:Session,id_cuota:int):
+
+    consulta = select(Cuota).where(Cuota.id_cuota == id_cuota)
+
+    cuota:Cuota = sesion.exec(consulta).first()
+    
+    return cuota
+    
+
 def consultar_cuotas_por_periodo(df_cuotas:pd.DataFrame,periodo:str = None):
     '''
         Función que busca cuotas por periodo en formato "MM-YYYY"
@@ -122,6 +131,8 @@ async def estadisticas_cuotas(sesion:Session):
     print("total",monto_mes_pagado)
 
     cant_cuotas_pendientes:int  =len(df_cuotas[df_cuotas['estado_pago'] == 'PENDIENTE'])
+    print("PENDIENTES")
+    print(cant_cuotas_pendientes)
     cant_cuotas_finalizadas:int = len(df_cuotas[df_cuotas['estado_pago'] == 'PAGADO'])
 
 

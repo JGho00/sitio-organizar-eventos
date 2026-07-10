@@ -14,23 +14,37 @@
         <section class="">
             <div class="">
                 <h3>Cuotas Emitidas (Mes)</h3>
-                <p class="">{{estadisticas.total_cuotas}}</p>
-                <span class="">Total programado para cobrar</span>
+                {% if estadisticas.total_cuotas%}
+                    <p class="">{{estadisticas.total_cuotas}}</p>
+                {% else %}
+                    <p class="">Sin cuotas cargadas</p>
+                {%endif%}
             </div>
             <div class="">
                 <h3>Cuotas Cobradas</h3>
-                <p class="">{{estadisticas.total_cuotas_finalizadas}}</p>
-                <span class="">61.3% de efectividad de cobro</span>
+                {% if estadisticas.total_cuotas_finalizadas%}
+                    <p class="">{{estadisticas.total_cuotas_finalizadas}}</p>
+                {% else %}
+                    <p class="">Sin cuotas cobradas</p>
+                {%endif%}
             </div>
             <div class="">
                 <h3>Cuotas Pendientes</h3>
-                <p class="">{{estadisticas.total_cuotas_pendientes}}</p>
-                <span class="">Dentro del plazo legal</span>
+                {% if estadisticas.cant_cuotas_pendientes%}
+                    <p class="">{{estadisticas.cant_cuotas_pendientes}}</p>
+                {% else %}
+                    <p class="">Sin cuotas pendientes</p>
+                {%endif%}
+                
             </div>
             <div class="">
                 <h3>Cuotas Vencidas</h3>
-                <p class="">{{estadisticas.total_cuotas_vencidas}}</p>
-                <span class="">Requieren acción inmediata</span>
+                {% if estadisticas.total_cuotas_vencidas %}
+                    <p class="">{{estadisticas.total_cuotas_vencidas}}</p>
+                {% else %}
+                    <p class="">Sin cuotas vencidas</p>
+                {%endif%}
+                
             </div>
         </section>
 
@@ -38,13 +52,10 @@
         <section class="">
             <div class="">
                 <h2>Listado General de Cuotas</h2>
-                <!-- Espacio preparado para futuros filtros dinámicos con FastAPI -->
-                <div class="">
-                    <small>Filtrado por: Todas las cuotas</small>
-                </div>
             </div>
 
             <div>
+                <h3>Realizar Filtros</h3>
                 <div>
                     <input type="text" placeholder="Búsqueda por Dni">
                 </div>
