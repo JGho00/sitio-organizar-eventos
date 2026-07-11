@@ -5,4 +5,4 @@ class Usuario(SQLModel,table = True):
     username:str = Field()
     email:str = Field()
     password_hash:str = Field()
-    rol :str = Field()
+    rol :str = Field(default= 'user')

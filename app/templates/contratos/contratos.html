@@ -84,7 +84,7 @@
                         {%for contrato in contratos%}
                             <tr>
                             
-                            <td>{{contrato.fecha_inicio}}</td>
+                            <td>{{ contrato.fecha_inicio.strftime('%Y-%m-%d') }}</td>
                             <td><strong>{{ contrato.curso.escuela.nombre }}</strong></td>
                             <td><strong>{{ contrato.monto_total }}</strong></td>
                             <td>Calcular</td>

@@ -16,6 +16,9 @@ async def obtener_estadisticas_generales(sesion:Session):
     print("RESUMEN Cuotas",resumen_cuotas)
 
     eventos_service = await obtener_eventos_bd_service(sesion)
+    if len(eventos_service) == 0:
+        estadisticas_globales:dict = {}
+        return estadisticas_globales
     resumen_eventos = estadisticas_eventos(eventos_service)
 
     #5 morosos ordenados por fecha de vencimiento y monto_pago

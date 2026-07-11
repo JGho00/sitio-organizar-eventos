@@ -9,8 +9,8 @@ if TYPE_CHECKING:
 
 class Contrato(SQLModel,table=True):
     id:int = Field(primary_key=True,default=None)
-    id_evento:int = Field(foreign_key="evento.id")
-    id_curso:int = Field(foreign_key="curso.id")
+    id_evento:int = Field(foreign_key="evento.id",ondelete="CASCADE")
+    id_curso:int = Field(foreign_key="curso.id",ondelete="CASCADE")
     fecha_inicio:datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
     fecha_fin:Optional[datetime] = Field(default=None)
     monto_total:Decimal= Field(max_digits=12, decimal_places=2)

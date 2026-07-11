@@ -9,7 +9,7 @@ if TYPE_CHECKING:
 
 class Pago(SQLModel,table = True):
     id_pago:int = Field(primary_key=True)
-    id_cuota:int = Field(foreign_key="cuota.id_cuota")
+    id_cuota:int = Field(foreign_key="cuota.id_cuota",ondelete="CASCADE")
     fecha:datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
     monto:float = Field()
     metodo_pago:str = Field()

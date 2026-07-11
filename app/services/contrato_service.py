@@ -14,11 +14,31 @@ async def obtener_contratos_bd(sesion:Session):
 
     return contratos
 
+async def obtener_contrato_id_bd(sesion:Session,id:int):
+
+    consulta = select(Contrato).where(Contrato.id == id)
+
+    resultado = sesion.exec(consulta)
+
+    contrato:Contrato = resultado.first()
+
+    return contrato
+
 async def crear_contrato_bd(sesion:Session,contrato:Contrato):
     sesion.add(contrato)
     #sesion.commit()
     #sesion.refresh(contrato)
     sesion.flush()
+    return contrato
+
+async def eliminar_contrato_bd(sesion:Session,contrato:Contrato):
+    
+
+
+    sesion.delete(contrato)
+    #sesion.commit()
+    sesion.flush()
+    
     return contrato
 
 

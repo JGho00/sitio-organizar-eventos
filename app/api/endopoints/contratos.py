@@ -1,13 +1,16 @@
 from fastapi import APIRouter, Depends, Form, HTTPException,Request,status,UploadFile,File
 from fastapi.templating import Jinja2Templates
 from fastapi.responses import RedirectResponse
-from api.endopoints.dependencias import obtener_usuario_actual
+from api.endopoints.dependencias import obtener_usuario_actual,VerificarRol
 import os
 from sqlmodel import  Session
 from core.config import obtener_sesion
+from typing import List
+
+from models.model_contrato import Contrato
 
 
-from services.contrato_service import obtener_contratos_bd,estadisticas_contratos
+from services.contrato_service import obtener_contratos_bd,obtener_contrato_id_bd,eliminar_contrato_bd,estadisticas_contratos
 from schemas.escuela import obtener_escuelas_bd
 
 from services import dependencias
@@ -31,13 +34,11 @@ async def consultar_contratos(request: Request,username = Depends(obtener_usuari
         response.delete_cookie("access_token")
         return response
     
-    contratos = await obtener_contratos_bd(sesion)
+    contratos:Contrato = await obtener_contratos_bd(sesion)
     
     contratos_estadisticas = await estadisticas_contratos(sesion)
 
     escuelas = await obtener_escuelas_bd(sesion)
-    
-    print("CONTRATOS")
     
     
     return templates.TemplateResponse(
@@ -51,6 +52,23 @@ async def consultar_contratos(request: Request,username = Depends(obtener_usuari
             'escuelas':escuelas
         }
     )
+
+
+@router.post("/eliminar-contrato/{id}")
+async def consultar_contratos(request: Request,id:int,usuario = Depends(VerificarRol(['admin'])),sesion: Session = Depends(obtener_sesion)):
+    
+    if not usuario:
+        response = RedirectResponse(url="/login", status_code=status.HTTP_303_SEE_OTHER)
+        response.delete_cookie("access_token")
+        return response
+    
+    contrato:Contrato = await obtener_contrato_id_bd(sesion,id)
+    print("CONTRATO",contrato)
+    contrato = await eliminar_contrato_bd(sesion,contrato)
+
+
+    sesion.commit()
+    return "Contrato eliminado"
 
     
 

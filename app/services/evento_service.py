@@ -27,9 +27,10 @@ async def obtener_eventos_bd_service(sesion: Session):
                        )
     eventos: List[Evento] = sesion.exec(consulta).all()
     
-    
     df_eventos = pd.DataFrame([r._asdict() for r in eventos])
-    df_eventos['fecha_evento'] = pd.to_datetime(df_eventos['fecha_evento'])
+
+    if len(df_eventos>0):
+        df_eventos['fecha_evento'] = pd.to_datetime(df_eventos['fecha_evento'])
     
     return df_eventos
 

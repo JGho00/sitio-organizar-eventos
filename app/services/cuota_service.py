@@ -10,7 +10,6 @@ from datetime import datetime
 from models.model_cuota import Cuota
 from models.model_egresado import Egresado
 from services.dependencias import obtener_fecha
-from services.pago_service import consultar_pagos_bd
 
 
 async def consultar_cuotas_bd(sesion:Session):
@@ -48,7 +47,7 @@ async def actualizar_cuota_bd(sesion:Session,cuota:Cuota,monto_pago:Decimal):
 
     print("MONNTO ACTUALIZADO",monto_actualizado)
     cuota.monto_original = monto_actualizado
-    cuota.monto_pago = monto_pago
+    cuota.monto_pago = cuota.monto_pago + monto_pago
     if int(monto_actualizado) == 0:
         cuota.estado_pago = 'PAGADO'
     
@@ -124,6 +123,9 @@ async def estadisticas_cuotas(sesion:Session):
 
     df_cuotas:pd.DataFrame = await consultar_cuotas_bd(sesion)
 
+    if len(df_cuotas) == 0:
+        estadisticas:dict= {}
+        return estadisticas
     
 
     total_cuotas:int = len(df_cuotas)

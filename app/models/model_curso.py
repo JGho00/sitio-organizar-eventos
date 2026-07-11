@@ -9,7 +9,7 @@ if TYPE_CHECKING:
 
 class Curso(SQLModel,table = True):
     id:int = Field(primary_key=True,default=None)
-    id_escuela:int = Field(foreign_key="escuela.id")
+    id_escuela:int = Field(foreign_key="escuela.id",ondelete="CASCADE")
     division:str = Field()
     año:int = Field()
 

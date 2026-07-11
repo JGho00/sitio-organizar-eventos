@@ -8,9 +8,9 @@ class Evento(SQLModel,table= True):
     id:int|None = Field(primary_key=True)
     nombre:str = Field()
     descripcion:str = Field()
-    id_curso:int = Field(foreign_key="curso.id")
+    id_curso:int = Field(foreign_key="curso.id",ondelete="CASCADE")
     fecha_evento:Optional[datetime | None] = Field(default=None)
-    id_establecimiento:int = Field(foreign_key="establecimiento.id")
+    id_establecimiento:int = Field(foreign_key="establecimiento.id",ondelete="CASCADE")
     estado : str = Field()
 
     #Relaciones

@@ -47,7 +47,7 @@ async def eliminar_egresado_bd(sesion:Session,dni:int):
     resultados = sesion.exec(consulta)
     egresado = resultados.one()
 
-    #sesion.delete(egresado)
+    sesion.delete(egresado)
     #sesion.commit()
     sesion.flush()
     

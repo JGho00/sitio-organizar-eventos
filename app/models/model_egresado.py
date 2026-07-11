@@ -16,7 +16,7 @@ class Persona(SQLModel):
     telefono: str
 
 class Egresado(Persona,table = True):
-    id_curso:int =Field(default=None, foreign_key="curso.id")
+    id_curso:int =Field(default=None, foreign_key="curso.id",ondelete="CASCADE")
 
     #Relaciones
     curso: "Curso" = Relationship(back_populates="egresados")

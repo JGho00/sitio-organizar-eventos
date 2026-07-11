@@ -71,8 +71,8 @@ function configurarEnvioPago(idcuota) {
                     divResultado.innerHTML = `<p style="color: green;">¡Pago de $${monto} registrado con éxito!</p>`;
                 }
                 
-                // Esperamos 1.5 segundos y cerramos la ventana flotante de forma automática
-                setTimeout(cerrarModal, 1500);
+                // Esperamos 3 segundos y cerramos la ventana flotante de forma automática
+                setTimeout(cerrarModal, 3000);
 
                 //Redireccionar
                 const dniEgresado = datos.dni

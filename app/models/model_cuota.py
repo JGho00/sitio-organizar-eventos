@@ -9,8 +9,8 @@ if TYPE_CHECKING:
 
 class Cuota(SQLModel,table = True):
     id_cuota:int = Field(primary_key=True)
-    id_contrato:int = Field(foreign_key="contrato.id")
-    id_egresado:int = Field(foreign_key="egresado.dni")
+    id_contrato:int = Field(foreign_key="contrato.id",ondelete="CASCADE")
+    id_egresado:int = Field(foreign_key="egresado.dni",ondelete="CASCADE")
     numero_cuota:int = Field()
     monto_original:Decimal = Field(default=0.00,decimal_places=2)
     monto_pago:Decimal = Field(default=0.00,decimal_places=2)
