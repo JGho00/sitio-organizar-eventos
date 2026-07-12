@@ -1,4 +1,5 @@
-from fastapi import FastAPI
+from fastapi import FastAPI,Request
+from fastapi.templating import Jinja2Templates
 from fastapi.responses import RedirectResponse
 from api.endopoints.egresados import router as egresados_router
 from api.endopoints.escuelas import router as escuelas_router
@@ -17,7 +18,10 @@ import models as models
 from starlette.middleware.sessions import SessionMiddleware
 import os
 from core.config import SECRET_KEY
+
+from core.logger import logger
 SQLModel.metadata.create_all(engine)
+import traceback
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -37,7 +41,25 @@ app.include_router(pagos_router)
 
 app.add_middleware(SessionMiddleware, secret_key=SECRET_KEY)
 
+templates = Jinja2Templates(directory=os.path.join("templates"))
+@app.exception_handler(Exception)
+async def global_exception_handler(request: Request, exc: Exception):
+    #Define los parámetros que se inyectarán en la plantilla de Jinja2
+    error_traceback = "".join(traceback.format_exception(type(exc), exc, exc.__traceback__))
+    logger.error(f"Error en la ruta {request.url.path}: {str(exc)}\n{error_traceback}")
+    context = {
+        "request": request,
+        "mensaje": "Se produjo un error al procesar tu solicitud en el sistema.",
+        "url_redireccion": "/dashboard"  # Cambia esto por la ruta de tu app a la que quieras enviar al usuario
+    }
 
+    return templates.TemplateResponse(
+    name="/excepciones/excepcion_500.html", 
+    context=context, 
+    status_code=500,
+    request= request
+    )
+    
 # Ruta raíz (GET)
 @app.get("/")
 def leer_raiz():

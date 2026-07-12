@@ -2,6 +2,8 @@
 from fastapi import Request, HTTPException, status,Depends
 from sqlmodel import Session
 
+from fastapi.responses import RedirectResponse
+
 from core.config import obtener_sesion
 
 import jwt
@@ -20,34 +22,35 @@ async def obtener_usuario_actual(request: Request,sesion: Session = Depends(obte
     cookie_token = request.cookies.get("access_token")
     
     # Si no hay cookie o falla el token, lanzamos un error de credenciales
-    excepcion_credenciales = HTTPException(
-        status_code=status.HTTP_401_UNAUTHORIZED,
-        detail="No autenticado o sesión expirada.",
-    )
-    
+
     if not cookie_token:
-        raise excepcion_credenciales
-    
+        print("COOKIE")
+        return RedirectResponse(url="/login", status_code=status.HTTP_303_SEE_OTHER)
+
     try:
         token = cookie_token.replace("Bearer ", "")
         payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
         username: str = payload.get("sub")
         
         if username is None:
-            raise excepcion_credenciales
+            print("TOKEN")
+            return RedirectResponse(url="/login", status_code=status.HTTP_303_SEE_OTHER)
+
+        # 2. Buscamos el objeto Usuario completo en PostgreSQL usando el username
+
+        usuario:Usuario = await obtener_usuario_activo_bd(sesion,username)
+
+        if usuario is None:
+            PRINT("BD")
+            return RedirectResponse(url="/login", status_code=status.HTTP_303_SEE_OTHER)
+
+        # 3. Devolvemos el objeto de la base de datos, NO un string
+        return usuario
             
     except Exception:
-        raise excepcion_credenciales
+        return RedirectResponse(url="/login", status_code=status.HTTP_303_SEE_OTHER)
 
-    # 2. Buscamos el objeto Usuario completo en PostgreSQL usando el username
-
-    usuario:Usuario = await obtener_usuario_activo_bd(sesion,username)
-
-    if usuario is None:
-        raise excepcion_credenciales
-
-    # 3. Devolvemos el objeto de la base de datos, NO un string
-    return usuario
+    
 
 #Validacion Rol
 
@@ -57,10 +60,19 @@ class VerificarRol:
         self.roles_permitidos = roles_permitidos
 
     def __call__(self, usuario_actual: Usuario = Depends(obtener_usuario_actual)) -> Usuario:
-        print("USUARIO",usuario_actual)
-        if usuario_actual.rol not in self.roles_permitidos:
+        try:
+            print("USUARIO",usuario_actual)
+            if usuario_actual.rol not in self.roles_permitidos:
+                raise HTTPException(
+                    status_code=status.HTTP_403_FORBIDDEN,
+                    detail="No tienes los permisos necesarios para realizar esta acción."
+                )
+            
+            print(f"Usuario actualbd :{usuario_actual}")
+            return usuario_actual
+        except Exception as e:
+            
             raise HTTPException(
-                status_code=status.HTTP_403_FORBIDDEN,
-                detail="No tienes los permisos necesarios para realizar esta acción."
-            )
-        return usuario_actual
+            status_code=status.HTTP_303_SEE_OTHER,
+            headers={"Location": "/login"}
+        )

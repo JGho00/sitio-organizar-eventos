@@ -33,7 +33,7 @@ async def cargar_dashboard(request:Request,usuario = Depends(VerificarRol(['admi
         name="dashboard/dashboard.html",
         context= {
             "request":request,
-            "username": usuario,
+            "username": usuario.username,
             'resumen':resumen
                 }
             
@@ -46,7 +46,7 @@ async def cargar_dashboard(request:Request,usuario = Depends(VerificarRol(['admi
 
 
 @router.get("/admin-user")
-async def cargar_dashboard(request:Request,username = Depends(obtener_usuario_actual)):
+async def cargar_dashboard(request:Request,username = Depends(VerificarRol(['admin']))):
     
     
     print(username)

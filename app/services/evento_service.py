@@ -107,21 +107,28 @@ def generar_calendario_eventos(df_eventos:pd.DataFrame):
 
 def estadisticas_eventos(df_eventos:pd.DataFrame):
     
-    
-    #Proximo evento
-    proximo_evento:dict = consultar_proximo_evento(df_eventos)
+    if len(df_eventos>0):
+        #Proximo evento
+        proximo_evento:dict = consultar_proximo_evento(df_eventos)
 
-    #Obtener eventos finalizados (top 5)
-    df_eventos_finalizados:pd.DataFrame =df_eventos[df_eventos['estado'] == 'FINALIZADO'].head(5)
+        #Obtener eventos finalizados (top 5)
+        df_eventos_finalizados:pd.DataFrame =df_eventos[df_eventos['estado'] == 'FINALIZADO'].head(5)
 
-    #Calendario
-    calendario = generar_calendario_eventos(df_eventos)
+        #Calendario
+        calendario = generar_calendario_eventos(df_eventos)
 
-    estadisticas = {
-        'proximo_evento' : proximo_evento,
-        'eventos_finalizados':df_eventos_finalizados.to_dict(orient='records'),
-        'calendario':calendario
-    }
+        estadisticas = {
+            'proximo_evento' : proximo_evento,
+            'eventos_finalizados':df_eventos_finalizados.to_dict(orient='records'),
+            'calendario':calendario
+        }
+    else:
+        estadisticas = {
+            'proximo_evento' : None,
+            'eventos_finalizados':None,
+            'calendario':None
+        }
+        
 
     
     return estadisticas

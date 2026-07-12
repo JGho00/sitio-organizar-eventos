@@ -1,0 +1,977 @@
+2026-07-12 18:41:30,392 - app_logger - ERROR - Error en la ruta /eventos/: 'estado'
+Traceback (most recent call last):
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\starlette\middleware\errors.py", line 164, in __call__
+    await self.app(scope, receive, _send)
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\starlette\middleware\sessions.py", line 88, in __call__
+    await self.app(scope, receive, send_wrapper)
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\starlette\middleware\exceptions.py", line 63, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\fastapi\middleware\asyncexitstack.py", line 18, in __call__
+    await self.app(scope, receive, send)
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\starlette\routing.py", line 660, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\starlette\routing.py", line 680, in app
+    await route.handle(scope, receive, send)
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\starlette\routing.py", line 276, in handle
+    await self.app(scope, receive, send)
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\fastapi\routing.py", line 134, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\fastapi\routing.py", line 120, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\fastapi\routing.py", line 674, in app
+    raw_response = await run_endpoint_function(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<3 lines>...
+    )
+    ^
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\fastapi\routing.py", line 328, in run_endpoint_function
+    return await dependant.call(**values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\app\api\endopoints\eventos.py", line 51, in get_eventos
+    estadisticas = estadisticas_eventos(eventos_service)
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\app\services\evento_service.py", line 112, in estadisticas_eventos
+    proximo_evento:dict = consultar_proximo_evento(df_eventos)
+                          ~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\app\services\evento_service.py", line 48, in consultar_proximo_evento
+    condicion = ((df_eventos['estado'] == 'creado') & (df_eventos['fecha_evento'] >= fecha_actual))
+                  ~~~~~~~~~~^^^^^^^^^^
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\pandas\core\frame.py", line 4378, in __getitem__
+    indexer = self.columns.get_loc(key)
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\pandas\core\indexes\range.py", line 525, in get_loc
+    raise KeyError(key)
+KeyError: 'estado'
+
+2026-07-12 18:41:41,369 - app_logger - ERROR - Error en la ruta /contratos/: 'RedirectResponse' object has no attribute 'username'
+Traceback (most recent call last):
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\starlette\middleware\errors.py", line 164, in __call__
+    await self.app(scope, receive, _send)
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\starlette\middleware\sessions.py", line 88, in __call__
+    await self.app(scope, receive, send_wrapper)
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\starlette\middleware\exceptions.py", line 63, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\fastapi\middleware\asyncexitstack.py", line 18, in __call__
+    await self.app(scope, receive, send)
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\starlette\routing.py", line 660, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\starlette\routing.py", line 680, in app
+    await route.handle(scope, receive, send)
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\starlette\routing.py", line 276, in handle
+    await self.app(scope, receive, send)
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\fastapi\routing.py", line 134, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\fastapi\routing.py", line 120, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\fastapi\routing.py", line 674, in app
+    raw_response = await run_endpoint_function(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<3 lines>...
+    )
+    ^
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\fastapi\routing.py", line 328, in run_endpoint_function
+    return await dependant.call(**values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\app\api\endopoints\contratos.py", line 49, in consultar_contratos
+    'username':username.username,
+               ^^^^^^^^^^^^^^^^^
+AttributeError: 'RedirectResponse' object has no attribute 'username'
+
+2026-07-12 18:45:57,092 - app_logger - ERROR - Error en la ruta /contratos/: 'RedirectResponse' object has no attribute 'username'
+Traceback (most recent call last):
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\starlette\middleware\errors.py", line 164, in __call__
+    await self.app(scope, receive, _send)
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\starlette\middleware\sessions.py", line 88, in __call__
+    await self.app(scope, receive, send_wrapper)
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\starlette\middleware\exceptions.py", line 63, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\fastapi\middleware\asyncexitstack.py", line 18, in __call__
+    await self.app(scope, receive, send)
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\starlette\routing.py", line 660, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\starlette\routing.py", line 680, in app
+    await route.handle(scope, receive, send)
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\starlette\routing.py", line 276, in handle
+    await self.app(scope, receive, send)
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\fastapi\routing.py", line 134, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\fastapi\routing.py", line 120, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\fastapi\routing.py", line 674, in app
+    raw_response = await run_endpoint_function(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<3 lines>...
+    )
+    ^
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\fastapi\routing.py", line 328, in run_endpoint_function
+    return await dependant.call(**values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\app\api\endopoints\contratos.py", line 49, in consultar_contratos
+    'username':username.username,
+               ^^^^^^^^^^^^^^^^^
+AttributeError: 'RedirectResponse' object has no attribute 'username'
+
+2026-07-12 18:47:22,536 - app_logger - ERROR - Error en la ruta /contratos/: 'RedirectResponse' object has no attribute 'username'
+Traceback (most recent call last):
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\starlette\middleware\errors.py", line 164, in __call__
+    await self.app(scope, receive, _send)
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\starlette\middleware\sessions.py", line 88, in __call__
+    await self.app(scope, receive, send_wrapper)
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\starlette\middleware\exceptions.py", line 63, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\fastapi\middleware\asyncexitstack.py", line 18, in __call__
+    await self.app(scope, receive, send)
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\starlette\routing.py", line 660, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\starlette\routing.py", line 680, in app
+    await route.handle(scope, receive, send)
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\starlette\routing.py", line 276, in handle
+    await self.app(scope, receive, send)
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\fastapi\routing.py", line 134, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\fastapi\routing.py", line 120, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\fastapi\routing.py", line 674, in app
+    raw_response = await run_endpoint_function(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<3 lines>...
+    )
+    ^
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\fastapi\routing.py", line 328, in run_endpoint_function
+    return await dependant.call(**values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\app\api\endopoints\contratos.py", line 49, in consultar_contratos
+    'username':username.username,
+               ^^^^^^^^^^^^^^^^^
+AttributeError: 'RedirectResponse' object has no attribute 'username'
+
+2026-07-12 18:50:24,232 - app_logger - ERROR - Error en la ruta /contratos/: 'RedirectResponse' object has no attribute 'username'
+Traceback (most recent call last):
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\starlette\middleware\errors.py", line 164, in __call__
+    await self.app(scope, receive, _send)
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\starlette\middleware\sessions.py", line 88, in __call__
+    await self.app(scope, receive, send_wrapper)
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\starlette\middleware\exceptions.py", line 63, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\fastapi\middleware\asyncexitstack.py", line 18, in __call__
+    await self.app(scope, receive, send)
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\starlette\routing.py", line 660, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\starlette\routing.py", line 680, in app
+    await route.handle(scope, receive, send)
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\starlette\routing.py", line 276, in handle
+    await self.app(scope, receive, send)
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\fastapi\routing.py", line 134, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\fastapi\routing.py", line 120, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\fastapi\routing.py", line 674, in app
+    raw_response = await run_endpoint_function(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<3 lines>...
+    )
+    ^
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\fastapi\routing.py", line 328, in run_endpoint_function
+    return await dependant.call(**values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\app\api\endopoints\contratos.py", line 49, in consultar_contratos
+    'username':username.username,
+               ^^^^^^^^^^^^^^^^^
+AttributeError: 'RedirectResponse' object has no attribute 'username'
+
+2026-07-12 18:50:46,968 - app_logger - ERROR - Error en la ruta /contratos/: 'RedirectResponse' object has no attribute 'username'
+Traceback (most recent call last):
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\starlette\middleware\errors.py", line 164, in __call__
+    await self.app(scope, receive, _send)
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\starlette\middleware\sessions.py", line 88, in __call__
+    await self.app(scope, receive, send_wrapper)
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\starlette\middleware\exceptions.py", line 63, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\fastapi\middleware\asyncexitstack.py", line 18, in __call__
+    await self.app(scope, receive, send)
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\starlette\routing.py", line 660, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\starlette\routing.py", line 680, in app
+    await route.handle(scope, receive, send)
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\starlette\routing.py", line 276, in handle
+    await self.app(scope, receive, send)
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\fastapi\routing.py", line 134, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\fastapi\routing.py", line 120, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\fastapi\routing.py", line 674, in app
+    raw_response = await run_endpoint_function(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<3 lines>...
+    )
+    ^
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\fastapi\routing.py", line 328, in run_endpoint_function
+    return await dependant.call(**values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\app\api\endopoints\contratos.py", line 49, in consultar_contratos
+    'username':username.username,
+               ^^^^^^^^^^^^^^^^^
+AttributeError: 'RedirectResponse' object has no attribute 'username'
+
+2026-07-12 18:52:07,828 - app_logger - ERROR - Error en la ruta /contratos/: 'RedirectResponse' object has no attribute 'username'
+Traceback (most recent call last):
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\starlette\middleware\errors.py", line 164, in __call__
+    await self.app(scope, receive, _send)
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\starlette\middleware\sessions.py", line 88, in __call__
+    await self.app(scope, receive, send_wrapper)
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\starlette\middleware\exceptions.py", line 63, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\fastapi\middleware\asyncexitstack.py", line 18, in __call__
+    await self.app(scope, receive, send)
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\starlette\routing.py", line 660, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\starlette\routing.py", line 680, in app
+    await route.handle(scope, receive, send)
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\starlette\routing.py", line 276, in handle
+    await self.app(scope, receive, send)
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\fastapi\routing.py", line 134, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\fastapi\routing.py", line 120, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\fastapi\routing.py", line 674, in app
+    raw_response = await run_endpoint_function(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<3 lines>...
+    )
+    ^
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\fastapi\routing.py", line 328, in run_endpoint_function
+    return await dependant.call(**values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\app\api\endopoints\contratos.py", line 49, in consultar_contratos
+    'username':username.username,
+               ^^^^^^^^^^^^^^^^^
+AttributeError: 'RedirectResponse' object has no attribute 'username'
+
+2026-07-12 18:52:44,790 - app_logger - ERROR - Error en la ruta /contratos/: 'RedirectResponse' object has no attribute 'username'
+Traceback (most recent call last):
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\starlette\middleware\errors.py", line 164, in __call__
+    await self.app(scope, receive, _send)
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\starlette\middleware\sessions.py", line 88, in __call__
+    await self.app(scope, receive, send_wrapper)
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\starlette\middleware\exceptions.py", line 63, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\fastapi\middleware\asyncexitstack.py", line 18, in __call__
+    await self.app(scope, receive, send)
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\starlette\routing.py", line 660, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\starlette\routing.py", line 680, in app
+    await route.handle(scope, receive, send)
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\starlette\routing.py", line 276, in handle
+    await self.app(scope, receive, send)
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\fastapi\routing.py", line 134, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\fastapi\routing.py", line 120, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\fastapi\routing.py", line 674, in app
+    raw_response = await run_endpoint_function(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<3 lines>...
+    )
+    ^
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\fastapi\routing.py", line 328, in run_endpoint_function
+    return await dependant.call(**values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\app\api\endopoints\contratos.py", line 49, in consultar_contratos
+    'username':username.username,
+               ^^^^^^^^^^^^^^^^^
+AttributeError: 'RedirectResponse' object has no attribute 'username'
+
+2026-07-12 18:53:02,150 - app_logger - ERROR - Error en la ruta /contratos/: 'RedirectResponse' object has no attribute 'username'
+Traceback (most recent call last):
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\starlette\middleware\errors.py", line 164, in __call__
+    await self.app(scope, receive, _send)
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\starlette\middleware\sessions.py", line 88, in __call__
+    await self.app(scope, receive, send_wrapper)
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\starlette\middleware\exceptions.py", line 63, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\fastapi\middleware\asyncexitstack.py", line 18, in __call__
+    await self.app(scope, receive, send)
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\starlette\routing.py", line 660, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\starlette\routing.py", line 680, in app
+    await route.handle(scope, receive, send)
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\starlette\routing.py", line 276, in handle
+    await self.app(scope, receive, send)
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\fastapi\routing.py", line 134, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\fastapi\routing.py", line 120, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\fastapi\routing.py", line 674, in app
+    raw_response = await run_endpoint_function(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<3 lines>...
+    )
+    ^
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\fastapi\routing.py", line 328, in run_endpoint_function
+    return await dependant.call(**values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\app\api\endopoints\contratos.py", line 49, in consultar_contratos
+    'username':username.username,
+               ^^^^^^^^^^^^^^^^^
+AttributeError: 'RedirectResponse' object has no attribute 'username'
+
+2026-07-12 18:53:23,871 - app_logger - ERROR - Error en la ruta /contratos/: 'RedirectResponse' object has no attribute 'username'
+Traceback (most recent call last):
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\starlette\middleware\errors.py", line 164, in __call__
+    await self.app(scope, receive, _send)
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\starlette\middleware\sessions.py", line 88, in __call__
+    await self.app(scope, receive, send_wrapper)
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\starlette\middleware\exceptions.py", line 63, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\fastapi\middleware\asyncexitstack.py", line 18, in __call__
+    await self.app(scope, receive, send)
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\starlette\routing.py", line 660, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\starlette\routing.py", line 680, in app
+    await route.handle(scope, receive, send)
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\starlette\routing.py", line 276, in handle
+    await self.app(scope, receive, send)
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\fastapi\routing.py", line 134, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\fastapi\routing.py", line 120, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\fastapi\routing.py", line 674, in app
+    raw_response = await run_endpoint_function(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<3 lines>...
+    )
+    ^
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\fastapi\routing.py", line 328, in run_endpoint_function
+    return await dependant.call(**values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\app\api\endopoints\contratos.py", line 49, in consultar_contratos
+    'username':username.username,
+               ^^^^^^^^^^^^^^^^^
+AttributeError: 'RedirectResponse' object has no attribute 'username'
+
+2026-07-12 18:55:34,889 - app_logger - ERROR - Error en la ruta /contratos/: 'RedirectResponse' object has no attribute 'username'
+Traceback (most recent call last):
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\starlette\middleware\errors.py", line 164, in __call__
+    await self.app(scope, receive, _send)
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\starlette\middleware\sessions.py", line 88, in __call__
+    await self.app(scope, receive, send_wrapper)
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\starlette\middleware\exceptions.py", line 63, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\fastapi\middleware\asyncexitstack.py", line 18, in __call__
+    await self.app(scope, receive, send)
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\starlette\routing.py", line 660, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\starlette\routing.py", line 680, in app
+    await route.handle(scope, receive, send)
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\starlette\routing.py", line 276, in handle
+    await self.app(scope, receive, send)
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\fastapi\routing.py", line 134, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\fastapi\routing.py", line 120, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\fastapi\routing.py", line 674, in app
+    raw_response = await run_endpoint_function(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<3 lines>...
+    )
+    ^
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\fastapi\routing.py", line 328, in run_endpoint_function
+    return await dependant.call(**values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\app\api\endopoints\contratos.py", line 49, in consultar_contratos
+    'username':username.username,
+               ^^^^^^^^^^^^^^^^^
+AttributeError: 'RedirectResponse' object has no attribute 'username'
+
+2026-07-12 19:40:38,902 - app_logger - ERROR - Error en la ruta /eventos/: 'estado'
+Traceback (most recent call last):
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\starlette\middleware\errors.py", line 164, in __call__
+    await self.app(scope, receive, _send)
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\starlette\middleware\sessions.py", line 88, in __call__
+    await self.app(scope, receive, send_wrapper)
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\starlette\middleware\exceptions.py", line 63, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\fastapi\middleware\asyncexitstack.py", line 18, in __call__
+    await self.app(scope, receive, send)
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\starlette\routing.py", line 660, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\starlette\routing.py", line 680, in app
+    await route.handle(scope, receive, send)
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\starlette\routing.py", line 276, in handle
+    await self.app(scope, receive, send)
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\fastapi\routing.py", line 134, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\fastapi\routing.py", line 120, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\fastapi\routing.py", line 674, in app
+    raw_response = await run_endpoint_function(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<3 lines>...
+    )
+    ^
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\fastapi\routing.py", line 328, in run_endpoint_function
+    return await dependant.call(**values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\app\api\endopoints\eventos.py", line 51, in get_eventos
+    estadisticas = estadisticas_eventos(eventos_service)
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\app\services\evento_service.py", line 112, in estadisticas_eventos
+    proximo_evento:dict = consultar_proximo_evento(df_eventos)
+                          ~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\app\services\evento_service.py", line 48, in consultar_proximo_evento
+    condicion = ((df_eventos['estado'] == 'creado') & (df_eventos['fecha_evento'] >= fecha_actual))
+                  ~~~~~~~~~~^^^^^^^^^^
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\pandas\core\frame.py", line 4378, in __getitem__
+    indexer = self.columns.get_loc(key)
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\pandas\core\indexes\range.py", line 525, in get_loc
+    raise KeyError(key)
+KeyError: 'estado'
+
+2026-07-12 19:43:20,586 - app_logger - ERROR - Error en la ruta /eventos/: 'estado'
+Traceback (most recent call last):
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\starlette\middleware\errors.py", line 164, in __call__
+    await self.app(scope, receive, _send)
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\starlette\middleware\sessions.py", line 88, in __call__
+    await self.app(scope, receive, send_wrapper)
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\starlette\middleware\exceptions.py", line 63, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\fastapi\middleware\asyncexitstack.py", line 18, in __call__
+    await self.app(scope, receive, send)
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\starlette\routing.py", line 660, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\starlette\routing.py", line 680, in app
+    await route.handle(scope, receive, send)
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\starlette\routing.py", line 276, in handle
+    await self.app(scope, receive, send)
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\fastapi\routing.py", line 134, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\fastapi\routing.py", line 120, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\fastapi\routing.py", line 674, in app
+    raw_response = await run_endpoint_function(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<3 lines>...
+    )
+    ^
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\fastapi\routing.py", line 328, in run_endpoint_function
+    return await dependant.call(**values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\app\api\endopoints\eventos.py", line 51, in get_eventos
+    estadisticas = estadisticas_eventos(eventos_service)
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\app\services\evento_service.py", line 112, in estadisticas_eventos
+    proximo_evento:dict = consultar_proximo_evento(df_eventos)
+                          ~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\app\services\evento_service.py", line 48, in consultar_proximo_evento
+    condicion = ((df_eventos['estado'] == 'creado') & (df_eventos['fecha_evento'] >= fecha_actual))
+                  ~~~~~~~~~~^^^^^^^^^^
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\pandas\core\frame.py", line 4378, in __getitem__
+    indexer = self.columns.get_loc(key)
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\pandas\core\indexes\range.py", line 525, in get_loc
+    raise KeyError(key)
+KeyError: 'estado'
+
+2026-07-12 19:50:37,254 - app_logger - ERROR - Error en la ruta /escuelas/eliminar-escuela/1: escuelas
+Traceback (most recent call last):
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\starlette\middleware\errors.py", line 164, in __call__
+    await self.app(scope, receive, _send)
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\starlette\middleware\sessions.py", line 88, in __call__
+    await self.app(scope, receive, send_wrapper)
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\starlette\middleware\exceptions.py", line 63, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\fastapi\middleware\asyncexitstack.py", line 18, in __call__
+    await self.app(scope, receive, send)
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\starlette\routing.py", line 660, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\starlette\routing.py", line 680, in app
+    await route.handle(scope, receive, send)
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\starlette\routing.py", line 276, in handle
+    await self.app(scope, receive, send)
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\fastapi\routing.py", line 134, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\fastapi\routing.py", line 120, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\fastapi\routing.py", line 674, in app
+    raw_response = await run_endpoint_function(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<3 lines>...
+    )
+    ^
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\fastapi\routing.py", line 328, in run_endpoint_function
+    return await dependant.call(**values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\app\api\endopoints\escuelas.py", line 170, in eliminar_escuela
+    for escuela in escuela_model.escuelas:
+                   ^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\pydantic\_internal\_model_construction.py", line 290, in __getattr__
+    raise AttributeError(item)
+AttributeError: escuelas
+
+2026-07-12 19:51:26,184 - app_logger - ERROR - Error en la ruta /escuelas/eliminar-escuela/2: escuelas
+Traceback (most recent call last):
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\starlette\middleware\errors.py", line 164, in __call__
+    await self.app(scope, receive, _send)
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\starlette\middleware\sessions.py", line 88, in __call__
+    await self.app(scope, receive, send_wrapper)
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\starlette\middleware\exceptions.py", line 63, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\fastapi\middleware\asyncexitstack.py", line 18, in __call__
+    await self.app(scope, receive, send)
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\starlette\routing.py", line 660, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\starlette\routing.py", line 680, in app
+    await route.handle(scope, receive, send)
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\starlette\routing.py", line 276, in handle
+    await self.app(scope, receive, send)
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\fastapi\routing.py", line 134, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\fastapi\routing.py", line 120, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\fastapi\routing.py", line 674, in app
+    raw_response = await run_endpoint_function(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<3 lines>...
+    )
+    ^
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\fastapi\routing.py", line 328, in run_endpoint_function
+    return await dependant.call(**values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\app\api\endopoints\escuelas.py", line 170, in eliminar_escuela
+    for escuela in escuela_model.escuelas:
+                   ^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\pydantic\_internal\_model_construction.py", line 290, in __getattr__
+    raise AttributeError(item)
+AttributeError: escuelas
+
+2026-07-12 19:56:08,532 - app_logger - ERROR - Error en la ruta /escuelas/: 'RedirectResponse' object has no attribute 'username'
+Traceback (most recent call last):
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\starlette\middleware\errors.py", line 164, in __call__
+    await self.app(scope, receive, _send)
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\starlette\middleware\sessions.py", line 88, in __call__
+    await self.app(scope, receive, send_wrapper)
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\starlette\middleware\exceptions.py", line 63, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\fastapi\middleware\asyncexitstack.py", line 18, in __call__
+    await self.app(scope, receive, send)
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\starlette\routing.py", line 660, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\starlette\routing.py", line 680, in app
+    await route.handle(scope, receive, send)
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\starlette\routing.py", line 276, in handle
+    await self.app(scope, receive, send)
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\fastapi\routing.py", line 134, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\fastapi\routing.py", line 120, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\fastapi\routing.py", line 674, in app
+    raw_response = await run_endpoint_function(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<3 lines>...
+    )
+    ^
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\fastapi\routing.py", line 328, in run_endpoint_function
+    return await dependant.call(**values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\app\api\endopoints\escuelas.py", line 38, in listar_escuelas
+    'username':username.username
+               ^^^^^^^^^^^^^^^^^
+AttributeError: 'RedirectResponse' object has no attribute 'username'
+
+2026-07-12 19:56:17,121 - app_logger - ERROR - Error en la ruta /escuelas/: 'RedirectResponse' object has no attribute 'username'
+Traceback (most recent call last):
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\starlette\middleware\errors.py", line 164, in __call__
+    await self.app(scope, receive, _send)
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\starlette\middleware\sessions.py", line 88, in __call__
+    await self.app(scope, receive, send_wrapper)
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\starlette\middleware\exceptions.py", line 63, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\fastapi\middleware\asyncexitstack.py", line 18, in __call__
+    await self.app(scope, receive, send)
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\starlette\routing.py", line 660, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\starlette\routing.py", line 680, in app
+    await route.handle(scope, receive, send)
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\starlette\routing.py", line 276, in handle
+    await self.app(scope, receive, send)
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\fastapi\routing.py", line 134, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\fastapi\routing.py", line 120, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\fastapi\routing.py", line 674, in app
+    raw_response = await run_endpoint_function(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<3 lines>...
+    )
+    ^
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\fastapi\routing.py", line 328, in run_endpoint_function
+    return await dependant.call(**values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\app\api\endopoints\escuelas.py", line 38, in listar_escuelas
+    'username':username.username
+               ^^^^^^^^^^^^^^^^^
+AttributeError: 'RedirectResponse' object has no attribute 'username'
+
+2026-07-12 19:56:19,705 - app_logger - ERROR - Error en la ruta /users/: 'RedirectResponse' object has no attribute 'username'
+Traceback (most recent call last):
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\starlette\middleware\errors.py", line 164, in __call__
+    await self.app(scope, receive, _send)
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\starlette\middleware\sessions.py", line 88, in __call__
+    await self.app(scope, receive, send_wrapper)
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\starlette\middleware\exceptions.py", line 63, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\fastapi\middleware\asyncexitstack.py", line 18, in __call__
+    await self.app(scope, receive, send)
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\starlette\routing.py", line 660, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\starlette\routing.py", line 680, in app
+    await route.handle(scope, receive, send)
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\starlette\routing.py", line 276, in handle
+    await self.app(scope, receive, send)
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\fastapi\routing.py", line 134, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\fastapi\routing.py", line 120, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\fastapi\routing.py", line 674, in app
+    raw_response = await run_endpoint_function(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<3 lines>...
+    )
+    ^
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\fastapi\routing.py", line 328, in run_endpoint_function
+    return await dependant.call(**values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\app\api\endopoints\usuarios.py", line 34, in listar_usuarios
+    'username':username.username
+               ^^^^^^^^^^^^^^^^^
+AttributeError: 'RedirectResponse' object has no attribute 'username'
+
+2026-07-12 19:56:23,524 - app_logger - ERROR - Error en la ruta /egresados/: 'RedirectResponse' object has no attribute 'username'
+Traceback (most recent call last):
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\starlette\middleware\errors.py", line 164, in __call__
+    await self.app(scope, receive, _send)
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\starlette\middleware\sessions.py", line 88, in __call__
+    await self.app(scope, receive, send_wrapper)
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\starlette\middleware\exceptions.py", line 63, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\fastapi\middleware\asyncexitstack.py", line 18, in __call__
+    await self.app(scope, receive, send)
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\starlette\routing.py", line 660, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\starlette\routing.py", line 680, in app
+    await route.handle(scope, receive, send)
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\starlette\routing.py", line 276, in handle
+    await self.app(scope, receive, send)
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\fastapi\routing.py", line 134, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\fastapi\routing.py", line 120, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\fastapi\routing.py", line 674, in app
+    raw_response = await run_endpoint_function(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<3 lines>...
+    )
+    ^
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\fastapi\routing.py", line 328, in run_endpoint_function
+    return await dependant.call(**values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\app\api\endopoints\egresados.py", line 45, in get_egresados
+    "username":username.username
+               ^^^^^^^^^^^^^^^^^
+AttributeError: 'RedirectResponse' object has no attribute 'username'
+
+2026-07-12 19:58:03,901 - app_logger - ERROR - Error en la ruta /escuelas/: 'RedirectResponse' object has no attribute 'username'
+Traceback (most recent call last):
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\starlette\middleware\errors.py", line 164, in __call__
+    await self.app(scope, receive, _send)
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\starlette\middleware\sessions.py", line 88, in __call__
+    await self.app(scope, receive, send_wrapper)
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\starlette\middleware\exceptions.py", line 63, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\fastapi\middleware\asyncexitstack.py", line 18, in __call__
+    await self.app(scope, receive, send)
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\starlette\routing.py", line 660, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\starlette\routing.py", line 680, in app
+    await route.handle(scope, receive, send)
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\starlette\routing.py", line 276, in handle
+    await self.app(scope, receive, send)
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\fastapi\routing.py", line 134, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\fastapi\routing.py", line 120, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\fastapi\routing.py", line 674, in app
+    raw_response = await run_endpoint_function(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<3 lines>...
+    )
+    ^
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\fastapi\routing.py", line 328, in run_endpoint_function
+    return await dependant.call(**values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\app\api\endopoints\escuelas.py", line 38, in listar_escuelas
+    'username':username.username
+               ^^^^^^^^^^^^^^^^^
+AttributeError: 'RedirectResponse' object has no attribute 'username'
+
+2026-07-12 20:11:30,903 - app_logger - ERROR - Error en la ruta /contratos/: 'RedirectResponse' object has no attribute 'username'
+Traceback (most recent call last):
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\starlette\middleware\errors.py", line 164, in __call__
+    await self.app(scope, receive, _send)
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\starlette\middleware\sessions.py", line 88, in __call__
+    await self.app(scope, receive, send_wrapper)
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\starlette\middleware\exceptions.py", line 63, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\fastapi\middleware\asyncexitstack.py", line 18, in __call__
+    await self.app(scope, receive, send)
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\starlette\routing.py", line 660, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\starlette\routing.py", line 680, in app
+    await route.handle(scope, receive, send)
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\starlette\routing.py", line 276, in handle
+    await self.app(scope, receive, send)
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\fastapi\routing.py", line 134, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\fastapi\routing.py", line 120, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\fastapi\routing.py", line 674, in app
+    raw_response = await run_endpoint_function(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<3 lines>...
+    )
+    ^
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\fastapi\routing.py", line 328, in run_endpoint_function
+    return await dependant.call(**values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\app\api\endopoints\contratos.py", line 49, in consultar_contratos
+    'username':username.username,
+               ^^^^^^^^^^^^^^^^^
+AttributeError: 'RedirectResponse' object has no attribute 'username'
+
+2026-07-12 20:12:23,760 - app_logger - ERROR - Error en la ruta /eventos/: 'RedirectResponse' object has no attribute 'username'
+Traceback (most recent call last):
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\starlette\middleware\errors.py", line 164, in __call__
+    await self.app(scope, receive, _send)
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\starlette\middleware\sessions.py", line 88, in __call__
+    await self.app(scope, receive, send_wrapper)
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\starlette\middleware\exceptions.py", line 63, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\fastapi\middleware\asyncexitstack.py", line 18, in __call__
+    await self.app(scope, receive, send)
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\starlette\routing.py", line 660, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\starlette\routing.py", line 680, in app
+    await route.handle(scope, receive, send)
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\starlette\routing.py", line 276, in handle
+    await self.app(scope, receive, send)
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\fastapi\routing.py", line 134, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\fastapi\routing.py", line 120, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\fastapi\routing.py", line 674, in app
+    raw_response = await run_endpoint_function(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<3 lines>...
+    )
+    ^
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\fastapi\routing.py", line 328, in run_endpoint_function
+    return await dependant.call(**values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\app\api\endopoints\eventos.py", line 61, in get_eventos
+    "username":username.username,
+               ^^^^^^^^^^^^^^^^^
+AttributeError: 'RedirectResponse' object has no attribute 'username'
+

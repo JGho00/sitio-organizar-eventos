@@ -3,7 +3,7 @@ from decimal import Decimal,ROUND_CEILING
 from fastapi import APIRouter,Depends,Request,status,UploadFile,File,Form
 from fastapi.responses import RedirectResponse
 from fastapi.templating import Jinja2Templates
-from api.endopoints.dependencias import obtener_usuario_actual
+from api.endopoints.dependencias import VerificarRol
 
 
 from sqlmodel import Session
@@ -16,11 +16,11 @@ from models.model_contrato import Contrato
 from models.model_egresado import Egresado
 from models.model_establecimiento import Establecimiento
 
-from schemas.escuela import obtener_escuelas_bd
 from schemas.evento import obtener_eventos_bd,obtener_evento_id_bd,obtener_evento_bd,agregar_evento_bd
 from schemas.curso import crear_curso_bd
 from services.contrato_service import crear_contrato_bd
 from schemas.establecimiento import obtener_establecimientos_bd
+from services.escuela_service import obtener_escuelas_bd
 
 from services import dependencias
 from services.curso_service import validar_existencia_curso
@@ -34,7 +34,7 @@ router = APIRouter(
 templates = Jinja2Templates("templates")
 
 @router.get("/")
-async def get_eventos(request:Request,username = Depends(obtener_usuario_actual),sesion = Depends(obtener_sesion)):
+async def get_eventos(request:Request,username = Depends(VerificarRol(['admin'])),sesion = Depends(obtener_sesion)):
     
     if not username:
         response = RedirectResponse(url="/login", status_code=status.HTTP_303_SEE_OTHER)
@@ -58,7 +58,7 @@ async def get_eventos(request:Request,username = Depends(obtener_usuario_actual)
         name="eventos/eventos.html",
         context={
             "eventos": eventos,
-            "username":username,
+            "username":username.username,
             "divisiones": dependencias.divisiones,
             "anios": dependencias.anios,
             "interes_mora": dependencias.interes_mora,
@@ -69,7 +69,7 @@ async def get_eventos(request:Request,username = Depends(obtener_usuario_actual)
     )
 
 @router.post("/id/{id}")
-async def get_evento_id(request:Request,id:int,username = Depends(obtener_usuario_actual),sesion = Depends(obtener_sesion)):
+async def get_evento_id(request:Request,id:int,username = Depends(VerificarRol(['admin'])),sesion = Depends(obtener_sesion)):
     
     if not username:
         response = RedirectResponse(url="/login", status_code=status.HTTP_303_SEE_OTHER)

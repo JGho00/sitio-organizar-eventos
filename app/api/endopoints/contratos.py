@@ -1,18 +1,16 @@
-from fastapi import APIRouter, Depends, Form, HTTPException,Request,status,UploadFile,File
+from fastapi import APIRouter, Depends,Request,status
 from fastapi.templating import Jinja2Templates
 from fastapi.responses import RedirectResponse
-from api.endopoints.dependencias import obtener_usuario_actual,VerificarRol
+from api.endopoints.dependencias import VerificarRol
 import os
 from sqlmodel import  Session
 from core.config import obtener_sesion
-from typing import List
 
 from models.model_contrato import Contrato
 
 
 from services.contrato_service import obtener_contratos_bd,obtener_contrato_id_bd,eliminar_contrato_bd,estadisticas_contratos
-from schemas.escuela import obtener_escuelas_bd
-
+from services.escuela_service import obtener_escuelas_bd
 from services import dependencias
 templates = Jinja2Templates("templates")
 
@@ -27,7 +25,7 @@ router = APIRouter(
 templates = Jinja2Templates(directory=os.path.join("templates"))
 
 @router.get("/")
-async def consultar_contratos(request: Request,username = Depends(obtener_usuario_actual),sesion: Session = Depends(obtener_sesion)):
+async def consultar_contratos(request: Request,username = Depends(VerificarRol(['admin'])),sesion: Session = Depends(obtener_sesion)):
     
     if not username:
         response = RedirectResponse(url="/login", status_code=status.HTTP_303_SEE_OTHER)
@@ -46,7 +44,7 @@ async def consultar_contratos(request: Request,username = Depends(obtener_usuari
         name="contratos/contratos.html",
         context={
             'anios':dependencias.anios,
-            'username':username,
+            'username':username.username,
             'contratos':contratos,
             'contratos_estadisticas':contratos_estadisticas,
             'escuelas':escuelas

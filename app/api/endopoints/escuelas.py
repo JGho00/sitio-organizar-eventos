@@ -3,13 +3,12 @@ from fastapi import APIRouter,Depends,Form,HTTPException,status
 from fastapi import Request,Depends
 from fastapi.templating import Jinja2Templates
 from fastapi.responses import HTMLResponse,RedirectResponse
-from api.endopoints.dependencias import obtener_usuario_actual
+from api.endopoints.dependencias import VerificarRol
 
 #IMPORT MODELOS
 from sqlmodel import Session
 from core.config import obtener_sesion
-from schemas.escuela import obtener_escuelas_bd,obtener_escuela_id,editar_escuela_id_bd,eliminar_escuela_bd,crear_escuela
-
+from services.escuela_service import  obtener_escuelas_bd,obtener_escuela_id,editar_escuela_id_bd,eliminar_escuela_bd,crear_escuela
 import os
 
 router = APIRouter(
@@ -21,7 +20,7 @@ router = APIRouter(
 templates = Jinja2Templates(directory=os.path.join("templates"))
 
 @router.get("/")
-async def listar_escuelas(request: Request,username = Depends(obtener_usuario_actual),sesion_bd: Session = Depends(obtener_sesion)):
+async def listar_escuelas(request: Request,username = Depends(VerificarRol(['admin'])),sesion_bd: Session = Depends(obtener_sesion)):
 
     if not username:
         response = RedirectResponse(url="/login", status_code=status.HTTP_303_SEE_OTHER)
@@ -35,12 +34,12 @@ async def listar_escuelas(request: Request,username = Depends(obtener_usuario_ac
         name="escuelas/escuelas.html",
         context={
             "escuelas": escuelas_bd,
-            'username':username
+            'username':username.username
         }
     )
 
 @router.get("/agregar-escuela")
-def agregar_escuela(request: Request,username = Depends(obtener_usuario_actual),sesion = Depends(obtener_sesion)):
+def agregar_escuela(request: Request,username = Depends(VerificarRol(['admin'])),sesion = Depends(obtener_sesion)):
     
     if not username:
         response = RedirectResponse(url="/login", status_code=status.HTTP_303_SEE_OTHER)
@@ -51,14 +50,14 @@ def agregar_escuela(request: Request,username = Depends(obtener_usuario_actual),
         request=request,
         name="escuelas/cargar_escuela.html",
         context={
-            "username": username
+            "username": username.username
         }
     )
 
 
 
 @router.get("/{id}")
-async def obtener_escuela_por_id(id: int, request: Request,username = Depends(obtener_usuario_actual),sesion: Session = Depends(obtener_sesion)):
+async def obtener_escuela_por_id(id: int, request: Request,username = Depends(VerificarRol(['admin'])),sesion: Session = Depends(obtener_sesion)):
     
     if not username:
         response = RedirectResponse(url="/login", status_code=status.HTTP_303_SEE_OTHER)
@@ -92,7 +91,7 @@ async def agregar_escuela(request: Request,
                     direccion:str= Form(...),
                     telefono:str = Form(...),
                     sesion: Session = Depends(obtener_sesion),
-                    username = Depends(obtener_usuario_actual)
+                    username = Depends(VerificarRol(['admin']))
                     ):
     
     if not username:
@@ -120,7 +119,7 @@ async def actualizar_escuela(
                     direccion:str = Form(...),
                     telefono:str = Form(...),
                     sesion_bd: Session = Depends(obtener_sesion),
-                    username = Depends(obtener_usuario_actual)
+                    username = Depends(VerificarRol(['admin']))
                        ):
     
     if not username:
@@ -157,7 +156,7 @@ async def actualizar_escuela(
     )
 
 @router.post("/eliminar-escuela/{id_escuela}")
-async def eliminar_escuela(id_escuela: int,request: Request,sesion_bd: Session = Depends(obtener_sesion),username = Depends(obtener_usuario_actual)):
+async def eliminar_escuela(id_escuela: int,request: Request,sesion_bd: Session = Depends(obtener_sesion),username = Depends(VerificarRol(['admin']))):
     print(id_escuela)
 
     if not username:

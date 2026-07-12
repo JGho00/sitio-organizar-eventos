@@ -1,13 +1,11 @@
 from fastapi import APIRouter, Depends
 from fastapi import Request
 from fastapi.templating import Jinja2Templates
-from api.endopoints.dependencias import obtener_usuario_actual
+from api.endopoints.dependencias import VerificarRol
 import os
 from sqlmodel import Session
 from core.config import obtener_sesion
-from typing import List
 import pandas as pd
-from models.model_cuota import Cuota
 from services.cuota_service import consultar_cuotas_bd,estadisticas_cuotas
 
 templates = Jinja2Templates("templates")
@@ -23,7 +21,7 @@ router = APIRouter(
 templates = Jinja2Templates(directory=os.path.join("templates"))
 
 @router.get("/")
-async def consultar_cuotas(request: Request,username = Depends(obtener_usuario_actual),sesion_bd: Session = Depends(obtener_sesion)):
+async def consultar_cuotas(request: Request,username = Depends(VerificarRol(['admin'])),sesion_bd: Session = Depends(obtener_sesion)):
 
     cuotas:pd.Dataframe = await consultar_cuotas_bd(sesion_bd)
     cuotas = cuotas.to_dict(orient='records')
@@ -38,7 +36,7 @@ async def consultar_cuotas(request: Request,username = Depends(obtener_usuario_a
         name="cuotas/cuotas.html",
         context={
             
-            'username':username,
+            'username':username.username,
             'cuotas': cuotas,
             'estadisticas':estadisticas
         }

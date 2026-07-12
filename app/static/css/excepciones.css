@@ -1,0 +1,28 @@
+/* Fondo oscuro que bloquea la pantalla trasera */
+.overlay {
+        position: fixed;
+        top: 0; left: 0; width: 100vw; height: 100vh;
+        background: rgba(0, 0, 0, 0.6);
+        backdrop-filter: blur(3px);
+        z-index: 9998;
+}
+/* Caja de mensaje perfectamente centrada */
+.error-modal {
+        position: fixed;
+        top: 50%; left: 50%;
+        transform: translate(-50%, -50%);
+        background: white;
+        padding: 30px 40px;
+        border-radius: 12px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        text-align: center;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        z-index: 9999;
+        max-width: 400px;
+        width: 90%;
+        }
+.error-icon { font-size: 48px; margin-bottom: 15px; }
+.error-title { color: #d32f2f; margin: 0 0 10px 0; font-size: 24px; }
+.error-msg { color: #333; font-size: 16px; line-height: 1.5; }
+.countdown { color: #666; font-size: 14px; margin-top: 20px; }
+#timer { font-weight: bold; color: #d32f2f; }

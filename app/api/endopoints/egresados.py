@@ -4,7 +4,7 @@ from fastapi.responses import RedirectResponse
 from sqlmodel import Session
 
 from schemas.egresado import obtener_egresados_bd,agregar_egresado_bd,eliminar_egresado_bd,actualizar_egresado_dni_bd
-from api.endopoints.dependencias import obtener_usuario_actual
+from api.endopoints.dependencias import VerificarRol
 
 from core.config import obtener_sesion
 
@@ -12,7 +12,7 @@ from models.model_curso import Curso
 
 from services.dependencias import divisiones,obtener_fecha
 from services.curso_service import validar_existencia_curso
-from schemas.escuela import obtener_escuelas_bd
+from services.escuela_service import obtener_escuelas_bd
 from schemas.curso import crear_curso_bd
 
 from services.egresado_service import obtener_egresado_con_cuotas,estadisticas_egresado
@@ -28,7 +28,7 @@ router = APIRouter(
 templates = Jinja2Templates( "templates")
 
 @router.get("/")
-async def get_egresados(request:Request,username = Depends(obtener_usuario_actual),sesion:Session = Depends(obtener_sesion)):
+async def get_egresados(request:Request,username = Depends(VerificarRol(['admin'])),sesion:Session = Depends(obtener_sesion)):
     
     if not username:
         response = RedirectResponse(url="/login", status_code=status.HTTP_303_SEE_OTHER)
@@ -42,12 +42,12 @@ async def get_egresados(request:Request,username = Depends(obtener_usuario_actua
         name="egresados/egresados.html",
         context={
             "egresados": egresados,
-            "username":username
+            "username":username.username
         }
     )
 
 @router.get("/cargar-egresado")
-async def cargar_egresado(request:Request,username = Depends(obtener_usuario_actual),sesion:Session = Depends(obtener_sesion)):
+async def cargar_egresado(request:Request,username = Depends(VerificarRol(['admin'])),sesion:Session = Depends(obtener_sesion)):
     
     escuelas = await obtener_escuelas_bd(sesion)
 
@@ -72,7 +72,7 @@ async def agregar_egresado(request:Request,
                            division:str = Form(...),
                            escuela_id:int = Form(...),
                            sesion:Session = Depends(obtener_sesion),
-                           username = Depends(obtener_usuario_actual)):
+                           username = Depends(VerificarRol(['admin']))):
     print("ENTRE")
     #Validar existencia del curso sino crearlo
     print("CURSO",division)
@@ -103,7 +103,7 @@ async def agregar_egresado(request:Request,
 
 
 @router.post("/eliminar-egresado/{dni}")
-async def eliminar_egresado(request:Request,dni:int,username = Depends(obtener_usuario_actual),sesion:Session = Depends(obtener_sesion)):
+async def eliminar_egresado(request:Request,dni:int,username = Depends(VerificarRol(['admin'])),sesion:Session = Depends(obtener_sesion)):
 
     await eliminar_egresado_bd(sesion,dni)
 
@@ -115,13 +115,13 @@ async def eliminar_egresado(request:Request,dni:int,username = Depends(obtener_u
         name="egresados/egresados.html",
         context={
             "egresados": egresados,
-            "username":username
+            "username":username.username
         }
     )
 
 
 @router.post("/actualizar-egresado/{dni}")
-async def get_egresado_dni(request:Request,dni:int,nombre:str =Form(...),telefono:str = Form(...),direccion:str = Form(...), username = Depends(obtener_usuario_actual),sesion:Session = Depends(obtener_sesion)):
+async def get_egresado_dni(request:Request,dni:int,nombre:str =Form(...),telefono:str = Form(...),direccion:str = Form(...), username = Depends(VerificarRol(['admin'])),sesion:Session = Depends(obtener_sesion)):
     print("Dni",dni)
     
     await actualizar_egresado_dni_bd(sesion,dni,nombre,telefono,direccion)
@@ -141,7 +141,7 @@ async def get_egresado_dni(request:Request,dni:int,nombre:str =Form(...),telefon
 
 
 @router.post("/dni/{dni}")
-async def get_egresado_dni(request:Request,dni:int,sesion:Session = Depends(obtener_sesion),username = Depends(obtener_usuario_actual)):
+async def get_egresado_dni(request:Request,dni:int,sesion:Session = Depends(obtener_sesion),username = Depends(VerificarRol(['admin']))):
     
     if not username:
         response = RedirectResponse(url="/login", status_code=status.HTTP_303_SEE_OTHER)
@@ -166,7 +166,7 @@ async def get_egresado_dni(request:Request,dni:int,sesion:Session = Depends(obte
 
 
 @router.get("/dni/{dni}")
-async def get_egresado_dni(request:Request,dni:int,sesion:Session = Depends(obtener_sesion),username = Depends(obtener_usuario_actual)):
+async def get_egresado_dni(request:Request,dni:int,sesion:Session = Depends(obtener_sesion),username = Depends(VerificarRol(['admin']))):
     
     if not username:
         response = RedirectResponse(url="/login", status_code=status.HTTP_303_SEE_OTHER)

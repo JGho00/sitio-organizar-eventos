@@ -7,7 +7,6 @@ from api.endopoints.dependencias import obtener_usuario_actual
 #IMPORT MODELOS
 from sqlmodel import Session
 from core.config import obtener_sesion
-from models.model_usuario import Usuario
 from schemas.usuario import crear_usuario_bd,obtener_usuarios_bd,obtener_usuario_id_bd,actualizar_usuario_id_bd,eliminar_usuario_bd
 
 import os
@@ -31,7 +30,7 @@ async def listar_usuarios(request: Request,username = Depends(obtener_usuario_ac
         name="usuarios/usuarios.html",
         context={
             "usuarios": usuarios_bd,
-            'username':username
+            'username':username.username
         }
     )
 
@@ -57,21 +56,13 @@ async def obtener_usuario_id(id: int, request: Request,sesion: Session = Depends
     
     
     return usuario_bd
-    print("Usuario",usuario_bd)
-    print(type(usuario_bd))
-    return templates.TemplateResponse(
-                request=request,
-                name="escuelas/escuela.html",
-                context={
-                    "usuario": usuario_bd
-                }
-            )
+    
 
     
 
 
 @router.post("/agregar-usuario")
-async def agregar_escuela(request: Request,
+async def agregar_usuario(request: Request,
                     username:str = Form(...),
                     email:str= Form(...),
                     password_hash:str = Form(...),
@@ -125,7 +116,7 @@ async def actualizar_usuario(
     )
 
 @router.post("/eliminar-usuario/{id_usuario}")
-async def eliminar_escuela(id_usuario: int,request: Request,sesion: Session = Depends(obtener_sesion) ):
+async def eliminar_usuario(id_usuario: int,request: Request,sesion: Session = Depends(obtener_sesion) ):
     
     print(id_usuario)
 
@@ -135,7 +126,7 @@ async def eliminar_escuela(id_usuario: int,request: Request,sesion: Session = De
     
     return templates.TemplateResponse(
             request=request,
-            name="escuelas/escuelas.html",
+            name="escuelas/usuarios.html",
             context={
                 "usuarios": usuarios
                     }
