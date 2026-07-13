@@ -64,28 +64,29 @@ Escuelas
                 </tr>
             </thead>
             <tbody id="escuelasTableBody">
+                {%if escuelas%}
                 {% for escuela in escuelas %}
-                <tr class="table-row" data-search="{{ (escuela.nombre|lower) }} {{ (escuela.ciudad|lower) }}">
-                    <td class="cell-nombre">
-                        <strong>{{ escuela.nombre }}</strong>
-                    </td>
-                    <td class="cell-direccion">{{ escuela.direccion }}</td>
-                    <td class="cell-ciudad">La Rioja (Capital)</td>
-                    <td class="cell-anio">{{ escuela.telefono}}</td>
-                    <td class="cell-acciones">
-                        <a href="/escuelas/{{escuela.id}}">
-                            <button class="btn-small btn-edit">✏️ Editar</button>
-                        </a>
-                        <form  action="/escuelas/eliminar-escuela/{{escuela.id}}" method="post">
-                            <button class="btn-small btn-delete">
-                                🗑️ Eliminar
-                            </button>
-                        </form>
-                        
-                        
-                    </td>
-                </tr>
+                    <tr class="table-row" data-search="{{ (escuela.nombre|lower) }} {{ (escuela.ciudad|lower) }}">
+                        <td class="cell-nombre">
+                            <strong>{{ escuela.nombre }}</strong>
+                        </td>
+                        <td class="cell-direccion">{{ escuela.direccion }}</td>
+                        <td class="cell-ciudad">La Rioja (Capital)</td>
+                        <td class="cell-anio">{{ escuela.telefono}}</td>
+                        <td class="cell-acciones">
+                            <button type="button" class="btn-small btn-edit" data-id="{{ escuela.id }}">✏️ Editar</button>
+                            <form action="/escuelas/eliminar-escuela/{{escuela.id}}" method="post">
+                                <button class="btn-small btn-delete">
+                                    🗑️ Eliminar
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
                 {% endfor %}
+                {%else%}
+                    <tr>Sin escuelas cargadas</tr>
+                {%endif%}
+                
             </tbody>
         </table>
         

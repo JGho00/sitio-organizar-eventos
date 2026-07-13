@@ -13,9 +13,6 @@ async def obtener_egresado_con_cuotas(sesion: Session, dni: int):
     return egresado_cuotas
 
 
-async def estadisticas_egresado_generales(egresados:List[Egresado]):
-    pass
-    
 
     
 

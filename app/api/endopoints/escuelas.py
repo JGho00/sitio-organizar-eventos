@@ -1,4 +1,4 @@
-from models.model_escuela import Escuela as escuela_model
+from models.model_escuela import Escuela
 from fastapi import APIRouter,Depends,Form,HTTPException,status
 from fastapi import Request,Depends
 from fastapi.templating import Jinja2Templates
@@ -19,26 +19,26 @@ router = APIRouter(
 
 templates = Jinja2Templates(directory=os.path.join("templates"))
 
-@router.get("/")
-async def listar_escuelas(request: Request,username = Depends(VerificarRol(['admin'])),sesion_bd: Session = Depends(obtener_sesion)):
+@router.get("/",status_code=status.HTTP_200_OK)
+async def listar_escuelas(request: Request,username = Depends(VerificarRol(['admin'])),sesion: Session = Depends(obtener_sesion)):
 
     if not username:
         response = RedirectResponse(url="/login", status_code=status.HTTP_303_SEE_OTHER)
         response.delete_cookie("access_token")
         return response
     
-    escuelas_bd= await obtener_escuelas_bd(sesion_bd)
+    escuelas_bd= await obtener_escuelas_bd(sesion)
     print("Escuelas de bd",escuelas_bd)
     return templates.TemplateResponse(
         request=request,
         name="escuelas/escuelas.html",
         context={
             "escuelas": escuelas_bd,
-            'username':username.username
+            'username':username
         }
     )
 
-@router.get("/agregar-escuela")
+@router.get("/agregar-escuela",status_code=status.HTTP_201_CREATED)
 def agregar_escuela(request: Request,username = Depends(VerificarRol(['admin'])),sesion = Depends(obtener_sesion)):
     
     if not username:
@@ -56,7 +56,7 @@ def agregar_escuela(request: Request,username = Depends(VerificarRol(['admin']))
 
 
 
-@router.get("/{id}")
+@router.get("/{id}",status_code=status.HTTP_200_OK)
 async def obtener_escuela_por_id(id: int, request: Request,username = Depends(VerificarRol(['admin'])),sesion: Session = Depends(obtener_sesion)):
     
     if not username:
@@ -66,16 +66,21 @@ async def obtener_escuela_por_id(id: int, request: Request,username = Depends(Ve
 
     escuela_bd = await obtener_escuela_id(sesion,id=id)
     if not escuela_bd:
-        return {"error": "Escuela no encontrada"}
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="La escuela no existe en el sistema."
+        )
     
     
     print("Escuela id",escuela_bd)
     print(type(escuela_bd))
     return templates.TemplateResponse(
+
                 request=request,
                 name="escuelas/escuela.html",
                 context={
-                    "escuela": escuela_bd
+                    "escuela": escuela_bd,
+                    "username": username
                 }
             )
 
@@ -118,25 +123,22 @@ async def actualizar_escuela(
                     id_escuela:int,
                     direccion:str = Form(...),
                     telefono:str = Form(...),
-                    sesion_bd: Session = Depends(obtener_sesion),
+                    sesion: Session = Depends(obtener_sesion),
                     username = Depends(VerificarRol(['admin']))
                        ):
-    
-    if not username:
-        response = RedirectResponse(url="/login", status_code=status.HTTP_303_SEE_OTHER)
-        response.delete_cookie("access_token")
-        return response
 
     campos_valores = {
         'direccion':direccion,
         'telefono':telefono
     }
     
-    await editar_escuela_id_bd(sesion_bd,id_escuela,campos_valores)
+    await editar_escuela_id_bd(sesion,id_escuela,campos_valores)
 
     existe_escuela:bool = False
     
-    for escuela in escuela_model.escuelas:
+    escuelas:Escuela = await obtener_escuelas_bd(sesion)
+
+    for escuela in escuelas:
         if escuela.id == id_escuela:
             existe_escuela = True
             escuela.direccion = direccion
@@ -151,32 +153,27 @@ async def actualizar_escuela(
         request=request,
         name="escuelas/escuelas.html",
         context={
-            "escuelas": escuela_model.escuelas
+            "escuelas": escuelas,
+            "username":username
         }
     )
 
-@router.post("/eliminar-escuela/{id_escuela}")
-async def eliminar_escuela(id_escuela: int,request: Request,sesion_bd: Session = Depends(obtener_sesion),username = Depends(VerificarRol(['admin']))):
+@router.post("/eliminar-escuela/{id_escuela}",status_code=status.HTTP_201_CREATED)
+async def eliminar_escuela(id_escuela: int,request: Request,sesion: Session = Depends(obtener_sesion),username = Depends(VerificarRol(['admin']))):
     print(id_escuela)
 
-    if not username:
-        response = RedirectResponse(url="/login", status_code=status.HTTP_303_SEE_OTHER)
-        response.delete_cookie("access_token")
-        return response
+    await eliminar_escuela_bd(sesion,id_escuela)
 
-    await eliminar_escuela_bd(sesion_bd,id_escuela)
+    escuelas:Escuela = await obtener_escuelas_bd(sesion)
 
-    for escuela in escuela_model.escuelas:
-        if escuela.id == id_escuela:
-            escuela_model.escuelas.remove(escuela)
-            return templates.TemplateResponse(
-                request=request,
-                name="escuelas/escuelas.html",
-                context={
-                    "escuelas": escuela_model.escuelas
-                }
-            )
-    return {"error": "Escuela no encontrada"}
+    return templates.TemplateResponse(
+        request=request,
+        name="escuelas/escuelas.html",
+        context={
+            "escuelas": escuelas,
+            "username":username
+        }
+    )
 
 
 

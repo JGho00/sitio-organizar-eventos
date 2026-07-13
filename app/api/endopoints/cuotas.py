@@ -36,7 +36,7 @@ async def consultar_cuotas(request: Request,username = Depends(VerificarRol(['ad
         name="cuotas/cuotas.html",
         context={
             
-            'username':username.username,
+            'username':username,
             'cuotas': cuotas,
             'estadisticas':estadisticas
         }

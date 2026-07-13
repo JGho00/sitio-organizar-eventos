@@ -2,7 +2,7 @@ from fastapi import APIRouter, Depends
 from fastapi.templating import Jinja2Templates
 from fastapi import Request,status
 from fastapi.responses import RedirectResponse
-from api.endopoints.dependencias import obtener_usuario_actual,VerificarRol
+from api.endopoints.dependencias import VerificarRol
 
 from sqlmodel import Session
 from core.config import obtener_sesion
@@ -18,7 +18,7 @@ router = APIRouter(
 
 
 @router.get("/")
-async def cargar_dashboard(request:Request,usuario = Depends(VerificarRol(['admin'])),sesion:Session = Depends(obtener_sesion)):
+async def cargar_dashboard(request:Request,usuario = Depends(VerificarRol(['admin','user'])),sesion:Session = Depends(obtener_sesion)):
     
     if not usuario:
         response = RedirectResponse(url="/login", status_code=status.HTTP_303_SEE_OTHER)
@@ -33,7 +33,7 @@ async def cargar_dashboard(request:Request,usuario = Depends(VerificarRol(['admi
         name="dashboard/dashboard.html",
         context= {
             "request":request,
-            "username": usuario.username,
+            "username": usuario,
             'resumen':resumen
                 }
             

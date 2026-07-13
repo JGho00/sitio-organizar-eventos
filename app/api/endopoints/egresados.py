@@ -42,7 +42,7 @@ async def get_egresados(request:Request,username = Depends(VerificarRol(['admin'
         name="egresados/egresados.html",
         context={
             "egresados": egresados,
-            "username":username.username
+            "username":username
         }
     )
 
@@ -115,7 +115,7 @@ async def eliminar_egresado(request:Request,dni:int,username = Depends(Verificar
         name="egresados/egresados.html",
         context={
             "egresados": egresados,
-            "username":username.username
+            "username":username
         }
     )
 

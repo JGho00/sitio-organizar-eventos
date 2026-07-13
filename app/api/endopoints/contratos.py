@@ -44,7 +44,7 @@ async def consultar_contratos(request: Request,username = Depends(VerificarRol([
         name="contratos/contratos.html",
         context={
             'anios':dependencias.anios,
-            'username':username.username,
+            'username':username,
             'contratos':contratos,
             'contratos_estadisticas':contratos_estadisticas,
             'escuelas':escuelas

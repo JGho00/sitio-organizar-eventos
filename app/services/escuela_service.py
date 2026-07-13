@@ -1,10 +1,13 @@
 from models.model_escuela import Escuela
 from sqlmodel import select
 
+import pandas as pd
+
 async def obtener_escuelas_bd(sesion):
     consulta = select(Escuela)
     escuelas = sesion.exec(consulta).all()
-    return escuelas
+    df_escuelas = [e.model_dump() for e in escuelas]
+    return df_escuelas
 
 async def obtener_escuela_id(sesion,id):
     consulta = select(Escuela).where(Escuela.id == id)
@@ -50,5 +53,11 @@ async def eliminar_escuela_bd(sesion_bd,id:int):
     sesion_bd.commit()
     
     return escuela
-    
-    
+
+
+def escuelas_contratos_activas(df_escuelas):
+    pass
+
+
+async def estadisticas_escuela(df_escuelas:pd.DataFrame):
+    pass

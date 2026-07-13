@@ -1,0 +1,26 @@
+<!-- Contenedor global donde JavaScript inyectará los pop-ups dinámicos -->
+<link rel="stylesheet" href="/static/css/excepcion_404.css">
+
+<div id="contenedor-popups-global"></div>
+
+<!-- Plantilla oculta (template) del Pop-up Parametrizable -->
+<template id="plantilla-popup-error">
+    <div class="popup-fondo-bloqueo">
+        <div class="popup-tarjeta-alerta animate-entrada">
+            <!-- Barra superior / Encabezado -->
+            <div class="popup-encabezado">
+                <span class="popup-icono">⚠️</span>
+                <h3 class="popup-titulo">{{error_popup_titulo}}</h3>
+                <button type="button" class="popup-boton-cerrar">&times;</button>
+            </div>
+            
+            <!-- Cuerpo del error -->
+            <div class="popup-cuerpo">
+                <p class="popup-mensaje">{{error_popup_mensaje}}</p>
+            </div>
+            
+            <!-- Barra de progreso visual para indicar los 11 segundos -->
+            <div class="popup-barra-tiempo"></div>
+        </div>
+    </div>
+</template>

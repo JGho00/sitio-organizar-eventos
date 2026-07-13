@@ -2,7 +2,7 @@ from fastapi import APIRouter,Depends,Form,HTTPException
 from fastapi import Request,Depends
 from fastapi.templating import Jinja2Templates
 from fastapi.responses import HTMLResponse
-from api.endopoints.dependencias import obtener_usuario_actual
+from api.endopoints.dependencias import VerificarRol
 
 #IMPORT MODELOS
 from sqlmodel import Session
@@ -20,7 +20,7 @@ router = APIRouter(
 templates = Jinja2Templates(directory=os.path.join("templates"))
 
 @router.get("/",response_class=HTMLResponse)
-async def listar_usuarios(request: Request,username = Depends(obtener_usuario_actual),sesion_bd: Session = Depends(obtener_sesion)):
+async def listar_usuarios(request: Request,username = Depends(VerificarRol(['admin'])),sesion_bd: Session = Depends(obtener_sesion)):
 
     usuarios_bd= await obtener_usuarios_bd(sesion_bd)
     
@@ -35,7 +35,7 @@ async def listar_usuarios(request: Request,username = Depends(obtener_usuario_ac
     )
 
 @router.get("/agregar-usuario")
-def agregar_usuario(request: Request,username = Depends(obtener_usuario_actual)):
+def agregar_usuario(request: Request,username = Depends(VerificarRol(['admin']))):
     
     return templates.TemplateResponse(
         request=request,
@@ -48,14 +48,9 @@ def agregar_usuario(request: Request,username = Depends(obtener_usuario_actual))
 
 
 @router.get("/{id}")
-async def obtener_usuario_id(id: int, request: Request,sesion: Session = Depends(obtener_sesion)):
+async def obtener_usuario_id(id: int, request: Request,sesion: Session = Depends(obtener_sesion),username = Depends(VerificarRol(['admin']))):
     
-    usuario_bd = await obtener_usuario_id_bd(sesion,id_usuario=id)
-    if not usuario_bd:
-        return {"error": "Usuario no encontrado"}
-    
-    
-    return usuario_bd
+    pass
     
 
     

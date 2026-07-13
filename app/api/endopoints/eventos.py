@@ -58,7 +58,7 @@ async def get_eventos(request:Request,username = Depends(VerificarRol(['admin'])
         name="eventos/eventos.html",
         context={
             "eventos": eventos,
-            "username":username.username,
+            "username":username,
             "divisiones": dependencias.divisiones,
             "anios": dependencias.anios,
             "interes_mora": dependencias.interes_mora,
