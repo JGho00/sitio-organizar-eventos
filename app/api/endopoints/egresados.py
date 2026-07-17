@@ -106,7 +106,7 @@ async def agregar_egresado(request:Request,
 async def eliminar_egresado(request:Request,dni:int,username = Depends(VerificarRol(['admin'])),sesion:Session = Depends(obtener_sesion)):
 
     await eliminar_egresado_bd(sesion,dni)
-
+    sesion.commit()
     egresados = await obtener_egresados_bd(sesion)
 
 
@@ -125,6 +125,8 @@ async def get_egresado_dni(request:Request,dni:int,nombre:str =Form(...),telefon
     print("Dni",dni)
     
     await actualizar_egresado_dni_bd(sesion,dni,nombre,telefono,direccion)
+
+    sesion.commit()
 
     egresados = await obtener_egresados_bd(sesion)
 

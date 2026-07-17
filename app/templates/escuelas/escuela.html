@@ -4,47 +4,38 @@
 Escuelas
 {% endblock %}
 
+{% block page_title %}Detalles de la Escuela{% endblock %}
+{% block page_subtitle %}{{ escuela.nombre }}{% endblock %}
+
 {% block styles %}
-<link rel="stylesheet" href="/static/css/escuelas.css">
 {% endblock %}
 
 {% block content %}
-    <div>
-        <div>
-            <h1>Detalles de la Escuela</h1>
-            <form action="/escuelas/actualizar-escuela/{{escuela.id}}" method="post">
-                <div>
-                    <p>Escuela:</p>
-                    <input type="text" placeholder="" value="{{escuela.nombre}}" name="nombre">
-                </div>
-                <div>
-                    <p>Dirección:</p>
-                    <input type="text" placeholder="" value="{{escuela.direccion}}" name="direccion">
-                </div>
-                <div>
-                    <p>Ciudad:</p>
-                    <input type="text" placeholder="" value="La Rioja (Capital)" name="ciudad" disabled>
-                </div>
-                <div>
-                    <p>Teléfono:</p>
-                    <input type="text" placeholder="" value="{{escuela.telefono}}" name="telefono">
-                </div>
-                <div>
-                    <button>Guardar cambios</button>
-                </div>
-                
-                
-            </form>
-            <div>
-                <a href="/escuelas"><button>Cancelar</button></a>
-                
-            </div>
-        </div>
 
-        <div>
-            <div><button></button></div>
+<section class="panel">
+    <div class="panel-head"><h2>Datos de la escuela</h2></div>
+    <form action="/escuelas/actualizar-escuela/{{escuela.id}}" method="post" class="form-grid">
+        <div class="field">
+            <label>Escuela</label>
+            <input type="text" value="{{escuela.nombre}}" name="nombre">
         </div>
-        
-    </div>
-    
+        <div class="field">
+            <label>Dirección</label>
+            <input type="text" value="{{escuela.direccion}}" name="direccion">
+        </div>
+        <div class="field">
+            <label>Ciudad</label>
+            <input type="text" value="La Rioja (Capital)" name="ciudad" disabled>
+        </div>
+        <div class="field">
+            <label>Teléfono</label>
+            <input type="text" value="{{escuela.telefono}}" name="telefono">
+        </div>
+        <div class="form-actions">
+            <a href="/escuelas"><button type="button" class="btn">Cancelar</button></a>
+            <button type="submit" class="btn primary">Guardar cambios</button>
+        </div>
+    </form>
+</section>
+
 {% endblock %}

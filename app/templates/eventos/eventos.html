@@ -4,51 +4,51 @@
 eventos
 {% endblock %}
 
+{% block page_title %}Panel de Eventos{% endblock %}
+{% block page_subtitle %}Calendario y gestión de eventos{% endblock %}
+
 {% block styles %}
-<link rel="stylesheet" href="/static/css/evento.css">
 {% endblock %}
 
 {% block content %}
 
-    <!-- Contenido Principal -->
-    <main class="">
-        <header class="">
-            <h1>Panel de Eventos</h1>
-        </header>
-
-        <!-- 1. Próximo evento -->
-        <section class="">
-            <div class="">
-                <h3>Próximo evento</h3>
+    <div class="grid2">
+        <section class="panel">
+            <div class="panel-head"><h2>Próximo evento</h2></div>
+            <div class="panel-body">
                 {%if estadisticas.proximo_evento%}
-                    <p class="">Nombre: {{estadisticas.proximo_evento.nombre}}</p>
-                    <p class="">Fecha: {{estadisticas.proximo_evento.fecha}}</p>
-                    <p class="">Lugar: {{estadisticas.proximo_evento.lugar}}</p>
+                    <p>{{estadisticas.proximo_evento.nombre}}</p>
+                    {%if estadisticas.proximo_evento.fecha%}
+                        <p>{{estadisticas.proximo_evento.fecha}}</p>
+                    {%else%}
+                        <p>Sin fecha definida</p>
+                    {%endif%}
+                    <p>{{estadisticas.proximo_evento.lugar}}</p>
                 {%else%}
-                    <p>Sin eventos cargados</p>
+                    <p class="row-empty">Sin eventos cargados</p>
                 {%endif%}
             </div>
         </section>
 
-         <!-- 1. Últimos finalizados -->
-        <section class="">
-            <div class="">
-                <h3>Ultimos Eventos finalizados</h3>
+        <section class="panel">
+            <div class="panel-head"><h2>Últimos eventos finalizados</h2></div>
+            <div class="panel-body">
                 {%if estadisticas.eventos_finalizados%}
                     {%for evento_finalizado in estadisticas.eventos_finalizados%}
-                    <p class="">Curso: {{evento_finalizado.nombre_curso}}</p>
-                    <p class="">Fecha:{{evento_finalizado.fecha_evento}}</p>
-                    <p class="">Lugar: {{evento_finalizado.nombre_establecimiento}}</p>
+                    <p>Curso: {{evento_finalizado.nombre_curso}}</p>
+                    <p>Fecha: {{evento_finalizado.fecha_evento}}</p>
+                    <p>Lugar: {{evento_finalizado.nombre_establecimiento}}</p>
                     {%endfor%}
                 {%else%}
-                    <p class="">Sin eventos finalizados</p>
+                    <p class="row-empty">Sin eventos finalizados</p>
                 {%endif%}
             </div>
         </section>
+    </div>
 
-        <!-- 2. Vista de Calendario (Mockup Operativo) -->
-        <section class="">
-            <h2>Calendario</h2>
+        <!-- Vista de Calendario -->
+        <section class="panel">
+            <div class="panel-head"><h2>Calendario</h2></div>
             <div class="calendar-container">
                 <!-- Cabecera -->
                 <div class="calendar-header">
@@ -91,88 +91,81 @@ eventos
         </section>
 
 
-        <section>
-            <div class="actions-section">
-                <h2>Formulario de alta de Evento</h2>
-                <form action="/eventos/carga-masiva-excel" method="POST" enctype="multipart/form-data">
-                    <div>
-                        <div>
-                            <p>Nombre</p>
-                            <input type="text" name="evento_nombre">
-                        </div>
-                        <div>
-                            <p>Escuela</p>
-                            <select name="escuela_id" id="escuela-select">
-                                <option value="">-- Por favor, elige una opción --</option>
-                                {% for escuela in escuelas %}
-                                    <option value="{{ escuela.id }}">{{ escuela.nombre }}</option>
-                                {% endfor %}
-                            </select>
-                        </div>
-                        <div>
-                            <p>Año</p>
-                            <select name="anio" id="anio-select">
-                                <option value="">-- Por favor, elige una opción --</option>
-                                {% for anio in anios %}
-                                    <option value="{{ anio }}">{{ anio }}</option>
-                                {% endfor %}
-                            </select>
-                        </div>
-                        <div>
-                            <p>Curso</p>
-                            <select name="division" id="division-select">
-                                <option value="">-- Por favor, elige una opción --</option>
-                                {% for clave, valor in divisiones.items() %}
-                                    <option value="{{ clave }}">{{ valor }}</option>
-                                {% endfor %}
-                            </select>
-                        </div>
-                        <div>
-                            <p>Monto total</p>
-                            <input type="text" name="monto_total">
-                        </div>
-                        <div>
-                            <p>Interés por mora</p>
-                            <select name="interes_mora" id="interes_mora-select">
-                                <option value="">-- Por favor, elige una opción --</option>
-                                {% for interes in interes_mora %}
-                                    <option value="{{ interes }}">{{ interes }}%</option>
-                                {% endfor %}
-                            </select>
-                        </div>
-                        <div>
-                            <p>Fecha ultimo pago</p>
-                            <input type="text" name="ultimo_dia_pago">
-                        </div>
-                        <div>
-                            <p>Lugar</p>
-                            <select name="id_establecimiento" id="id_establecimiento-select">
-                                <option value="">-- Por favor, elige una opción --</option>
-                                
-                                {% for establecimiento in establecimientos %}
-                                    <option value="{{ establecimiento.id }}">{{ establecimiento.nombre }}</option>
-                                {% endfor %}
-                            </select>
-                        </div>
-                        <div>
-                            <p>Adjuntar planilla de excel con datos de alumnos</p>
-                            <input type="file" name="archivo_egresados" accept=".xlsx, .xls">
-                        </div>
-                    </div>
-                    <div>
-                        <button class="btn btn-primary" type="submit">Crear</button>
-                        <button type="button" class="btn btn-delete btn-secondary">Cancelar</button>
-                    </div>
-                </form>
-
-            
-            </div>
+        <section class="panel">
+            <div class="panel-head"><h2>Formulario de alta de evento</h2></div>
+            <form action="/eventos/carga-masiva-excel" method="POST" enctype="multipart/form-data" class="form-grid">
+                <div class="field">
+                    <label>Nombre</label>
+                    <input type="text" name="evento_nombre">
+                </div>
+                <div class="field">
+                    <label>Escuela</label>
+                    <select name="escuela_id" id="escuela-select">
+                        <option value="">-- Por favor, elige una opción --</option>
+                        {% for escuela in escuelas %}
+                            <option value="{{ escuela.id }}">{{ escuela.nombre }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="field">
+                    <label>Año</label>
+                    <select name="anio" id="anio-select">
+                        <option value="">-- Por favor, elige una opción --</option>
+                        {% for anio in anios %}
+                            <option value="{{ anio }}">{{ anio }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="field">
+                    <label>Curso</label>
+                    <select name="division" id="division-select">
+                        <option value="">-- Por favor, elige una opción --</option>
+                        {% for clave, valor in divisiones.items() %}
+                            <option value="{{ clave }}">{{ valor }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="field">
+                    <label>Monto total</label>
+                    <input type="text" name="monto_total">
+                </div>
+                <div class="field">
+                    <label>Interés por mora</label>
+                    <select name="interes_mora" id="interes_mora-select">
+                        <option value="">-- Por favor, elige una opción --</option>
+                        {% for interes in interes_mora %}
+                            <option value="{{ interes }}">{{ interes }}%</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="field">
+                    <label>último día pago</label>
+                    <input type="text" name="ultimo_dia_pago">
+                </div>
+                <div class="field">
+                    <label>Lugar</label>
+                    <select name="id_establecimiento" id="id_establecimiento-select">
+                        <option value="">-- Por favor, elige una opción --</option>
+                        {% for establecimiento in establecimientos %}
+                            <option value="{{ establecimiento.id }}">{{ establecimiento.nombre }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="field full">
+                    <label>Adjuntar planilla de excel con datos de alumnos</label>
+                    <input type="file" name="archivo_egresados" accept=".xlsx, .xls">
+                </div>
+                <div class="form-actions">
+                    <button type="button" class="btn">Cancelar</button>
+                    <button class="btn primary" type="submit">Crear</button>
+                </div>
+            </form>
         </section>
 
-        <!-- 4. Tabla Principal -->
-        <section class="">
-            <h2>Listado Detallado de Eventos</h2>
-            <div class="">
+        <!-- Tabla Principal -->
+        <section class="panel">
+            <div class="panel-head"><h2>Listado detallado de eventos</h2></div>
+            <div class="table-responsive">
                 <table>
                     <thead>
                         <tr>
@@ -188,20 +181,19 @@ eventos
                         <tr>
                             <td><strong>{{ evento.nombre }}</strong></td>
                             <td><strong>{{ evento.nombre_escuela }}</strong></td>
-                            <td>{{ evento.fecha_evento }}</td>
+                            <td class="mono">{{ evento.fecha_evento }}</td>
                             <td>{{ evento.nombre_establecimiento }}</td>
-                            <td>
-                                <button class="">Editar</button>
-                                <button class="">Eliminar</button>
+                            <td class="btn-row">
+                                <button class="btn">Editar</button>
+                                <button class="btn">Eliminar</button>
                             </td>
                         </tr>
+                        {% else %}
+                            <tr><td colspan="5" class="row-empty">Sin eventos cargados</td></tr>
                         {% endfor %}
-                        
                     </tbody>
                 </table>
             </div>
         </section>
-    </main>
-
 
 {% endblock %}

@@ -1,45 +1,61 @@
 {% extends "base.html" %}
 
 {% block title %}
-Escuelas
+Egresados
 {% endblock %}
 
+{% block page_title %}Agregar egresado{% endblock %}
+{% block page_subtitle %}Alta manual de un nuevo egresado{% endblock %}
+
 {% block styles %}
-<link rel="stylesheet" href="/static/css/escuelas.css">
 {% endblock %}
 
 {% block content %}
 
-<div>
-    <div>
-        <h1>Agregar egresado</h1>
-    </div>
-    <div>
-        <form action="/egresados/agregar-egresado" method="post">
+<section class="panel">
+    <div class="panel-head"><h2>Datos del egresado</h2></div>
+    <form action="/egresados/agregar-egresado" method="post" class="form-grid">
+        <div class="field">
+            <label>Dni</label>
             <input type="text" name="dni" placeholder="Ingresar dni">
+        </div>
+        <div class="field">
+            <label>Nombre</label>
             <input type="text" name="nombre" placeholder="Ingresar nombre">
+        </div>
+        <div class="field">
+            <label>Dirección</label>
             <input type="text" name="direccion" placeholder="Ingresar direccion">
+        </div>
+        <div class="field">
+            <label>Edad</label>
             <input type="text" name="edad" placeholder="Ingresar edad">
+        </div>
+        <div class="field">
+            <label>Teléfono</label>
             <input type="text" name="telefono" placeholder="Ingresar telefono">
+        </div>
+        <div class="field">
+            <label>División</label>
             <select name="division" id="division">
                 {% for curso, division in cursos.items() %}
                     <option value="{{ division }}">{{ division }}</option>
                 {% endfor %}
             </select>
+        </div>
+        <div class="field full">
+            <label>Escuela</label>
             <select name="escuela_id">
                 {% for escuela in escuelas %}
                 <option value="{{escuela.id}}">{{escuela.nombre}}</option>
                 {% endfor %}
             </select>
-            <button type="submit">Agregar</button>
-        </form>
-        
-        <div>
-
-            <a href="/egresados"><button>Cancelar</button></a>
-
         </div>
-    </div>
-</div>
+        <div class="form-actions">
+            <a href="/egresados"><button type="button" class="btn">Cancelar</button></a>
+            <button type="submit" class="btn primary">Agregar</button>
+        </div>
+    </form>
+</section>
 
 {% endblock %}

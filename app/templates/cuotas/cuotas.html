@@ -1,106 +1,96 @@
 {% extends "base.html" %}
 
+{% block page_title %}Control de Cuotas{% endblock %}
+{% block page_subtitle %}Seguimiento de cuotas emitidas y cobradas{% endblock %}
+
 {% block styles %}
-<link rel="stylesheet" href="/static/css/cuotas1.css">
+<link rel="stylesheet" href="/static/css/formulario_pagos.css">
 {% endblock %}
 
 {% block content %}
-    <main class="">
-        <header class="">
-            <h1>Control de Cuotas</h1>
-        </header>
 
-        <!-- Tarjetas de Control de Cuotas -->
-        <section class="">
-            <div class="">
-                <h3>Cuotas Emitidas (Mes)</h3>
-                {% if estadisticas.total_cuotas%}
-                    <p class="">{{estadisticas.total_cuotas}}</p>
-                {% else %}
-                    <p class="">Sin cuotas cargadas</p>
-                {%endif%}
-            </div>
-            <div class="">
-                <h3>Cuotas Cobradas</h3>
-                {% if estadisticas.total_cuotas_finalizadas%}
-                    <p class="">{{estadisticas.total_cuotas_finalizadas}}</p>
-                {% else %}
-                    <p class="">Sin cuotas cobradas</p>
-                {%endif%}
-            </div>
-            <div class="">
-                <h3>Cuotas Pendientes</h3>
-                {% if estadisticas.cant_cuotas_pendientes%}
-                    <p class="">{{estadisticas.cant_cuotas_pendientes}}</p>
-                {% else %}
-                    <p class="">Sin cuotas pendientes</p>
-                {%endif%}
-                
-            </div>
-            <div class="">
-                <h3>Cuotas Vencidas</h3>
-                {% if estadisticas.total_cuotas_vencidas %}
-                    <p class="">{{estadisticas.total_cuotas_vencidas}}</p>
-                {% else %}
-                    <p class="">Sin cuotas vencidas</p>
-                {%endif%}
-                
-            </div>
-        </section>
+<div class="ticker">
+    <div class="cell">
+        <div class="lbl">Cuotas emitidas (mes)</div>
+        {% if estadisticas.total_cuotas%}
+            <div class="val">{{estadisticas.total_cuotas}}</div>
+        {% else %}
+            <div class="val">Sin cuotas cargadas</div>
+        {%endif%}
+    </div>
+    <div class="cell">
+        <div class="lbl">Cuotas cobradas</div>
+        {% if estadisticas.total_cuotas_finalizadas%}
+            <div class="val ok">{{estadisticas.total_cuotas_finalizadas}}</div>
+        {% else %}
+            <div class="val">Sin cuotas cobradas</div>
+        {%endif%}
+    </div>
+    <div class="cell">
+        <div class="lbl">Cuotas pendientes</div>
+        {% if estadisticas.cant_cuotas_pendientes%}
+            <div class="val warn">{{estadisticas.cant_cuotas_pendientes}}</div>
+        {% else %}
+            <div class="val">Sin cuotas pendientes</div>
+        {%endif%}
+    </div>
+    <div class="cell">
+        <div class="lbl">Cuotas vencidas</div>
+        {% if estadisticas.total_cuotas_vencidas %}
+            <div class="val danger">{{estadisticas.total_cuotas_vencidas}}</div>
+        {% else %}
+            <div class="val">Sin cuotas vencidas</div>
+        {%endif%}
+    </div>
+</div>
 
-        <!-- Tabla de Listado de Cuotas -->
-        <section class="">
-            <div class="">
-                <h2>Listado General de Cuotas</h2>
-            </div>
+<section class="panel">
+    <div class="panel-head">
+        <h2>Listado general de cuotas</h2>
+    </div>
+    <div class="search-box">
+        <input type="text" placeholder="🔍 Búsqueda por DNI">
+        <input type="text" placeholder="🔍 Búsqueda por estado">
+    </div>
+    <div class="table-responsive">
+        <table>
+            <thead>
+                <tr>
+                    <th>N° Cuota</th>
+                    <th>Egresado</th>
+                    <th>Monto</th>
+                    <th>Monto pagado</th>
+                    <th>Vencimiento</th>
+                    <th>Estado</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                {%for cuota in cuotas%}
+                <tr>
+                    <td class="mono">{{cuota.numero_cuota}}</td>
+                    <td>{{cuota.nombre_egresado}}</td>
+                    <td class="mono">${{cuota.monto_original}}</td>
+                    <td class="mono">${{cuota.monto_pago}}</td>
+                    <td class="mono">{{cuota.fecha_vencimiento}}</td>
+                    <td><span class="badge warn">{{cuota.estado_pago}}</span></td>
+                    <td class="btn-row">
+                        <button class="btn btn_registrar_pago_cuota" data-idcuota="{{cuota.id_cuota}}">Registrar pago</button>
+                    </td>
+                </tr>
+                {%else%}
+                    <tr><td colspan="7" class="row-empty">Sin cuotas cargadas</td></tr>
+                {%endfor%}
+            </tbody>
+        </table>
+    </div>
+</section>
 
-            <div>
-                <h3>Realizar Filtros</h3>
-                <div>
-                    <input type="text" placeholder="Búsqueda por Dni">
-                </div>
-                <div>
-                    <input type="text" placeholder="Búsqueda por Estado">
-                </div>
-            </div>
-            
-            <div class="">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>N° Cuota</th>
-                            <th>Egresado</th>
-                            <th>Monto</th>
-                            <th>Monto Pagado</th>
-                            <th>Vencimiento</th>
-                            <th>Estado</th>
-                            <th>Acciones</th>
-                        </tr>
-                    </thead>
-                    <tbody>
+<div id="modal-base" class="modal-backdrop"></div>
 
-                        {%for cuota in cuotas%}
-                        <tr>
-                            <td>{{cuota.numero_cuota}}</td>
-                            <td>{{cuota.nombre_egresado}}</td>
-                            <td>${{cuota.monto_original}}</td>
-                            <td>${{cuota.monto_pago}}</td>
-                            <td>{{cuota.fecha_vencimiento}}</td>
-                            <td><span class="">{{cuota.estado_pago}}</span></td>
-                            <td>
-                                <button class="">Registrar Pago</button>
-                            </td>
-                        </tr>
-                       
-                        {%endfor%}
-                       
-                    </tbody>
-                </table>
-            </div>
-        </section>
-    </main>
 {% endblock content%}
 
 {% block scripts %}
-<script src="/static/js/.js"></script>
+{{ super() }}
+<script src="/static/js/cuotas.js"></script>
 {% endblock %}

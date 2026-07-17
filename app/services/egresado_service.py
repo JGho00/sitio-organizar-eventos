@@ -14,7 +14,10 @@ async def obtener_egresado_con_cuotas(sesion: Session, dni: int):
 
 
 
-    
+async def consultar_egresados_curso(sesion:Session,id_curso:int):
+    consulta = select(Egresado).where(Egresado.id_curso == id_curso)
+    egresados_curso:List[Egresado] = sesion.exec(consulta).all()
+    return egresados_curso 
 
 
 async def estadisticas_egresado(egresado:Egresado):
@@ -23,30 +26,38 @@ async def estadisticas_egresado(egresado:Egresado):
     egresado = [e.model_dump() for e in egresado.cuotas]
 
     df_egresado_cuotas = pd.DataFrame(egresado)
-
+    cant_cuotas_totales:int = 0
     cant_cuotas_totales = len(df_egresado_cuotas)
+    cant_cuotas_impagas:int = 0
+    total_no_pagado:float = float(0.00)
+    cant_cuotas_pagas:int = 0
+    cant_cuotas_vencidas:int = 0
+    total_pagado:float = float(0.00)
+    df_cuotas_pagas:pd.DataFrame = pd.DataFrame()
+    df_cuotas_impagas:pd.DataFrame = pd.DataFrame()
+    if len(df_egresado_cuotas)>0:
+        
+        df_cuotas_impagas = df_egresado_cuotas[df_egresado_cuotas['estado_pago'] == 'PENDIENTE']
+        cant_cuotas_impagas = len(df_cuotas_impagas)
+        total_no_pagado = df_cuotas_impagas['monto_original'].sum()
 
-    
-    
-    df_cuotas_impagas:pd.DataFrame = df_egresado_cuotas[df_egresado_cuotas['estado_pago'] == 'PENDIENTE']
-    cant_cuotas_impagas:int = len(df_cuotas_impagas)
-    total_no_pagado:float = df_cuotas_impagas['monto_original'].sum()
+        df_cuotas_pagas = df_egresado_cuotas[df_egresado_cuotas['estado_pago'] == 'PAGADO']
+        cant_cuotas_pagas = len(df_cuotas_pagas)
+        total_pagado= df_cuotas_pagas['monto_original'].sum()
 
-    df_cuotas_pagas:pd.DataFrame = df_egresado_cuotas[df_egresado_cuotas['estado_pago'] == 'PAGADO']
-    cant_cuotas_pagas:int = len(df_cuotas_pagas)
-    total_pagado:float = df_cuotas_pagas['monto_original'].sum()
-
-    fecha_actual = datetime.now()
-    df_egresado_cuotas['fecha_vencimiento'] = pd.to_datetime(df_egresado_cuotas['fecha_vencimiento'])
-    df_cuotas_vencidas = df_egresado_cuotas[
-        (df_egresado_cuotas['estado_pago'] == 'PENDIENTE') & 
-        (df_egresado_cuotas['fecha_vencimiento'] < fecha_actual)
-    ]
-    cant_cuotas_vencidas:int = len(df_cuotas_vencidas)
+        fecha_actual = datetime.now()
+        df_egresado_cuotas['fecha_vencimiento'] = pd.to_datetime(df_egresado_cuotas['fecha_vencimiento'])
+        df_cuotas_vencidas = df_egresado_cuotas[
+            (df_egresado_cuotas['estado_pago'] == 'PENDIENTE') & 
+            (df_egresado_cuotas['fecha_vencimiento'] < fecha_actual)
+        ]
+        cant_cuotas_vencidas = len(df_cuotas_vencidas)
     
     #Calcular estado de cuenta egresado (AL DÍA, EN MORA)
     estado_cuenta:str = 'AL DÍA'
-    if cant_cuotas_vencidas > 0:
+    if len(df_cuotas_pagas) == 0:
+        estado_cuenta = 'SIN CUOTAS CARGADAS'
+    elif cant_cuotas_vencidas > 0:
         estado_cuenta = 'EN MORA'
 
 

@@ -34,7 +34,7 @@ async def consultar_contratos(request: Request,username = Depends(VerificarRol([
     
     contratos:Contrato = await obtener_contratos_bd(sesion)
     
-    contratos_estadisticas = await estadisticas_contratos(sesion)
+    contratos_estadisticas = await estadisticas_contratos(sesion,contratos)
 
     escuelas = await obtener_escuelas_bd(sesion)
     

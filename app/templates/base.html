@@ -1,15 +1,19 @@
 <!DOCTYPE html>
-<html>
+<html lang="es">
 
 <head>
 
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>
         {% block title %}
         Sistema Eventos
         {% endblock %}
     </title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
 
     <link rel="stylesheet" href="/static/css/styles.css">
 
@@ -20,95 +24,89 @@
 
 <body>
 
-    <!-- ENCABEZADO -->
-    <header class="header">
-        <div class="header-content">
-            <div class="header-left">
-                <img src="/static/images/logo.png" class="logo">
-                <a href="/" class ="titulo-header"><h1 class="site-title">Gestor de Eventos</h1></a>
-            </div>
-            <div class="header-right">
-                <span class="user-info">
-                    <span class="user-icon">👤</span>
-                    <span class="user-name">Usuario: {{username.username}}</span>
-                </span>
-            </div>
+    <!-- RAIL: nav lateral -->
+    <nav class="rail">
+        <div class="mark">
+            <img src="/static/images/logo.png" alt="Logo">
+            <span class="mark-text">Gestor de<br>Eventos</span>
         </div>
-    </header>
 
-    <div class="main-content">
-        <!-- MENÚ VERTICAL IZQUIERDO -->
-        <aside class="sidebar">
-            <nav class="sidebar-nav">
-                <ul class="nav-list">
-                     <li class="nav-item">
-                        <a href="/" class="nav-link active">
-                            <span class="nav-icon">🏫</span>
-                            <span class="nav-text">Inicio</span>
-                        </a>
-                    </li>
-                    
-                    <li class="nav-item">
-                        <a href="/egresados" class="nav-link">
-                            <span class="nav-icon">👨‍🎓</span>
-                            <span class="nav-text">Egresados</span>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="/contratos" class="nav-link">
-                            <span class="nav-icon">📋</span>
-                            <span class="nav-text">Contratos</span>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="/cuotas" class="nav-link">
-                            <span class="nav-icon">📊</span>
-                            <span class="nav-text">Cuotas</span>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="/eventos" class="nav-link">
-                            <span class="nav-icon">📅</span>
-                            <span class="nav-text">Eventos</span>
-                        </a>
-                    </li>
-                    
-                    
-                    <li class="nav-item nav-divider"></li>
-                    
-                    <li class="nav-item">
-                        <a href="/escuelas" class="nav-link active">
-                            <span class="nav-icon">🏫</span>
-                            <span class="nav-text">Escuelas</span>
-                        </a>
-                    </li>
-                    
-                    {%if username.rol == 'admin'%}
-                        <li class="nav-item">
-                            <a href="/users" class="nav-link">
-                                <span class="nav-icon">📋</span>
-                                <span class="nav-text">Usuarios</span>
-                            </a>
-                        </li>
-                    {%endif%}
-                   
-                    <li class="nav-item nav-divider"></li>
-                    <li class="nav-item">
-                        <a href="/login/logout" class="nav-link logout">
-                            <span class="nav-icon">🚪</span>
-                            <span class="nav-text">Cerrar Sesión</span>
-                        </a>
-                    </li>
-                </ul>
-            </nav>
-        </aside>
+        <ul class="rail-nav">
+            <li class="rail-item">
+                <a href="/dashboard" class="{% if request.url.path == '/dashboard' %}active{% endif %}">
+                    <span class="rail-icon">🏠</span>
+                    <span class="rail-text">Inicio</span>
+                </a>
+            </li>
 
-        <!-- CONTENIDO PRINCIPAL -->
-        <main class="content">
-            {% block content %}
-            {% endblock %}
-        </main>
-    </div>
+            <li class="rail-item">
+                <a href="/egresados" class="{% if request.url.path.startswith('/egresados') %}active{% endif %}">
+                    <span class="rail-icon">🎓</span>
+                    <span class="rail-text">Egresados</span>
+                </a>
+            </li>
+
+            <li class="rail-item">
+                <a href="/contratos" class="{% if request.url.path.startswith('/contratos') %}active{% endif %}">
+                    <span class="rail-icon">📋</span>
+                    <span class="rail-text">Contratos</span>
+                </a>
+            </li>
+
+            <li class="rail-item">
+                <a href="/cuotas" class="{% if request.url.path.startswith('/cuotas') %}active{% endif %}">
+                    <span class="rail-icon">📊</span>
+                    <span class="rail-text">Cuotas</span>
+                </a>
+            </li>
+
+            <li class="rail-item">
+                <a href="/eventos" class="{% if request.url.path.startswith('/eventos') %}active{% endif %}">
+                    <span class="rail-icon">📅</span>
+                    <span class="rail-text">Eventos</span>
+                </a>
+            </li>
+
+            <li class="rail-divider"></li>
+
+            <li class="rail-item">
+                <a href="/escuelas" class="{% if request.url.path.startswith('/escuelas') %}active{% endif %}">
+                    <span class="rail-icon">🏫</span>
+                    <span class="rail-text">Escuelas</span>
+                </a>
+            </li>
+
+            {% if username.rol == 'admin' %}
+            <li class="rail-item">
+                <a href="/users" class="{% if request.url.path.startswith('/users') %}active{% endif %}">
+                    <span class="rail-icon">👥</span>
+                    <span class="rail-text">Usuarios</span>
+                </a>
+            </li>
+            {% endif %}
+        </ul>
+
+        <div class="spacer"></div>
+
+        <a href="/login/logout" class="logout">
+            <span class="rail-icon">⏻</span>
+            <span class="rail-text">Cerrar Sesión</span>
+        </a>
+    </nav>
+
+    <!-- CONTENIDO PRINCIPAL -->
+    <main class="main">
+        <div class="topbar">
+            <div>
+                <h1>{% block page_title %}Sistema Eventos{% endblock %}</h1>
+                <div class="sub">{% block page_subtitle %}{% endblock %}</div>
+            </div>
+            <div class="user-chip"><span class="dot"></span> Sesión: <strong>{{ username.username }}</strong></div>
+        </div>
+
+        {% block content %}
+        {% endblock %}
+    </main>
 
     {% include "excepciones/excepcion_404.html" %}
     {% block scripts %}
@@ -116,3 +114,4 @@
     {% endblock %}
 
 </body>
+</html>

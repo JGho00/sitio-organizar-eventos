@@ -1,110 +1,91 @@
 {% extends "base.html" %}
 
+{% block page_title %}Contratos{% endblock %}
+{% block page_subtitle %}Gestión de contratos por escuela{% endblock %}
+
 {% block styles %}
-<link rel="stylesheet" href="/static/css/contrato.css">
 {% endblock %}
 
 {% block content %}
-    <!-- Contenido Principal -->
-    <div class="">
 
-        <div class="contenedor-contratos">
-    <h1 class="titulo-principal">Contratos</h1>
-    
-    <div class="fila-tarjetas">
-        <!-- Tarjeta: Activos -->
-        <div class="tarjeta tarjeta-activos">
-            <p class="numero">{{ contratos_estadisticas.total_contratos_activos }}</p>
-            <h3>Contratos activos</h3>
-        </div>
-
-        <!-- Tarjeta: Finalizados -->
-        <div class="tarjeta tarjeta-finalizados">
-            <p class="numero">{{ contratos_estadisticas.total_contratos_finalizados }}</p>
-            <h3>Contratos finalizados</h3>
-        </div>
-
-        <!-- Tarjeta: Proyecciones -->
-        <div class="tarjeta tarjeta-proyecciones">
-            <p class="numero">{{ contratos_estadisticas.total_contratos }}</p>
-            <h3>Contratos totales</h3>
-        </div>
+<div class="ticker">
+    <div class="cell">
+        <div class="lbl">Contratos activos</div>
+        <div class="val ok">{{ contratos_estadisticas.total_contratos_activos }}</div>
+    </div>
+    <div class="cell">
+        <div class="lbl">Contratos finalizados</div>
+        <div class="val">{{ contratos_estadisticas.total_contratos_finalizados }}</div>
+    </div>
+    <div class="cell">
+        <div class="lbl">Contratos totales</div>
+        <div class="val">{{ contratos_estadisticas.total_contratos }}</div>
     </div>
 </div>
 
-        
-        <!-- Tabla Principal de Contratos -->
-        <div class="contratos-general">
-            <h2>Listado General de Contratos</h2>
-            <div class="toolbar">
-        <div class="search-section">
-            <div class="search-group">
-                <input 
-                    type="text" 
-                    id="searchInput" 
-                    class="search-input" 
-                    placeholder="🔍 Buscar por nombre..."
-                    onkeyup="filterTable()"
-                >
-                <input 
-                    type="text" 
-                    id="dniInput" 
-                    class="search-input" 
-                    placeholder="🔍 Buscar por año..."
-                    onkeyup="filterTable()"
-                >
-                <input 
-                    type="text" 
-                    id="escuelaInput" 
-                    class="search-input" 
-                    placeholder="🔍 Buscar por escuela..."
-                    onkeyup="filterTable()"
-                >
-            </div>
-        </div>
-        
-        
+<section class="panel">
+    <div class="panel-head">
+        <h2>Listado general de contratos</h2>
     </div>
-            <div class="">
-                <table>
-                    <thead>
-                        <tr>
-                            
-                            <th>Fecha_Contrato</th>
-                            <th>Escuela</th>
-                            <th>Monto_Total</th>
-                            <th>Monto_x_Persona</th>
-                            <th>Interés_Mora</th>
-                            <th>Dia_Vto_Mensual</th>
-                            <th>Fecha_Caducidad</th>
-                            <th>Acciones</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {%for contrato in contratos%}
-                            <tr>
-                            
-                            <td>{{ contrato.fecha_inicio.strftime('%Y-%m-%d') }}</td>
-                            <td><strong>{{ contrato.curso.escuela.nombre }}</strong></td>
-                            <td><strong>{{ contrato.monto_total }}</strong></td>
-                            <td>Calcular</td>
-                            <td class="">{{contrato.interes_mora}} %</td>
-                            <td>{{ contrato.dia_vencimiento_mensual}}</td>
-                            <td>{{ contrato.fecha_fin }}</td>
-                            <td>
-                                <button class="btn btn-edit">Ver</button>
-                            </td>
-                        </tr>
-                        
-                        {%endfor%}
-                        
-                    </tbody>
-                </table>
-            </div>
-        </div>
+    <div class="search-box">
+        <input
+            type="text"
+            id="searchInput"
+            placeholder="🔍 Buscar por nombre..."
+            onkeyup="filterTable()"
+        >
+        <input
+            type="text"
+            id="dniInput"
+            placeholder="🔍 Buscar por año..."
+            onkeyup="filterTable()"
+        >
+        <input
+            type="text"
+            id="escuelaInput"
+            placeholder="🔍 Buscar por escuela..."
+            onkeyup="filterTable()"
+        >
     </div>
+    <div class="table-responsive">
+        <table>
+            <thead>
+                <tr>
+                    <th>Fecha contrato</th>
+                    <th>Escuela</th>
+                    <th>Monto total</th>
+                    <th>Monto x persona</th>
+                    <th>Interés mora</th>
+                    <th>Día vto. mensual</th>
+                    <th>Fecha caducidad</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                {%for contrato in contratos%}
+                    <tr>
+                        <td class="mono">{{ contrato.fecha_inicio.strftime('%Y-%m-%d') }}</td>
+                        <td><strong>{{ contrato.curso.escuela.nombre }}</strong></td>
+                        <td class="mono"><strong>{{ contrato.monto_total }}</strong></td>
+                        <td>Calcular</td>
+                        <td class="mono">{{contrato.interes_mora}} %</td>
+                        <td class="mono">{{ contrato.dia_vencimiento_mensual}}</td>
+                        <td class="mono">{{ contrato.fecha_fin }}</td>
+                        <td class="btn-row">
+                            <button class="btn">Ver</button>
+                        </td>
+                    </tr>
+                {%else%}
+                    <tr><td colspan="8" class="row-empty">Sin contratos cargados</td></tr>
+                {%endfor%}
+            </tbody>
+        </table>
+    </div>
+</section>
+
 {% endblock content%}
 
 {% block scripts %}
+{{ super() }}
 <script src="/static/js/contratos.js"></script>
 {% endblock %}

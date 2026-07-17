@@ -1,34 +1,41 @@
 {% extends "base.html" %}
 
 {% block title %}
-usuarios
+Usuarios
 {% endblock %}
 
+{% block page_title %}Agregar usuario{% endblock %}
+{% block page_subtitle %}Alta de un nuevo usuario del sistema{% endblock %}
+
 {% block styles %}
-<link rel="stylesheet" href="/static/css/usuarios.css">
 {% endblock %}
 
 {% block content %}
 
-<div>
-    <div>
-        <h1>Agregar usuario</h1>
-    </div>
-    <div>
-        <form action="/users/agregar-usuario" method="post">
+<section class="panel">
+    <div class="panel-head"><h2>Datos del usuario</h2></div>
+    <form action="/users/agregar-usuario" method="post" class="form-grid">
+        <div class="field">
+            <label>Nombre de usuario</label>
             <input type="text" name="username" placeholder="Ingresar nombre">
-            <input type="text" name="email" placeholder="Ingresar email">
-            <input type="password" name="password_hash" placeholder="Ingresar password">
-            <input type="text" name="rol" placeholder="Ingresar rol">
-            <button type="submit">Agregar</button>
-        </form>
-        
-        <div>
-
-            <a href="/users"><button>Cancelar</button></a>
-
         </div>
-    </div>
-</div>
+        <div class="field">
+            <label>Email</label>
+            <input type="text" name="email" placeholder="Ingresar email">
+        </div>
+        <div class="field">
+            <label>Contraseña</label>
+            <input type="password" name="password_hash" placeholder="Ingresar password">
+        </div>
+        <div class="field">
+            <label>Rol</label>
+            <input type="text" name="rol" placeholder="Ingresar rol">
+        </div>
+        <div class="form-actions">
+            <a href="/users"><button type="button" class="btn">Cancelar</button></a>
+            <button type="submit" class="btn primary">Agregar</button>
+        </div>
+    </form>
+</section>
 
 {% endblock %}

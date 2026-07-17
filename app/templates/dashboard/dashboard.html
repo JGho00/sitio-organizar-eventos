@@ -1,86 +1,90 @@
 {% extends "base.html" %}
 
+{% block page_title %}Control de Pagos{% endblock %}
+{% block page_subtitle %}Panel general{% endblock %}
+
 {% block styles %}
 {% endblock %}
 
 {% block content %}
-<div>
-    <h1>Control de Pagos</h1>
 
-    <div>
-        <h2>General</h2>
-        <div>
-            {%if resumen.contratos%}
-                <p>Contratos activos: {{resumen.contratos.total_contratos}}</p>
-            {%else%}
-                <p>Contratos activos: Sin contratos</p>
-            {%endif%}
-            
-        </div>
-        <div>
-            {%if resumen.cuotas%}
-                <p>Ingreso mensual proyeccion: {{resumen.cuotas.total_proyeccion_mes}}</p>
-            {%else%}
-                <p>Ingreso mensual proyeccion: Sin ingresos.</p>
-            {%endif%}
-
-        </div>
-        <div>
-            {%if resumen.cuotas%}
-
-                <p>Ingreso mensual actual: {{resumen.cuotas.monto_mes_pagado}}</p>
-            {%else%}
-                <p>Ingreso mensual actual: Sin pagos en el mes</p>
-            {%endif%}
-        </div>
-        <div>
-            {%if resumen.cuotas%}
-                <p>Morosidad: {{resumen.cuotas.monto_total_morosidad}}</p>
-            {%else%}
-                <p>Morosidad: Al día</p>
-            {%endif%}
-        </div>
+<div class="ticker">
+    <div class="cell">
+        <div class="lbl">Contratos activos</div>
+        {%if resumen.contratos%}
+            <div class="val">{{resumen.contratos.total_contratos}}</div>
+        {%else%}
+            <div class="val">Sin contratos</div>
+        {%endif%}
     </div>
+    <div class="cell">
+        <div class="lbl">Proyección mensual</div>
+        {%if resumen.cuotas%}
+            <div class="val ok">{{resumen.cuotas.total_proyeccion_mes}}</div>
+        {%else%}
+            <div class="val">Sin ingresos</div>
+        {%endif%}
+    </div>
+    <div class="cell">
+        <div class="lbl">Cobrado este mes</div>
+        {%if resumen.cuotas%}
+            <div class="val">{{resumen.cuotas.monto_mes_pagado}}</div>
+        {%else%}
+            <div class="val">Sin pagos en el mes</div>
+        {%endif%}
+    </div>
+    <div class="cell">
+        <div class="lbl">Morosidad total</div>
+        {%if resumen.cuotas%}
+            <div class="val danger">{{resumen.cuotas.monto_total_morosidad}}</div>
+        {%else%}
+            <div class="val ok">Al día</div>
+        {%endif%}
+    </div>
+</div>
 
-    <div>
-        <h2>Alerta de Morosidad</h2>
-        
+<section class="panel">
+    <div class="panel-head">
+        <h2>Alerta de morosidad</h2>
+        <span class="tag danger">{{ resumen.egresados_morosidad|length }} cuotas vencidas</span>
+    </div>
+    <div class="table-responsive">
         <table>
-            <tr>
-                <thead>
-                    <td>Egresado</td>
-                    <td>Nro de cuota</td>
-                    <td>Monto</td>
-                    <td>Estado</td>
-                    <td>Acciones</td>
-                </thead>
-                <tbody>
-                    {% for egresado in resumen.egresados_morosidad %}
-                        <tr>
-                            <td>{{egresado.nombre_egresado}}</td>
-                            <td>{{egresado.numero_cuota}}</td>
-                            <td>{{egresado.monto_original}}</td>
-                            <td>Vencida</td>
-                            <td>
-                                <button>Consultar</button>
-                                <button>Recordatorio</button>
-                            </td>
-                        </tr>
-                    {% else %}
-                            <tr>
-                                <!-- El colspan debe coincidir con el número total de columnas -->
-                                <td colspan="2" class="text-center">Sin registros de morosidad</td>
-                            </tr>
-                    {% endfor %}
-                </tbody>
-            </tr>
+            <thead>
+                <tr>
+                    <th>Egresado</th>
+                    <th>Nro de cuota</th>
+                    <th>Monto</th>
+                    <th>Estado</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for egresado in resumen.egresados_morosidad %}
+                    <tr>
+                        <td>{{egresado.nombre_egresado}}</td>
+                        <td class="mono">{{egresado.numero_cuota}}</td>
+                        <td class="mono">{{egresado.monto_original}}</td>
+                        <td><span class="badge danger">Vencida</span></td>
+                        <td class="btn-row">
+                            <button class="btn">Consultar</button>
+                            <button class="btn">Recordatorio</button>
+                        </td>
+                    </tr>
+                {% else %}
+                    <tr><td colspan="5" class="row-empty">Sin registros de morosidad</td></tr>
+                {% endfor %}
+            </tbody>
         </table>
     </div>
+</section>
 
-
-    <div>
-        <h2>Ultimos pagos recibidos</h2>
-
+<section class="panel">
+    <div class="panel-head">
+        <h2>Últimos pagos recibidos</h2>
+        <span class="tag">Este mes</span>
+    </div>
+    <div class="table-responsive">
         <table>
             <thead>
                 <tr>
@@ -94,103 +98,96 @@
                 </tr>
             </thead>
             <tbody>
-                {% if resumen.pagos%}
+                {% if resumen.pagos and resumen.pagos.ultimos_pagos %}
                     {% for pago in resumen.pagos.ultimos_pagos %}
                     <tr>
-                        <td>{{pago.numero_cuota}}</td>
-                        <td>escuela</td>
+                        <td class="mono">{{pago.numero_cuota}}</td>
                         <td>{{pago.nombre_egresado}}</td>
-                        <td>{{pago.monto}}</td>
-                        <td>{{pago.fecha}}</td>
+                        <td>{{pago.escuela_nombre}}</td>
+                        <td class="mono">{{pago.monto}}</td>
+                        <td class="mono">{{pago.fecha}}</td>
                         <td>{{pago.metodo_pago}}</td>
-                        <td><button type="button">Cobrar</button></td>
+                        <td><button type="button" class="btn">Cobrar</button></td>
                     </tr>
                     {% endfor %}
                 {%else%}
-                    <tr>Sin pagos en el mes</tr>
+                    <tr><td colspan="7" class="row-empty">Sin pagos en el mes</td></tr>
                 {%endif%}
             </tbody>
         </table>
     </div>
+</section>
 
-    <div>
+<div class="grid2">
+    <section class="panel">
+        <div class="panel-head">
+            <h2>Próximos vencimientos</h2>
+            <span class="tag">Siguientes 15 días</span>
+        </div>
+        <div class="table-responsive">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Egresado</th>
+                        <th>Escuela</th>
+                        <th>Monto</th>
+                        <th>Vence</th>
+                        <th>Estado</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {%if resumen.cuotas and resumen.cuotas.proximos_vencimientos%}
+                        {% for vencimiento in resumen.cuotas.proximos_vencimientos%}
+                            <tr>
+                                <td>{{vencimiento.nombre_egresado}}</td>
+                                <td>{{vencimiento.escuela_nombre}}</td>
+                                <td class="mono">{{vencimiento.monto_original}}</td>
+                                <td class="mono">{{vencimiento.fecha_vencimiento}}</td>
+                                <td><span class="badge warn">{{vencimiento.estado_pago}}</span></td>
+                                <td class="btn-row">
+                                    <button type="button" class="btn">Cobrar</button>
+                                    <button type="button" class="btn">Recordatorio</button>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    {%else%}
+                        <tr><td colspan="6" class="row-empty">Sin vencimientos próximos</td></tr>
+                    {%endif%}
+                </tbody>
+            </table>
+        </div>
+    </section>
 
-        <h2>Próximos Vencimientos (Siguientes 15 días)</h2>
-
-        <table>
-            <thead>
-                <tr>
-                    <th>Egresado</th>
-                    <th>Escuela</th>
-                    <th>Monto</th>
-                    <th>Fecha Vencimiento</th>
-                    <th>Estado</th>
-                    <th>Acciones</th>
-                </tr>
-            </thead>
-            <tbody>
-                {%if resumen.contratos%}
-                    {% for vencimiento in  resumen.cuotas.proximos_vencimientos%}
-                        <tr>
-                            <td>{{vencimiento.nombre_egresado}}</td>
-                            <td>Escuela</td>
-                            <td>{{vencimiento.monto_original}}</td>
-                            <td>{{vencimiento.fecha_vencimiento}}</td>
-                            <td>{{vencimiento.estado_pago}}</td>
-                            <td>
-                                <button type="button">Cobrar</button>
-                                <button type="button">Recordatorio</button>
-                            </td>
-                        </tr>
-                    {% endfor %}
-                {%else%}
-                        <tr>Sin vencimientos próximos</tr>
-                {%endif%}
-                
-            </tbody>
-        </table>
-    </div>
-
-    <div>
-        <h2>Registrar pago</h2>
-        <div>
-            <div>
-                <h3>Buscador</h3>
-                <p>Dni:</p>
-                <input type="text" placeholder="Ingrese nro de documento">
-                <button><a href="">Buscar</a></button>
+    <section class="panel form-panel">
+        <div class="panel-head"><h2>Registrar pago</h2></div>
+        <div class="search-box">
+            <input type="text" placeholder="Buscar por DNI…">
+            <button class="btn">Buscar</button>
+        </div>
+        <form action="" class="form-grid">
+            <div class="field full">
+                <label>Egresado</label>
+                <input type="text">
             </div>
-
-        </div>
-        <div>
-            <form action="">
-                <div>
-                    <p>Egresado</p>
-                    <input type="text">
-                </div>
-                        
-                <div>
-                    <p>Cuota</p>
-                    <input type="text">
-                </div>
-
-                <div>
-                    <p>Monto</p>
-                    <input type="text">
-                </div>
-
-                <div>
-                    <button class="btn btn-delete btn-secundary">Vaciar</button>
-                    <button class="btn btn-primary">Registrar</button>
-                </div>
-            </form>
-        </div>
-       
-    </div>
-    
+            <div class="field">
+                <label>Cuota</label>
+                <input type="text">
+            </div>
+            <div class="field">
+                <label>Monto</label>
+                <input type="text">
+            </div>
+            <div class="form-actions">
+                <button type="reset" class="btn">Vaciar</button>
+                <button type="submit" class="btn primary">Registrar pago</button>
+            </div>
+        </form>
+    </section>
 </div>
 
 {% endblock content %}
 
 {% block scripts %}
+{{ super() }}
 {% endblock %}

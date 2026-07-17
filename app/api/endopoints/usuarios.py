@@ -30,7 +30,7 @@ async def listar_usuarios(request: Request,username = Depends(VerificarRol(['adm
         name="usuarios/usuarios.html",
         context={
             "usuarios": usuarios_bd,
-            'username':username.username
+            'username':username
         }
     )
 
@@ -75,7 +75,8 @@ async def agregar_usuario(request: Request,
         request=request,
         name="usuarios/usuarios.html",
         context={
-            "usuarios": usuarios
+            "usuarios": usuarios,
+            "username":username
         }
     )
 
@@ -87,7 +88,8 @@ async def actualizar_usuario(
                     password_hash:str = Form(...),
                     email:str = Form(...),
                     rol:str = Form(...),
-                    sesion: Session = Depends(obtener_sesion)
+                    sesion: Session = Depends(obtener_sesion),
+                    username_bd = VerificarRol(['admin'])
                        ):
     
     usuario = await obtener_usuario_id_bd(sesion,id_usuario)
@@ -106,12 +108,13 @@ async def actualizar_usuario(
         request=request,
         name="usuarios/usuarios.html",
         context={
-            "usuarios": usuarios
+            "usuarios": usuarios,
+            "username":username_bd
         }
     )
 
 @router.post("/eliminar-usuario/{id_usuario}")
-async def eliminar_usuario(id_usuario: int,request: Request,sesion: Session = Depends(obtener_sesion) ):
+async def eliminar_usuario(id_usuario: int,request: Request,sesion: Session = Depends(obtener_sesion),username = VerificarRol(['admin'])):
     
     print(id_usuario)
 
@@ -123,7 +126,8 @@ async def eliminar_usuario(id_usuario: int,request: Request,sesion: Session = De
             request=request,
             name="escuelas/usuarios.html",
             context={
-                "usuarios": usuarios
+                "usuarios": usuarios,
+                "username":username
                     }
             )
     

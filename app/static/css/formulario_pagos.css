@@ -1,54 +1,99 @@
-/* static/css/estilos.css */
+/* Modal de registro de pago (inyectado dinámicamente por cuotas.js/pagos.js) */
 
-/* Fondo oscuro que cubre toda la pantalla */
 .modal-backdrop {
-    display: none; /* Oculto por defecto */
+    display: none;
     position: fixed;
-    top: 0; 
-    left: 0; 
-    width: 100%; 
+    top: 0;
+    left: 0;
+    width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.5); /* Opacidad negra */
+    background-color: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(2px);
     z-index: 1000;
     justify-content: center;
     align-items: center;
 }
 
-/* Clase para mostrar el modal (se activa dinámicamente con JS) */
 .modal-backdrop.mostrar {
     display: flex;
 }
 
-/* La caja blanca del modal centrada */
 .modal-contenido {
-    background-color: white;
-    padding: 25px;
-    border-radius: 8px;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    background-color: var(--surface, #111B2E);
+    border: 1px solid var(--border, #223049);
+    color: var(--text, #E8EDF7);
+    padding: 26px;
+    border-radius: 10px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
     width: 90%;
-    max-width: 450px;
+    max-width: 420px;
     position: relative;
+    font-family: 'Inter', sans-serif;
 }
 
-/* Estilos adicionales para limpiar el diseño del formulario interno */
+.modal-contenido h2 {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 17px;
+    margin-bottom: 12px;
+}
+
+.modal-contenido p {
+    font-size: 13.5px;
+    color: var(--muted, #8393B0);
+    margin-bottom: 6px;
+}
+
+.modal-contenido label {
+    display: block;
+    font-size: 11px;
+    color: var(--muted, #8393B0);
+    text-transform: uppercase;
+    letter-spacing: .05em;
+    margin-top: 16px;
+    margin-bottom: 6px;
+}
+
+.modal-contenido input[type="text"],
 .modal-contenido input[type="number"] {
-    width: 100%; 
-    padding: 8px; 
-    margin: 10px 0;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    box-sizing: border-box;
+    width: 100%;
+    padding: 10px 12px;
+    background: var(--surface-alt, #16233A);
+    border: 1px solid var(--border, #223049);
+    color: var(--text, #E8EDF7);
+    border-radius: 6px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13.5px;
+}
+
+.modal-contenido input:focus {
+    outline: none;
+    border-color: var(--accent, #22D3EE);
+}
+
+#mensaje-resultado {
+    margin-top: 12px;
+    font-size: 13px;
 }
 
 .modal-botones {
-    margin-top: 15px; 
-    text-align: right;
+    margin-top: 18px;
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
 }
 
 .btn-cerrar-esquina {
-    float: right; 
-    cursor: pointer; 
-    border: none; 
-    background: none; 
+    position: absolute;
+    top: 14px;
+    right: 16px;
+    border: none;
+    background: none;
+    color: var(--muted, #8393B0);
     font-size: 20px;
+    cursor: pointer;
+    line-height: 1;
+}
+
+.btn-cerrar-esquina:hover {
+    color: var(--text, #E8EDF7);
 }

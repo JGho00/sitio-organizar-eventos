@@ -1,42 +1,41 @@
-/* Contenedor principal que flota sobre toda la app */
+/* Popup global de error (404/403/500) parametrizable vía JS */
+
 #contenedor-popups-global {
     position: fixed;
     top: 0;
     left: 0;
     width: 100vw;
     height: 100vh;
-    pointer-events: none; /* No bloquea clicks si está vacío */
+    pointer-events: none;
     z-index: 9999;
 }
 
-/* Fondo oscuro translúcido para centrar el pop-up */
 .popup-fondo-bloqueo {
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.4);
+    background-color: rgba(0, 0, 0, 0.5);
     display: flex;
     justify-content: center;
     align-items: center;
-    pointer-events: auto; /* Activa clicks para el fondo y tarjeta */
-    backdrop-filter: blur(2px); /* Efecto difuminado moderno */
+    pointer-events: auto;
+    backdrop-filter: blur(2px);
 }
 
-/* Tarjeta del Pop-up */
 .popup-tarjeta-alerta {
-    background-color: #ffffff;
+    background-color: var(--surface, #111B2E);
+    border: 1px solid var(--border, #223049);
     width: 90%;
     max-width: 450px;
     border-radius: 12px;
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
     overflow: hidden;
     position: relative;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-family: 'Inter', sans-serif;
 }
 
-/* Animación de entrada escalada */
 .animate-entrada {
     animation: zoomIn 0.3s ease-out forwards;
 }
@@ -46,13 +45,12 @@
     to { opacity: 1; transform: scale(1); }
 }
 
-/* Encabezado */
 .popup-encabezado {
     display: flex;
     align-items: center;
     padding: 16px 20px;
-    background-color: #fff5f5;
-    border-bottom: 1px solid #ffe3e3;
+    background-color: rgba(240, 85, 90, .08);
+    border-bottom: 1px solid var(--border, #223049);
 }
 
 .popup-icono {
@@ -62,8 +60,9 @@
 
 .popup-titulo {
     margin: 0;
-    font-size: 1.15rem;
-    color: #c92a2a;
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 1.05rem;
+    color: var(--danger, #F0555A);
     font-weight: 600;
     flex-grow: 1;
 }
@@ -72,7 +71,7 @@
     background: none;
     border: none;
     font-size: 1.5rem;
-    color: #868e96;
+    color: var(--muted, #8393B0);
     cursor: pointer;
     line-height: 1;
     padding: 0 5px;
@@ -80,13 +79,12 @@
 }
 
 .popup-boton-cerrar:hover {
-    color: #212529;
+    color: var(--text, #E8EDF7);
 }
 
-/* Cuerpo */
 .popup-cuerpo {
     padding: 20px;
-    color: #495057;
+    color: var(--text, #E8EDF7);
     font-size: 0.95rem;
     line-height: 1.5;
 }
@@ -95,13 +93,12 @@
     margin: 0;
 }
 
-/* Barra de temporizador animada (11 segundos) */
 .popup-barra-tiempo {
     position: absolute;
     bottom: 0;
     left: 0;
     height: 4px;
-    background-color: #e03131;
+    background-color: var(--danger, #F0555A);
     width: 100%;
     animation: reducirBarra 11s linear forwards;
 }

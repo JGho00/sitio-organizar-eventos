@@ -10,6 +10,8 @@ from datetime import datetime
 from models.model_cuota import Cuota
 from models.model_egresado import Egresado
 from models.model_pago import Pago
+from models.model_curso import Curso
+from models.model_escuela import Escuela
 from services.dependencias import obtener_fecha
 
 
@@ -23,9 +25,15 @@ async def consultar_pagos_bd(sesion:Session):
         Pago.metodo_pago,
         Egresado.nombre.label("nombre_egresado"),
         Cuota.numero_cuota,
-        Cuota.estado_pago
+        Cuota.estado_pago,
+        Curso.id.label("curso_id"),
+        Curso.id_escuela,
+        Escuela.id,
+        Escuela.nombre.label("escuela_nombre")
     ).join(Cuota, Pago.id_cuota == Cuota.id_cuota)
     .join(Egresado, Cuota.id_egresado == Egresado.dni)
+    .join(Curso,Egresado.id_curso == Curso.id)
+    .join(Escuela,Curso.id_escuela == Escuela.id)
     )
     pagos:Pago = sesion.exec(consulta).all()
     df_pagos = pd.DataFrame([r._asdict() for r in pagos])

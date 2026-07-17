@@ -1,7 +1,9 @@
 {% extends "base.html" %}
 
+{% block page_title %}{% endblock %}
+{% block page_subtitle %}{% endblock %}
+
 {% block styles %}
-<link rel="stylesheet" href="/static/css/.css">
 {% endblock %}
 
 {% block content %}
@@ -9,5 +11,5 @@
 {% endblock content%}
 
 {% block scripts %}
-<script src="/static/js/.js"></script>
+{{ super() }}
 {% endblock %}

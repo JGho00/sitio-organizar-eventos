@@ -4,31 +4,38 @@
 Escuelas
 {% endblock %}
 
+{% block page_title %}Agregar escuela{% endblock %}
+{% block page_subtitle %}Alta de una nueva escuela{% endblock %}
+
 {% block styles %}
-<link rel="stylesheet" href="/static/css/escuelas.css">
 {% endblock %}
 
 {% block content %}
 
-<div>
-    <div>
-        <h1>Agregar escuela</h1>
-    </div>
-    <div>
-        <form action="/escuelas/agregar-escuela" method="post">
+<section class="panel">
+    <div class="panel-head"><h2>Datos de la escuela</h2></div>
+    <form action="/escuelas/agregar-escuela" method="post" class="form-grid">
+        <div class="field">
+            <label>Nombre</label>
             <input type="text" name="nombre" placeholder="Ingresar nombre">
-            <input type="text" name="direccion" placeholder="Ingresar direccion">
-            <input type="text" name="ciudad" placeholder="Ingresar ciudad">
-            <input type="text" name="telefono" placeholder="Ingresar telefono">
-            <button type="submit">Agregar</button>
-        </form>
-        
-        <div>
-
-            <a href="/escuelas"><button>Cancelar</button></a>
-
         </div>
-    </div>
-</div>
+        <div class="field">
+            <label>Dirección</label>
+            <input type="text" name="direccion" placeholder="Ingresar direccion">
+        </div>
+        <div class="field">
+            <label>Ciudad</label>
+            <input type="text" name="ciudad" placeholder="Ingresar ciudad">
+        </div>
+        <div class="field">
+            <label>Teléfono</label>
+            <input type="text" name="telefono" placeholder="Ingresar telefono">
+        </div>
+        <div class="form-actions">
+            <a href="/escuelas"><button type="button" class="btn">Cancelar</button></a>
+            <button type="submit" class="btn primary">Agregar</button>
+        </div>
+    </form>
+</section>
 
 {% endblock %}

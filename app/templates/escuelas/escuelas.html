@@ -4,55 +4,44 @@
 Escuelas
 {% endblock %}
 
+{% block page_title %}Gestión de Escuelas{% endblock %}
+{% block page_subtitle %}Administra las escuelas asociadas{% endblock %}
+
 {% block styles %}
-<link rel="stylesheet" href="/static/css/escuelas.css">
 {% endblock %}
 
 {% block content %}
 
-<!-- Header con título -->
  <div class="page-container">
-    <div class="page-header">
-        <h1>Gestión de Escuelas</h1>
-    </div>
-    <div>
-        <h2>Escuelas con mayor número de contratos</h2>
-        <div>
-            <p>Numero</p>
-            <p>Escuela</p>
+
+    <div class="ticker">
+        <div class="cell">
+            <div class="lbl">Escuelas con más contratos</div>
+            <div class="val">—</div>
+        </div>
+        <div class="cell">
+            <div class="lbl">Escuelas con más faltas (pagos retrasados)</div>
+            <div class="val warn">—</div>
         </div>
     </div>
 
-    <div>
-        <h2>Escuelas con mayor cantidad de faltas (pagos retrasados)</h2>
-        <div>
-            <p>Numero</p>
-            <p>Escuela</p>
+    <section class="panel">
+        <div class="panel-head">
+            <h2>Listado de escuelas</h2>
         </div>
-    </div>
-    <!-- Barra de herramientas: Búsqueda y filtros -->
-    <div class="toolbar">
-        <div>
-            <input 
-                type="text" 
-                id="searchInput" 
-                
+        <div class="search-box">
+            <input
+                type="text"
+                id="searchInput"
                 placeholder="🔍 Buscar escuela por nombre o ciudad..."
                 onkeyup=""
             >
+            <a href="/escuelas/agregar-escuela">
+                <button class="btn primary" type="button">➕ Agregar Escuela</button>
+            </a>
         </div>
-        
-        <div><a href="/escuelas/agregar-escuela">
-            <button class="btn-primary" onclick="">
-                ➕ Agregar Escuela
-            </button>
-        </a>
-            
-        </div>
-    </div>
 
-    <!-- Tabla de escuelas -->
-    <div class="table-container">
+    <div class="table-responsive">
         <table class="escuela-table">
             <thead>
                 <tr>
@@ -84,7 +73,7 @@ Escuelas
                     </tr>
                 {% endfor %}
                 {%else%}
-                    <tr>Sin escuelas cargadas</tr>
+                    <tr><td colspan="5" class="row-empty">Sin escuelas cargadas</td></tr>
                 {%endif%}
                 
             </tbody>
@@ -96,8 +85,7 @@ Escuelas
         </div>
         {% endif %}
     </div>
-
-    
+    </section>
 
  </div>
 

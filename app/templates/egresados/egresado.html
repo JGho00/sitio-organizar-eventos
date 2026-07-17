@@ -1,124 +1,123 @@
 {% extends "base.html" %}
 
 {% block title %}
-Escuelas
+Egresados
 {% endblock %}
 
-{% block styles %}
-<link rel="stylesheet" href="/static/css/egresados.css">
-<link rel="stylesheet" href="/static/css/formulario_pagos.css">
+{% block page_title %}Detalles del Egresado{% endblock %}
+{% block page_subtitle %}{{ egresado.nombre }}{% endblock %}
 
+{% block styles %}
+<link rel="stylesheet" href="/static/css/formulario_pagos.css">
 {% endblock %}
 
 {% block content %}
-    <div>
-        <div>
-            <h1>Detalles del Egresado</h1>
-            <div>
-                <h2>Información general</h2>
-                <div>
-                    <p>Nombre: {{egresado.nombre}}</p>
-                    <p>Dni: {{egresado.dni}}</p>
-                    <p>Dirección:{{egresado.dirección}}</p>
-                    <p>Telefono: {{egresado.telefono}}</p>
-                    <p>Escuela: {{egresado.curso.escuela.nombre}}</p>
-                    <p>Division:{{egresado.curso.division}}</p>
-                    <p>Año</p>
-                </div>
-            </div>
-            <div>
-                <h2>Estado de cuenta</h2>
-                <div>
-                    <p>Total pagado:{{estadisticas.total_pagado}}</p>
-                    <p>Total por pagar:{{estadisticas.total_no_pagado}}</p>
-                    <p>cantidad cuotas restantes: {{estadisticas.cant_cuotas_impagas}}</p>
-                    <p>Cuotas vencidas: {{estadisticas.cant_cuotas_vencidas}}</p>
-                    <p>Estado de cuenta: {{estadisticas.estado_cuenta}}</p>
-                    <p>intereses acumulados por morosidad CALCULAR</p>
-                </div>
-            </div>
 
-            <div>
-                <h2>Historial de cuotas pagos</h2>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Nro de cuota</th>
-                            <th>Monto</th>
-                            <th>Monto Recargo</th>
-                            <th>Fecha de pago</th>
-                            <th>Estado</th>
-                            <th>Acciones</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {%for cuota in egresado.cuotas%}
-                        <tr>
-                            <td>{{cuota.numero_cuota}}</td>
-                            <td>{{cuota.monto_original}}</td>
-                            <td>{{cuota.monto_pago}}</td>
-                            <td>{{cuota.fecha_vencimiento}}</td>
-                            <td>{{cuota.estado_pago}}</td>
-                            <td>{{cuota.id_cuota}}</td>
-                            <td>
-                                
-                                <button>Ver comprobante</button>
-                                <button class="btn_registrar_pago_cuota" data-idcuota="{{cuota.id_cuota}}">Registrar pago cuota</button>
-                            </td>
-                        </tr>
-                        {%endfor%}
-                    </tbody>
-                </table>
-            </div>
-
-            <div>
-                <h2>Acciones</h2>
-                <button>Recordatorio</button>
-                <button>Generar Informe</button>
-                <button>Adelantar pago</button>
-                <button>Eliminar</button>
-            </div>
-
-
-            <div>
-                <form action="/egresados/actualizar-egresado/{{egresado.dni}}" method="post">
-                    <div>
-                        <p>Egresado:</p>
-                        <input type="text" placeholder="" value="{{egresado.nombre}}" name="nombre">
-                    </div>
-                    <div>
-                        <p>Dirección:</p>
-                        <input type="text" placeholder="" value="{{egresado.direccion}}" name="direccion">
-                    </div>
-                    <div>
-                        <p>Edad:</p>
-                        <input type="text" placeholder="" value="{{egresado.edad}}" name="edad" disabled>
-                    </div>
-                    <div>
-                        <p>Teléfono:</p>
-                        <input type="text" placeholder="" value="{{egresado.telefono}}" name="telefono">
-                    </div>
-                    <div>
-                        <p>Dni:</p>
-                        <input type="text" placeholder="" value="{{egresado.dni}}" name="dni">
-                    </div>
-                    <div>
-                        <button type="submit">Guardar cambios</button>
-                        <a href="/egresados"><button>Cancelar</button></a>
-                    </div>
-                    
-                    
-                </form>
-
-            </div>
-           
+<div class="grid2">
+    <section class="panel">
+        <div class="panel-head"><h2>Información general</h2></div>
+        <div class="panel-body">
+            <p>Nombre: {{egresado.nombre}}</p>
+            <p>Dni: {{egresado.dni}}</p>
+            <p>Dirección: {{egresado.direccion}}</p>
+            <p>Telefono: {{egresado.telefono}}</p>
+            <p>Escuela: {{egresado.curso.escuela.nombre}}</p>
+            <p>Division: {{egresado.curso.division}}</p>
         </div>
-        
-        <div id="modal-base" class="modal-backdrop"></div>
-        
+    </section>
+
+    <section class="panel">
+        <div class="panel-head"><h2>Estado de cuenta</h2></div>
+        <div class="panel-body">
+            <p>Total pagado: <span class="mono">{{estadisticas.total_pagado}}</span></p>
+            <p>Total por pagar: <span class="mono">{{estadisticas.total_no_pagado}}</span></p>
+            <p>Cantidad cuotas restantes: <span class="mono">{{estadisticas.cant_cuotas_impagas}}</span></p>
+            <p>Cuotas vencidas: <span class="mono">{{estadisticas.cant_cuotas_vencidas}}</span></p>
+            <p>Estado de cuenta: <span class="badge {% if estadisticas.estado_cuenta == 'Al día' %}ok{% else %}warn{% endif %}">{{estadisticas.estado_cuenta}}</span></p>
+        </div>
+    </section>
+</div>
+
+<section class="panel">
+    <div class="panel-head"><h2>Historial de cuotas y pagos</h2></div>
+    <div class="table-responsive">
+        <table>
+            <thead>
+                <tr>
+                    <th>Nro de cuota</th>
+                    <th>Monto</th>
+                    <th>Monto recargo</th>
+                    <th>Fecha de pago</th>
+                    <th>Estado</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                {%for cuota in egresado.cuotas%}
+                <tr>
+                    <td class="mono">{{cuota.numero_cuota}}</td>
+                    <td class="mono">{{cuota.monto_original}}</td>
+                    <td class="mono">{{cuota.monto_pago}}</td>
+                    <td class="mono">{{cuota.fecha_vencimiento}}</td>
+                    <td><span class="badge warn">{{cuota.estado_pago}}</span></td>
+                    <td class="btn-row">
+                        <button class="btn">Ver comprobante</button>
+                        <button class="btn primary btn_registrar_pago_cuota" data-idcuota="{{cuota.id_cuota}}">Registrar pago</button>
+                    </td>
+                </tr>
+                {%else%}
+                    <tr><td colspan="6" class="row-empty">Sin cuotas registradas</td></tr>
+                {%endfor%}
+            </tbody>
+        </table>
     </div>
+</section>
 
+<section class="panel">
+    <div class="panel-head"><h2>Acciones</h2></div>
+    <div class="panel-body btn-row">
+        <button class="btn">Recordatorio</button>
+        <button class="btn">Generar Informe</button>
+        <button class="btn">Adelantar pago</button>
+        <button class="btn btn-delete">Eliminar</button>
+    </div>
+</section>
 
-    <script src="/static/js/pagos.js"></script>
-    
+<section class="panel">
+    <div class="panel-head"><h2>Editar datos</h2></div>
+    <form action="/egresados/actualizar-egresado/{{egresado.dni}}" method="post" class="form-grid">
+        <div class="field">
+            <label>Egresado</label>
+            <input type="text" value="{{egresado.nombre}}" name="nombre">
+        </div>
+        <div class="field">
+            <label>Dirección</label>
+            <input type="text" value="{{egresado.direccion}}" name="direccion">
+        </div>
+        <div class="field">
+            <label>Edad</label>
+            <input type="text" value="{{egresado.edad}}" name="edad" disabled>
+        </div>
+        <div class="field">
+            <label>Teléfono</label>
+            <input type="text" value="{{egresado.telefono}}" name="telefono">
+        </div>
+        <div class="field">
+            <label>Dni</label>
+            <input type="text" value="{{egresado.dni}}" name="dni">
+        </div>
+        <div class="form-actions">
+            <a href="/egresados"><button type="button" class="btn">Cancelar</button></a>
+            <button type="submit" class="btn primary">Guardar cambios</button>
+        </div>
+    </form>
+</section>
+
+<div id="modal-base" class="modal-backdrop"></div>
+
+{% endblock %}
+
+{% block scripts %}
+{{ super() }}
+<script src="/static/js/pagos.js"></script>
 {% endblock %}

@@ -41,11 +41,9 @@ async def eliminar_contrato_bd(sesion:Session,contrato:Contrato):
     
     return contrato
 
+async def estadisticas_contratos(sesion:Session,contratos:Contrato):
+    
 
-async def estadisticas_contratos(sesion:Session):
-    
-    
-    contratos:Contrato = await obtener_contratos_bd(sesion)
 
     total_contratos = len(contratos)
 

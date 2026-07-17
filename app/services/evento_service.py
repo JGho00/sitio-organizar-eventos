@@ -29,7 +29,7 @@ async def obtener_eventos_bd_service(sesion: Session):
     
     df_eventos = pd.DataFrame([r._asdict() for r in eventos])
 
-    if len(df_eventos>0):
+    if len(df_eventos)>0:
         df_eventos['fecha_evento'] = pd.to_datetime(df_eventos['fecha_evento'])
     
     return df_eventos
@@ -45,16 +45,20 @@ def consultar_proximo_evento(df_eventos:pd.DataFrame):
     #Proximo evento
     fecha_actual = datetime.now()
     proximo_evento:dict = {}
-    condicion = ((df_eventos['estado'] == 'creado') & (df_eventos['fecha_evento'] >= fecha_actual))
+    condicion = (df_eventos["estado"] == "creado") & (
+    (df_eventos["fecha_evento"] >= fecha_actual)
+    | (df_eventos["fecha_evento"].isna())
+    )
     df_proximo_evento:pd.DataFrame = df_eventos[condicion]
 
     if len(df_proximo_evento) == 0:
         return 
     df_proximo_evento = df_proximo_evento.iloc[0]
 
+    fecha_evento = df_proximo_evento['fecha_evento']
     proximo_evento = {
         'nombre' : df_proximo_evento['nombre'],
-        'fecha' : df_proximo_evento['fecha_evento'],
+        'fecha' : None if pd.isna(fecha_evento) else fecha_evento,
         'lugar' : df_proximo_evento['nombre_establecimiento']
     }
 
@@ -106,28 +110,30 @@ def generar_calendario_eventos(df_eventos:pd.DataFrame):
     return calendario
 
 def estadisticas_eventos(df_eventos:pd.DataFrame):
-    
-    if len(df_eventos>0):
+
+    proximo_evento = None
+    df_eventos_finalizados:pd.DataFrame = pd.DataFrame()
+    calendario = None
+    if len(df_eventos)>0:
         #Proximo evento
         proximo_evento:dict = consultar_proximo_evento(df_eventos)
 
         #Obtener eventos finalizados (top 5)
-        df_eventos_finalizados:pd.DataFrame =df_eventos[df_eventos['estado'] == 'FINALIZADO'].head(5)
+        df_eventos_finalizados:pd.DataFrame =df_eventos[df_eventos['estado'] == 'FINALIZADO'].head(5).copy()
+        if not df_eventos_finalizados.empty:
+            df_eventos_finalizados['fecha_evento'] = df_eventos_finalizados['fecha_evento'].astype(object).where(
+                df_eventos_finalizados['fecha_evento'].notna(), None
+            )
 
         #Calendario
         calendario = generar_calendario_eventos(df_eventos)
 
-        estadisticas = {
-            'proximo_evento' : proximo_evento,
-            'eventos_finalizados':df_eventos_finalizados.to_dict(orient='records'),
-            'calendario':calendario
-        }
-    else:
-        estadisticas = {
-            'proximo_evento' : None,
-            'eventos_finalizados':None,
-            'calendario':None
-        }
+    estadisticas = {
+        'proximo_evento' : proximo_evento,
+        'eventos_finalizados':df_eventos_finalizados.to_dict(orient='records'),
+        'calendario':calendario
+    }
+    
         
 
     

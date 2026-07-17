@@ -9,6 +9,8 @@ from datetime import datetime
 
 from models.model_cuota import Cuota
 from models.model_egresado import Egresado
+from models.model_curso import Curso
+from models.model_escuela import Escuela
 from services.dependencias import obtener_fecha
 
 
@@ -23,9 +25,13 @@ async def consultar_cuotas_bd(sesion:Session):
         Cuota.monto_pago,
         Cuota.estado_pago,
         Cuota.fecha_vencimiento,
-        # Agrega aquí todos los campos de Cuota que necesites...
-        Egresado.nombre.label("nombre_egresado")  # Traemos el nombre desde Egresado
-    ).join(Egresado, Cuota.id_egresado == Egresado.dni)
+        Egresado.nombre.label("nombre_egresado"),  # Traemos el nombre desde Egresado
+        Egresado.id_curso,
+        Curso.id.label("curso_id"),
+        Curso.id_escuela,
+        Escuela.id.label("escuela_id"),
+        Escuela.nombre.label("escuela_nombre")
+    ).join(Egresado, Cuota.id_egresado == Egresado.dni).join(Curso,Curso.id == Egresado.id_curso).join(Escuela,Escuela.id == Curso.id_escuela)
 
     cuotas:Cuota = sesion.exec(consulta).all()
     

@@ -4,52 +4,41 @@
 Egresados
 {% endblock %}
 
+{% block page_title %}Gestión de Egresados{% endblock %}
+{% block page_subtitle %}Administra el registro de egresados{% endblock %}
+
 {% block styles %}
-<link rel="stylesheet" href="/static/css/egresados.css">
 {% endblock %}
 
 {% block content %}
 
 <div class="page-container">
-    <!-- Header de la página -->
-    <div class="page-header">
-        <h1>Gestión de Egresados</h1>
-        <p class="subtitle">Administra el registro de egresados</p>
-    </div>
 
-    <!-- Barra de herramientas: Búsqueda y filtros -->
-    <div class="toolbar">
-        <div class="search-section">
-            <div class="search-group">
-                <input 
-                    type="text" 
-                    id="searchInput" 
-                    class="search-input" 
-                    placeholder="🔍 Buscar por nombre..."
-                    onkeyup="filterTable()"
-                >
-                <input 
-                    type="text" 
-                    id="dniInput" 
-                    class="search-input" 
-                    placeholder="🔍 Buscar por DNI..."
-                    onkeyup="filterTable()"
-                >
-                <input 
-                    type="text" 
-                    id="escuelaInput" 
-                    class="search-input" 
-                    placeholder="🔍 Buscar por escuela..."
-                    onkeyup="filterTable()"
-                >
-            </div>
-        </div>
-        
-        
+<section class="panel">
+    <div class="panel-head">
+        <h2>Listado de egresados</h2>
     </div>
-
-    <!-- Tabla de egresados -->
-    <div class="table-container">
+    <div class="search-box">
+        <input
+            type="text"
+            id="searchInput"
+            placeholder="🔍 Buscar por nombre..."
+            onkeyup="filterTable()"
+        >
+        <input
+            type="text"
+            id="dniInput"
+            placeholder="🔍 Buscar por DNI..."
+            onkeyup="filterTable()"
+        >
+        <input
+            type="text"
+            id="escuelaInput"
+            placeholder="🔍 Buscar por escuela..."
+            onkeyup="filterTable()"
+        >
+    </div>
+    <div class="table-responsive">
         <table class="egresados-table">
             <thead>
                 <tr>
@@ -58,7 +47,7 @@ Egresados
                     <th>Edad</th>
                     <th>Escuela</th>
                     <th>Division</th>
-                    <th>Año</th>
+                    <th>Dirección</th>
                     <th>Telefono</th>
                     <th>Acciones</th>
                 </tr>
@@ -91,40 +80,36 @@ Egresados
                 {% endfor %}
             </tbody>
         </table>
-        
-        {% if not egresados %}
-        <div class="empty-state">
-            <p>📭 No hay egresados registrados</p>
-            <button class="btn-primary" onclick="openAddModal()">Agregar Primer Egresado</button>
-        </div>
-        {% endif %}
     </div>
 
-    <div>
-        <h2>Carga de egresados</h2>
-        <div>
-            <div>
-                <h3>Carga Manual</h3>
-                <div class="actions-section">
-                    <a href="/egresados/cargar-egresado">
-                        <button class="btn-primary" onclick="openAddModal()">
-                             ➕ Agregar Egresado
-                        </button>
-                    </a>
-                </div>
-            </div>
-            <div>
-                <h3>Carga Masiva</h3>
-                <div class="actions-section">
-                    <a href="">
-                        <button class="btn-primary" onclick="openAddModal()">
-                             ➕ Subir archivo
-                        </button>
-                    </a>
-                </div>
-            </div>
-        </div>        
+    {% if not egresados %}
+    <div class="empty-state">
+        <p>📭 No hay egresados registrados</p>
+        <a href="/egresados/cargar-egresado"><button class="btn-primary" onclick="openAddModal()">Agregar Egresado</button></a>
+        
     </div>
+    {% endif %}
+</section>
+
+<section class="panel">
+    <div class="panel-head">
+        <h2>Carga de egresados</h2>
+    </div>
+    <div class="form-grid">
+        <div class="field">
+            <label>Carga manual</label>
+            <a href="/egresados/cargar-egresado">
+                <button type="button" class="btn-primary" onclick="openAddModal()">➕ Agregar Egresado</button>
+            </a>
+        </div>
+        <div class="field">
+            <label>Carga masiva</label>
+            <a href="">
+                <button type="button" class="btn-primary" onclick="openAddModal()" disabled>➕ Subir archivo</button>
+            </a>
+        </div>
+    </div>
+</section>
 </div>
 
 
@@ -163,7 +148,7 @@ function closeModal() {
 
 function deleteEgresado(id) {
     if (confirm('¿Está seguro de que desea eliminar este egresado?')) {
-        alert('Función de eliminación en desarrollo: Egresado ID ' + id);
+        //alert('Función de eliminación en desarrollo: Egresado ID ' + id);
         // TODO: Implementar eliminación de egresado
     }
 }

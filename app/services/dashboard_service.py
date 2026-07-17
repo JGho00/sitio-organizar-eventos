@@ -1,14 +1,14 @@
 from sqlmodel import Session
 import pandas as pd
 from services.egresado_service import estadisticas_egresado
-from services.contrato_service import estadisticas_contratos
+from services.contrato_service import estadisticas_contratos,obtener_contratos_bd
 from services.cuota_service import consultar_cuotas_bd,estadisticas_cuotas,consultar_cuotas_vencidas
 from services.evento_service import obtener_eventos_bd_service,estadisticas_eventos
 from services.pago_service import consultar_pagos_bd,estadisticas_pagos
 
 async def obtener_estadisticas_generales(sesion:Session):
-
-    resumen_contratos = await estadisticas_contratos(sesion)
+    contratos = await obtener_contratos_bd(sesion)
+    resumen_contratos = await estadisticas_contratos(sesion,contratos)
 
     #resumen_egresados = await estadisticas_egresado(sesion)
 
