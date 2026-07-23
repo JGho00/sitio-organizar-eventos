@@ -22,4 +22,7 @@ class Cuota(SQLModel,table = True):
     egresado: "Egresado" = Relationship(back_populates="cuotas")
     #Relacion una cuota pertenece a un contrato
     contrato: "Contrato" = Relationship(back_populates="cuotas")
-    pagos: list["Pago"] = Relationship(back_populates="cuota")
+    pagos: list["Pago"] = Relationship(
+        back_populates="cuota",
+        sa_relationship_kwargs={"passive_deletes": True}
+    )

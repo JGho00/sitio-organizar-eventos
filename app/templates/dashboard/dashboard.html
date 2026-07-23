@@ -118,25 +118,24 @@
     </div>
 </section>
 
-<div class="grid2">
-    <section class="panel">
-        <div class="panel-head">
-            <h2>Próximos vencimientos</h2>
-            <span class="tag">Siguientes 15 días</span>
-        </div>
-        <div class="table-responsive">
-            <table>
-                <thead>
-                    <tr>
-                        <th>Egresado</th>
-                        <th>Escuela</th>
-                        <th>Monto</th>
-                        <th>Vence</th>
-                        <th>Estado</th>
-                        <th></th>
-                    </tr>
-                </thead>
-                <tbody>
+<section class="panel">
+    <div class="panel-head">
+        <h2>Próximos vencimientos</h2>
+        <span class="tag">Siguientes 15 días</span>
+    </div>
+    <div class="table-responsive">
+        <table>
+            <thead>
+                <tr>
+                    <th>Egresado</th>
+                    <th>Escuela</th>
+                    <th>Monto</th>
+                    <th>Vence</th>
+                    <th>Estado</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
                     {%if resumen.cuotas and resumen.cuotas.proximos_vencimientos%}
                         {% for vencimiento in resumen.cuotas.proximos_vencimientos%}
                             <tr>
@@ -157,33 +156,8 @@
                 </tbody>
             </table>
         </div>
-    </section>
+</section>
 
-    <section class="panel form-panel">
-        <div class="panel-head"><h2>Registrar pago</h2></div>
-        <div class="search-box">
-            <input type="text" placeholder="Buscar por DNI…">
-            <button class="btn">Buscar</button>
-        </div>
-        <form action="" class="form-grid">
-            <div class="field full">
-                <label>Egresado</label>
-                <input type="text">
-            </div>
-            <div class="field">
-                <label>Cuota</label>
-                <input type="text">
-            </div>
-            <div class="field">
-                <label>Monto</label>
-                <input type="text">
-            </div>
-            <div class="form-actions">
-                <button type="reset" class="btn">Vaciar</button>
-                <button type="submit" class="btn primary">Registrar pago</button>
-            </div>
-        </form>
-    </section>
 </div>
 
 {% endblock content %}

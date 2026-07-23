@@ -26,6 +26,7 @@ class Egresado(Persona,table = True):
         back_populates="egresado",
         sa_relationship_kwargs={
             # Queda explícito que va de menor a mayor
-           "order_by": "Cuota.numero_cuota"
+           "order_by": "Cuota.numero_cuota",
+           "passive_deletes": True
         }
     )

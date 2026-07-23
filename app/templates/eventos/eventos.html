@@ -185,7 +185,9 @@ eventos
                             <td>{{ evento.nombre_establecimiento }}</td>
                             <td class="btn-row">
                                 <button class="btn">Editar</button>
-                                <button class="btn">Eliminar</button>
+                                <form action="/eventos/eliminar-evento/{{ evento.id }}" method="POST" style="display:inline;" onsubmit="return confirm('¿Está seguro de que desea eliminar este evento?');">
+                                    <button type="submit" class="btn">Eliminar</button>
+                                </form>
                             </td>
                         </tr>
                         {% else %}

@@ -30,8 +30,9 @@ async def obtener_estadisticas_generales(sesion:Session):
 
     #Ultimos pagos
     df_pagos = await consultar_pagos_bd(sesion)
+    
     resumen_pagos = estadisticas_pagos(df_pagos)
-    print(resumen_pagos)
+
     estadisticas_globales:dict = {
 
         'contratos': resumen_contratos,

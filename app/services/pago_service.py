@@ -56,16 +56,23 @@ async def generar_pago_bd(sesion:Session,id_cuota:int,monto:Decimal):
 
 def estadisticas_pagos(df_pagos:pd.DataFrame):
 
+    if len(df_pagos)>0:
 
-    df_pagos['fecha'] = pd.to_datetime(df_pagos['fecha'])
 
-    #Obtener pagos realizados
-    df_ultimos_pagos = df_pagos[df_pagos['estado_pago'] == 'PAGADO']
-    #Ordenar de forma ascendente y tomar los primeros 5
-    df_ultimos_pagos = df_ultimos_pagos.sort_values(by='fecha', ascending=True).head(5)
-    df_ultimos_pagos['fecha'] = df_ultimos_pagos['fecha'].dt.strftime('%Y-%m-%d')
-    estadisticas = {
-        'ultimos_pagos': df_ultimos_pagos.to_dict(orient='records')
-    }
+        df_pagos['fecha'] = pd.to_datetime(df_pagos['fecha'])
+
+        #Obtener pagos realizados
+        df_ultimos_pagos = df_pagos[df_pagos['estado_pago'] == 'PAGADO']
+        #Ordenar de forma ascendente y tomar los primeros 5
+        df_ultimos_pagos = df_ultimos_pagos.sort_values(by='fecha', ascending=True).head(5)
+        df_ultimos_pagos['fecha'] = df_ultimos_pagos['fecha'].dt.strftime('%Y-%m-%d')
+        estadisticas = {
+            'ultimos_pagos': df_ultimos_pagos.to_dict(orient='records')
+        }
+
+    else:
+        estadisticas = {
+            'ultimos_pagos':{}
+        }
 
     return estadisticas

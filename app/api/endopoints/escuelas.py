@@ -20,7 +20,7 @@ router = APIRouter(
 templates = Jinja2Templates(directory=os.path.join("templates"))
 
 @router.get("/",status_code=status.HTTP_200_OK)
-async def listar_escuelas(request: Request,username = Depends(VerificarRol(['admin'])),sesion: Session = Depends(obtener_sesion)):
+async def listar_escuelas(request: Request,username = Depends(VerificarRol(['user'])),sesion: Session = Depends(obtener_sesion)):
 
     if not username:
         response = RedirectResponse(url="/login", status_code=status.HTTP_303_SEE_OTHER)
@@ -39,7 +39,7 @@ async def listar_escuelas(request: Request,username = Depends(VerificarRol(['adm
     )
 
 @router.get("/agregar-escuela",status_code=status.HTTP_201_CREATED)
-def agregar_escuela(request: Request,username = Depends(VerificarRol(['admin'])),sesion = Depends(obtener_sesion)):
+def agregar_escuela(request: Request,username = Depends(VerificarRol(['user'])),sesion = Depends(obtener_sesion)):
     
     if not username:
         response = RedirectResponse(url="/login", status_code=status.HTTP_303_SEE_OTHER)
@@ -57,7 +57,7 @@ def agregar_escuela(request: Request,username = Depends(VerificarRol(['admin']))
 
 
 @router.get("/{id}",status_code=status.HTTP_200_OK)
-async def obtener_escuela_por_id(id: int, request: Request,username = Depends(VerificarRol(['admin'])),sesion: Session = Depends(obtener_sesion)):
+async def obtener_escuela_por_id(id: int, request: Request,username = Depends(VerificarRol(['user'])),sesion: Session = Depends(obtener_sesion)):
     
     if not username:
         response = RedirectResponse(url="/login", status_code=status.HTTP_303_SEE_OTHER)
@@ -96,7 +96,7 @@ async def agregar_escuela(request: Request,
                     direccion:str= Form(...),
                     telefono:str = Form(...),
                     sesion: Session = Depends(obtener_sesion),
-                    username = Depends(VerificarRol(['admin']))
+                    username = Depends(VerificarRol(['user']))
                     ):
     
     if not username:

@@ -21,4 +21,7 @@ class Contrato(SQLModel,table=True):
     # Relación: Un contrato pertenece a un curso
     curso: "Curso" = Relationship(back_populates="contratos")
     #Relacion un contrato puede tener varias cuotas
-    cuotas: list["Cuota"] = Relationship(back_populates="contrato")
+    cuotas: list["Cuota"] = Relationship(
+        back_populates="contrato",
+        sa_relationship_kwargs={"passive_deletes": True}
+    )

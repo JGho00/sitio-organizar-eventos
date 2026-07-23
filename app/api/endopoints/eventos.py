@@ -25,7 +25,7 @@ from services.escuela_service import obtener_escuelas_bd
 from services import dependencias
 from services.curso_service import validar_existencia_curso
 from services.cuota_service import generar_plan_cuotas_egresado
-from services.evento_service import obtener_eventos_bd_service,estadisticas_eventos
+from services.evento_service import obtener_eventos_bd_service,estadisticas_eventos,eliminar_evento_bd
 router = APIRouter(
     prefix="/eventos",
     tags =["Eventos"],
@@ -87,6 +87,22 @@ async def get_evento_id(request:Request,id:int,username = Depends(VerificarRol([
         }
     )
 
+
+@router.post("/eliminar-evento/{id}")
+async def eliminar_evento_api(request:Request,id:int,username = Depends(VerificarRol(['admin'])),sesion = Depends(obtener_sesion)):
+
+    try:
+
+        await eliminar_evento_bd(sesion,id)
+
+        sesion.commit()
+
+    except Exception as excepcion_sistema:
+        if sesion:
+            sesion.rollback()
+    finally:
+        response = RedirectResponse(url="/eventos", status_code=status.HTTP_303_SEE_OTHER)
+        return response
 
 @router.post('/carga-masiva-excel')
 async def carga_masiva(

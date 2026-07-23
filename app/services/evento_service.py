@@ -1,4 +1,5 @@
 from sqlmodel import Session,select
+from sqlalchemy import or_
 from typing import List
 from models.model_evento import Evento
 import pandas as pd
@@ -8,6 +9,10 @@ import calendar
 from models.model_establecimiento import Establecimiento
 from models.model_escuela import Escuela
 from models.model_curso import Curso
+from models.model_egresado import Egresado
+from models.model_contrato import Contrato
+from models.model_cuota import Cuota
+from models.model_pago import Pago
 async def obtener_eventos_bd_service(sesion: Session):
     consulta = (select(Evento.id,
                        Evento.nombre,
@@ -33,6 +38,61 @@ async def obtener_eventos_bd_service(sesion: Session):
         df_eventos['fecha_evento'] = pd.to_datetime(df_eventos['fecha_evento'])
     
     return df_eventos
+
+async def eliminar_evento_bd(sesion:Session,id_evento:int):
+    consulta = select(Evento).where(Evento.id == id_evento)
+    resultados = sesion.exec(consulta)
+    evento = resultados.first()
+
+    if not evento:
+        return evento
+
+    #Egresados del curso asociado al evento
+    egresados = sesion.exec(
+        select(Egresado).where(Egresado.id_curso == evento.id_curso)
+    ).all()
+    dnis_egresados = [egresado.dni for egresado in egresados]
+
+    #Contratos generados para este evento
+    contratos = sesion.exec(
+        select(Contrato).where(Contrato.id_evento == id_evento)
+    ).all()
+    ids_contratos = [contrato.id for contrato in contratos]
+
+    #Cuotas ligadas a esos egresados o contratos
+    cuotas = []
+    if dnis_egresados or ids_contratos:
+        consulta_cuotas = select(Cuota).where(
+            or_(
+                Cuota.id_egresado.in_(dnis_egresados),
+                Cuota.id_contrato.in_(ids_contratos)
+            )
+        )
+        cuotas = sesion.exec(consulta_cuotas).all()
+    ids_cuotas = [cuota.id_cuota for cuota in cuotas]
+
+    #Pagos ligados a esas cuotas
+    if ids_cuotas:
+        pagos = sesion.exec(
+            select(Pago).where(Pago.id_cuota.in_(ids_cuotas))
+        ).all()
+        for pago in pagos:
+            sesion.delete(pago)
+
+    for cuota in cuotas:
+        sesion.delete(cuota)
+
+    for egresado in egresados:
+        sesion.delete(egresado)
+
+    for contrato in contratos:
+        sesion.delete(contrato)
+
+    sesion.delete(evento)
+    #sesion.commit()
+    sesion.flush()
+
+    return evento
 
 def consultar_eventos_activos(df_eventos):
 
