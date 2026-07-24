@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Error Interno</title>
+    <title>Error de Validación</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/static/css/excepciones.css">
@@ -14,10 +14,15 @@
 
     <div class="error-modal">
         <div class="error-icon">⚠️</div>
-        <h2 class="error-title">Hubo un problema</h2>
+        <h2 class="error-title warning">Errores de validación</h2>
         <p class="error-msg">{{ mensaje }}</p>
-        <p class="countdown">Serás redirigido automáticamente en <span id="timer">11</span> segundos...</p>
+        <ul class="error-list">
+            {% for error in errores %}
+            <li>{{ error }}</li>
+            {% endfor %}
+        </ul>
+        <p class="countdown">Serás redirigido automáticamente en <span id="timer" class="warning">11</span> segundos...</p>
     </div>
-    <script src="/static/js/excepciones.js" data-redirect-url="{{ url_redireccion }}"></script>
+    <script src="/static/js/excepcion_422.js" data-redirect-url="{{ url_redireccion }}"></script>
 </body>
 </html>

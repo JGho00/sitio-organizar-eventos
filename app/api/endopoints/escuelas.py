@@ -20,12 +20,9 @@ router = APIRouter(
 templates = Jinja2Templates(directory=os.path.join("templates"))
 
 @router.get("/",status_code=status.HTTP_200_OK)
-async def listar_escuelas(request: Request,username = Depends(VerificarRol(['user'])),sesion: Session = Depends(obtener_sesion)):
+async def listar_escuelas(request: Request,username = Depends(VerificarRol(['admin','user'])),sesion: Session = Depends(obtener_sesion)):
 
-    if not username:
-        response = RedirectResponse(url="/login", status_code=status.HTTP_303_SEE_OTHER)
-        response.delete_cookie("access_token")
-        return response
+    
     
     escuelas_bd= await obtener_escuelas_bd(sesion)
     print("Escuelas de bd",escuelas_bd)
@@ -39,12 +36,7 @@ async def listar_escuelas(request: Request,username = Depends(VerificarRol(['use
     )
 
 @router.get("/agregar-escuela",status_code=status.HTTP_201_CREATED)
-def agregar_escuela(request: Request,username = Depends(VerificarRol(['user'])),sesion = Depends(obtener_sesion)):
-    
-    if not username:
-        response = RedirectResponse(url="/login", status_code=status.HTTP_303_SEE_OTHER)
-        response.delete_cookie("access_token")
-        return response
+def agregar_escuela(request: Request,username = Depends(VerificarRol(['admin','user'])),sesion = Depends(obtener_sesion)):
     
     return templates.TemplateResponse(
         request=request,
@@ -57,12 +49,8 @@ def agregar_escuela(request: Request,username = Depends(VerificarRol(['user'])),
 
 
 @router.get("/{id}",status_code=status.HTTP_200_OK)
-async def obtener_escuela_por_id(id: int, request: Request,username = Depends(VerificarRol(['user'])),sesion: Session = Depends(obtener_sesion)):
+async def obtener_escuela_por_id(id: int, request: Request,username = Depends(VerificarRol(['admin','user'])),sesion: Session = Depends(obtener_sesion)):
     
-    if not username:
-        response = RedirectResponse(url="/login", status_code=status.HTTP_303_SEE_OTHER)
-        response.delete_cookie("access_token")
-        return response
 
     escuela_bd = await obtener_escuela_id(sesion,id=id)
     if not escuela_bd:
@@ -90,7 +78,6 @@ async def obtener_escuela_por_id(id: int, request: Request,username = Depends(Ve
 
 
 @router.post("/agregar-escuela")
-
 async def agregar_escuela(request: Request,
                     nombre:str = Form(...),
                     direccion:str= Form(...),
@@ -99,10 +86,7 @@ async def agregar_escuela(request: Request,
                     username = Depends(VerificarRol(['user']))
                     ):
     
-    if not username:
-        response = RedirectResponse(url="/login", status_code=status.HTTP_303_SEE_OTHER)
-        response.delete_cookie("access_token")
-        return response
+    
     #################### Creacion del modelo en BD ####################
     await crear_escuela(sesion,nombre,direccion,telefono)
 
@@ -133,21 +117,9 @@ async def actualizar_escuela(
     }
     
     await editar_escuela_id_bd(sesion,id_escuela,campos_valores)
+    sesion.commit()
 
-    existe_escuela:bool = False
-    
     escuelas:Escuela = await obtener_escuelas_bd(sesion)
-
-    for escuela in escuelas:
-        if escuela.id == id_escuela:
-            existe_escuela = True
-            escuela.direccion = direccion
-            escuela.telefono = telefono
-        
-        
-    if not existe_escuela:
-        raise HTTPException(status_code=404,detail="No existe escuela")
-    print("existe escuela")
     
     return templates.TemplateResponse(
         request=request,

@@ -1,6 +1,7 @@
-from fastapi import FastAPI,Request
+from fastapi import FastAPI,Request,status
 from fastapi.templating import Jinja2Templates
 from fastapi.responses import RedirectResponse
+from fastapi.exceptions import RequestValidationError
 from api.endopoints.egresados import router as egresados_router
 from api.endopoints.escuelas import router as escuelas_router
 from api.endopoints.eventos import router as eventos_router
@@ -42,6 +43,37 @@ app.include_router(pagos_router)
 app.add_middleware(SessionMiddleware, secret_key=SECRET_KEY)
 
 templates = Jinja2Templates(directory=os.path.join("templates"))
+
+
+@app.exception_handler(RequestValidationError)
+async def validation_data_exception_handler(request: Request, exc: RequestValidationError):
+    
+    errores_legibles = []
+    for error in exc.errors():
+        campo = error["loc"][-1]
+        if error["type"] == "missing":
+            mensaje = f"El campo '{campo}' es obligatorio."
+        else:
+            mensaje = f"El campo '{campo}' tiene un formato inválido."
+        errores_legibles.append(mensaje)
+
+    
+    context = {
+        "request": request,
+        "mensaje": "El formulario contiene errores de validación.",
+        "errores": errores_legibles, 
+        "url_redireccion": "/eventos"
+    }
+
+    return templates.TemplateResponse(
+        name="/excepciones/excepcion_422.html", 
+        context=context,
+        status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+        request=request
+    )
+
+
+
 @app.exception_handler(Exception)
 async def global_exception_handler(request: Request, exc: Exception):
     #Define los parámetros que se inyectarán en la plantilla de Jinja2
@@ -65,7 +97,3 @@ async def global_exception_handler(request: Request, exc: Exception):
 def leer_raiz():
     return RedirectResponse(url="/dashboard")
 
-# Ruta con parámetros (GET)
-@app.get("/items/{item_id}")
-def leer_item(item_id: int, q: str = None):
-    return {"item_id": item_id, "busqueda": q}

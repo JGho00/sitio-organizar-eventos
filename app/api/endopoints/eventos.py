@@ -206,6 +206,7 @@ async def carga_masiva(
         if sesion:
             #Por algún error se vuelve atrás la transacción
             sesion.rollback()
+        raise excepcion_sistema
 
     finally:
         response = RedirectResponse(url="/eventos", status_code=status.HTTP_303_SEE_OTHER)

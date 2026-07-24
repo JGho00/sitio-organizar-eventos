@@ -13,7 +13,7 @@ class Pago(SQLModel,table = True):
     fecha:datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
     monto:float = Field()
     metodo_pago:str = Field()
-    nro_comprobante:str = Field()
+    ruta_comprobante:str = Field()
     cobrador:str = Field()
 
     #Relaciones

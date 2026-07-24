@@ -42,12 +42,11 @@ async def consultar_pagos_bd(sesion:Session):
 
 
 
-async def generar_pago_bd(sesion:Session,id_cuota:int,monto:Decimal):
+async def generar_pago_bd(sesion:Session,id_cuota:int,monto:Decimal,ruta_comprobante:str):
 
     metodo_pago = 'Transferecia'
-    comprobante = 'xxx333'
     cobrador = 'admin'
-    nuevo_pago:Pago = Pago(id_cuota=id_cuota,monto =monto,metodo_pago=metodo_pago,nro_comprobante=comprobante,cobrador=cobrador)
+    nuevo_pago:Pago = Pago(id_cuota=id_cuota,monto =monto,metodo_pago=metodo_pago,ruta_comprobante=ruta_comprobante,cobrador=cobrador)
 
     sesion.add(nuevo_pago)
     sesion.flush()

@@ -1,6 +1,5 @@
 from models.model_escuela import Escuela
-from sqlmodel import select
-
+from sqlmodel import select, Session
 import pandas as pd
 
 async def obtener_escuelas_bd(sesion):
@@ -15,7 +14,7 @@ async def obtener_escuela_id(sesion,id):
     return escuela
 
 
-async def crear_escuela(sesion_bd,nombre:str,direccion:str,telefono:str):
+async def crear_escuela(sesion_bd:Session,nombre:str,direccion:str,telefono:str):
     
     escuela:Escuela = Escuela(nombre = nombre,direccion = direccion,telefono=telefono)
 
@@ -25,10 +24,10 @@ async def crear_escuela(sesion_bd,nombre:str,direccion:str,telefono:str):
 
     return escuela
 
-async def editar_escuela_id_bd(sesion_bd,id,campos_valores:dict):
+async def editar_escuela_id_bd(sesion_bd:Session,id:int,campos_valores:dict):
     consulta = select(Escuela).where(Escuela.id == id)
     resultado = sesion_bd.exec(consulta)
-    escuela:Escuela = resultado.one()
+    escuela:Escuela = resultado.first()
     
     print(campos_valores)
     for llave, valor in campos_valores.items():
@@ -39,9 +38,8 @@ async def editar_escuela_id_bd(sesion_bd,id,campos_valores:dict):
 
 
     sesion_bd.add(escuela)
-    sesion_bd.commit()
-    sesion_bd.refresh(escuela)
 
+    return escuela
 
 
 async def eliminar_escuela_bd(sesion_bd,id:int):
