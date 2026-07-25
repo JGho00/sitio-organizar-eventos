@@ -6,15 +6,17 @@ from sqlmodel import Session
 from decimal import Decimal
 import pandas as pd
 import os
+from pathlib import Path
+import shutil
 from models.model_pago import Pago
 from models.model_cuota import Cuota
 from models.model_egresado import Egresado
 from models.model_escuela import Escuela
 from models.model_curso import Curso
 
-from services.pago_service import consultar_pagos_bd,generar_pago_bd
+from services.pago_service import consultar_pagos_bd,generar_pago_bd,consultar_pago_id_bd
 from services.cuota_service import consultar_cuota_id_bd,actualizar_cuota_bd
-from api.endopoints.dependencias import obtener_usuario_actual
+from api.endopoints.dependencias import VerificarRol
 
 from core.config import obtener_sesion
 
@@ -27,14 +29,9 @@ carpeta_comprobantes = "media/comprobantes/"
 templates = Jinja2Templates( "templates")
 
 @router.get("/")
-async def get_pagos(request:Request,username = Depends(obtener_usuario_actual),sesion:Session = Depends(obtener_sesion)):
+async def get_pagos(request:Request,username = Depends(VerificarRol(['admin','user'])),sesion:Session = Depends(obtener_sesion)):
     
-    if not username:
-        response = RedirectResponse(url="/login", status_code=status.HTTP_303_SEE_OTHER)
-        response.delete_cookie("access_token")
-        return response
     
-
     pagos:pd.DataFrame = await consultar_pagos_bd(sesion)
 
 
@@ -42,6 +39,32 @@ async def get_pagos(request:Request,username = Depends(obtener_usuario_actual),s
     return pagos.to_dict(orient='records')
 
 
+@router.get("/{id_cuota}")
+async def get_pago_id(request:Request,id_cuota:int,username = Depends(VerificarRol(['admin','user'])),sesion:Session = Depends(obtener_sesion)):
+    
+
+    cuota:Cuota = await consultar_cuota_id_bd(sesion,id_cuota)
+
+    pago:Pago = await consultar_pago_id_bd(sesion,id_cuota)
+
+    #Calcular monto por pagar
+    monto_por_pagar:float = float(cuota.monto_original) - float(pago.monto)
+    
+
+    return templates.TemplateResponse(
+            request=request,
+            name="pagos/detalle_pago.html",
+            context={
+                "cuota_id": cuota.id_cuota,
+                "monto_cuota":cuota.monto_original,
+                "monto_pagado": pago.monto,
+                "monto_por_pagar":monto_por_pagar,
+                "metodo_pago":pago.metodo_pago,
+                "ruta_comprobante":pago.ruta_comprobante
+                }
+                
+        )
+    
 # 1. Endpoint que arma e inyecta la ventana flotante
 @router.get("/cuotas/{cuota_id}/formulario-pago", response_class=HTMLResponse)
 async def obtener_formulario_pago(request: Request, cuota_id: int,sesion:Session = Depends(obtener_sesion)):
@@ -59,7 +82,7 @@ async def obtener_formulario_pago(request: Request, cuota_id: int,sesion:Session
 
 
 @router.post("/registrar-pago/{idcuota}")
-async def registrar_pago_cuota(request:Request,idcuota:int,monto_pagar:Decimal = Form(...),comprobante:UploadFile=File(...),sesion:Session = Depends(obtener_sesion),username = Depends(obtener_usuario_actual)):
+async def registrar_pago_cuota(request:Request,idcuota:int,monto_pagar:Decimal = Form(...),comprobante:UploadFile=File(...),sesion:Session = Depends(obtener_sesion),username = Depends(VerificarRol(['admin','user']))):
     try:
 
         #Validacion extension del comprobante
@@ -101,11 +124,19 @@ async def registrar_pago_cuota(request:Request,idcuota:int,monto_pagar:Decimal =
         os.makedirs(carpeta_egresado,exist_ok=True)
 
         
-
+        
         ruta_comprobante:str = carpeta_egresado + comprobante.filename
+        objeto_comprobante:Path = Path(ruta_comprobante)
 
         print("Ruta comprobante",ruta_comprobante)
-
+        try:
+            if ruta_comprobante:
+                with objeto_comprobante.open("wb") as buffer:
+                    shutil.copyfileobj(comprobante.file, buffer)
+        except Exception as e:
+            print(f"Error al guardar comprobante. Descripción: {str(e)}")
+        finally:
+            await comprobante.close() 
         print("Cuota existe",idcuota)
         
         
@@ -113,7 +144,7 @@ async def registrar_pago_cuota(request:Request,idcuota:int,monto_pagar:Decimal =
 
         
 
-        pago:Pago = await generar_pago_bd(sesion,cuota.id_cuota,monto_pagar)
+        pago:Pago = await generar_pago_bd(sesion,cuota.id_cuota,monto_pagar,ruta_comprobante)
         
         cuota_actualizada:Cuota = await actualizar_cuota_bd(sesion,cuota,monto_pagar)
 

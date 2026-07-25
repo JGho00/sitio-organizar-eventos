@@ -29,6 +29,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # Inicializar la aplicación
 app = FastAPI()
 app.mount("/static", StaticFiles(directory=os.path.join(BASE_DIR, "app", "static")), name="static")
+app.mount("/media", StaticFiles(directory=os.path.join(BASE_DIR, "app", "media")), name="media")
 app.include_router(egresados_router)
 app.include_router(escuelas_router)
 app.include_router(eventos_router)

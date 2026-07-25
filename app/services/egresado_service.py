@@ -54,9 +54,9 @@ async def estadisticas_egresado(egresado:Egresado):
         cant_cuotas_vencidas = len(df_cuotas_vencidas)
     
     #Calcular estado de cuenta egresado (AL DÍA, EN MORA)
-    estado_cuenta:str = 'AL DÍA'
+    estado_cuenta:str = 'PAGOS AL DÍA'
     if len(df_cuotas_pagas) == 0:
-        estado_cuenta = 'SIN CUOTAS CARGADAS'
+        estado_cuenta = 'AL DÍA, SIN PAGOS REALIZADOS'
     elif cant_cuotas_vencidas > 0:
         estado_cuenta = 'EN MORA'
 

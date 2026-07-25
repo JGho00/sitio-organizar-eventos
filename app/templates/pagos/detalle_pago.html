@@ -1,0 +1,33 @@
+<div class="modal-contenido modal-detalle-pago">
+    <button onclick="cerrarModal()" class="btn-cerrar-esquina">&times;</button>
+
+    <h2>Detalle Pago</h2>
+
+    <div class="detalle-datos">
+        <div class="detalle-item">
+            <span class="detalle-label">Cuota ID</span>
+            <span class="detalle-valor mono">{{ cuota_id }}</span>
+        </div>
+        <div class="detalle-item">
+            <span class="detalle-label">Monto de la cuota</span>
+            <span class="detalle-valor mono">${{ monto_cuota }}</span>
+        </div>
+        <div class="detalle-item">
+            <span class="detalle-label">Monto del pago</span>
+            <span class="detalle-valor mono">${{ monto_pagado }}</span>
+        </div>
+        <div class="detalle-item">
+            <span class="detalle-label">Monto por pagar</span>
+            <span class="detalle-valor mono">${{ monto_por_pagar }}</span>
+        </div>
+        <div class="detalle-item">
+            <span class="detalle-label">Metodo de pago</span>
+            <span class="detalle-valor mono">{{ metodo_pago }}</span>
+        </div>
+    </div>
+
+    <div class="detalle-comprobante">
+        <span class="detalle-label">Comprobante</span>
+        <img class="comprobante-img" src="/{{ ruta_comprobante }}" alt="Comprobante de pago">
+    </div>
+</div>

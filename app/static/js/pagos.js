@@ -90,7 +90,40 @@ function configurarEnvioPago(idcuota) {
     });
 }
 
-// 4. Función global para cerrar el modal de forma limpia
+// 4. Capturar clics en los botones "Ver detalle" para ABRIR el detalle del pago
+const botonesDetalle = document.querySelectorAll('.btn_ver_detalle_pago');
+
+botonesDetalle.forEach(boton => {
+    boton.addEventListener('click', async (evento) => {
+        const idCuota = evento.currentTarget.getAttribute('data-idcuota');
+        console.log("ID capturado para abrir detalle:", idCuota);
+        await abrirDetallePago(idCuota);
+    });
+});
+
+// 5. Función para obtener el HTML del detalle de pago e inyectarlo en el modal
+async function abrirDetallePago(idcuota) {
+    try {
+        const respuesta = await fetch(`/pagos/${idcuota}`);
+
+        if (!respuesta.ok) {
+            throw new Error(`Error en el servidor: ${respuesta.status}`);
+        }
+
+        const htmlDetalle = await respuesta.text();
+
+        const modal = document.getElementById("modal-base");
+        if (modal) {
+            modal.innerHTML = htmlDetalle;
+            modal.classList.add("mostrar");
+        }
+    } catch (error) {
+        console.error("Error al obtener el detalle del pago:", error);
+        alert("No se pudo cargar el detalle del pago.");
+    }
+}
+
+// 6. Función global para cerrar el modal de forma limpia
 function cerrarModal() {
     const modal = document.getElementById("modal-base");
     if (modal) {
