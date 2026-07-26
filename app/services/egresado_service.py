@@ -7,9 +7,11 @@ from datetime import datetime
 import pandas as pd
 
 async def obtener_egresado_con_cuotas(sesion: Session, dni: int):
-    # Usamos selectinload para forzar la carga de la relación 'cuotas'
+    
     consulta = select(Egresado).where(Egresado.dni == dni).options(selectinload(Egresado.cuotas))
+
     egresado_cuotas:Egresado = sesion.exec(consulta).first()
+
     return egresado_cuotas
 
 
@@ -24,8 +26,13 @@ async def estadisticas_egresado(egresado:Egresado):
 
     #Limpiar listado cuotas
     egresado = [e.model_dump() for e in egresado.cuotas]
-
+    print("Egresado")
+    
     df_egresado_cuotas = pd.DataFrame(egresado)
+
+    
+    print(df_egresado_cuotas)
+    
     cant_cuotas_totales:int = 0
     cant_cuotas_totales = len(df_egresado_cuotas)
     cant_cuotas_impagas:int = 0
@@ -72,3 +79,14 @@ async def estadisticas_egresado(egresado:Egresado):
     }
 
     return estadisticas
+
+
+def obtener_egresado_cuotas(egresado:Egresado):
+
+    dict_egresado:dict = [e.model_dump() for e in egresado.cuotas]
+        
+    print("Egresado") 
+            
+    df_egresado_cuotas:pd.DataFrame = pd.DataFrame(dict_egresado)
+
+    return df_egresado_cuotas

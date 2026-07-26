@@ -1,6 +1,7 @@
 from sqlmodel import SQLModel,Field,Relationship
 from decimal import Decimal
 from typing import TYPE_CHECKING
+from pydantic import computed_field
 
 if TYPE_CHECKING:
     from models.model_contrato import Contrato
@@ -26,3 +27,10 @@ class Cuota(SQLModel,table = True):
         back_populates="cuota",
         sa_relationship_kwargs={"passive_deletes": True}
     )
+
+    @computed_field
+    @property
+    def monto_restante(self) -> Decimal:
+        return self.monto_original - self.monto_pago
+
+    

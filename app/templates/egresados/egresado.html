@@ -47,6 +47,7 @@ Egresados
                     <th>Nro de cuota</th>
                     <th>Monto</th>
                     <th>Monto pagado</th>
+                    <th>Monto por pagar</th>
                     <th>Fecha de pago</th>
                     <th>Estado</th>
                     <th>Acciones</th>
@@ -58,6 +59,7 @@ Egresados
                     <td class="mono">{{cuota.numero_cuota}}</td>
                     <td class="mono">{{cuota.monto_original}}</td>
                     <td class="mono">{{cuota.monto_pago}}</td>
+                    <td class="mono">{{cuota.monto_restante}}</td>
                     <td class="mono">{{cuota.fecha_vencimiento}}</td>
                     <td><span class="badge warn">{{cuota.estado_pago}}</span></td>
                     <td class="btn-row">
@@ -85,7 +87,7 @@ Egresados
 
 <section class="panel">
     <div class="panel-head"><h2>Editar datos</h2></div>
-    <form action="/egresados/actualizar-egresado/{{egresado.dni}}" method="post" class="form-grid">
+    <form action="/egresados/actualizar-egresado/{{egresado.dni}}" method="post" class="form-grid" data-ajax>
         <div class="field">
             <label>Egresado</label>
             <input type="text" value="{{egresado.nombre}}" name="nombre">

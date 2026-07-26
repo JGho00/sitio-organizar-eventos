@@ -14,7 +14,7 @@ Escuelas
 
 <section class="panel">
     <div class="panel-head"><h2>Datos de la escuela</h2></div>
-    <form action="/escuelas/actualizar-escuela/{{escuela.id}}" method="post" class="form-grid">
+    <form action="/escuelas/actualizar-escuela/{{escuela.id}}" method="post" class="form-grid" data-ajax>
         <div class="field">
             <label>Escuela</label>
             <input type="text" value="{{escuela.nombre}}" name="nombre">

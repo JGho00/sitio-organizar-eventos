@@ -50,7 +50,7 @@ Usuarios
                         <a href="/users/actualizar-usuario/{{usuario.id}}">
                             <button class="btn-small btn-edit">✏️ Editar</button>
                         </a>
-                        <form  action="/users/eliminar-usuario/{{usuario.id}}" method="post">
+                        <form  action="/users/eliminar-usuario/{{usuario.id}}" method="post" data-ajax data-confirm="¿Está seguro de que desea eliminar este usuario?">
                             <button class="btn-small btn-delete">
                                 🗑️ Eliminar
                             </button>

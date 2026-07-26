@@ -1,6 +1,6 @@
 from fastapi import FastAPI,Request,status
 from fastapi.templating import Jinja2Templates
-from fastapi.responses import RedirectResponse
+from fastapi.responses import RedirectResponse,JSONResponse
 from fastapi.exceptions import RequestValidationError
 from api.endopoints.egresados import router as egresados_router
 from api.endopoints.escuelas import router as escuelas_router
@@ -46,9 +46,13 @@ app.add_middleware(SessionMiddleware, secret_key=SECRET_KEY)
 templates = Jinja2Templates(directory=os.path.join("templates"))
 
 
+def es_peticion_ajax(request: Request) -> bool:
+    return request.headers.get("x-requested-with") == "XMLHttpRequest"
+
+
 @app.exception_handler(RequestValidationError)
 async def validation_data_exception_handler(request: Request, exc: RequestValidationError):
-    
+
     errores_legibles = []
     for error in exc.errors():
         campo = error["loc"][-1]
@@ -58,16 +62,23 @@ async def validation_data_exception_handler(request: Request, exc: RequestValida
             mensaje = f"El campo '{campo}' tiene un formato inválido."
         errores_legibles.append(mensaje)
 
-    
+    mensaje_general = "El formulario contiene errores de validación."
+
+    if es_peticion_ajax(request):
+        return JSONResponse(
+            status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+            content={"mensaje": mensaje_general, "errores": errores_legibles}
+        )
+
     context = {
         "request": request,
-        "mensaje": "El formulario contiene errores de validación.",
-        "errores": errores_legibles, 
+        "mensaje": mensaje_general,
+        "errores": errores_legibles,
         "url_redireccion": "/eventos"
     }
 
     return templates.TemplateResponse(
-        name="/excepciones/excepcion_422.html", 
+        name="/excepciones/excepcion_422.html",
         context=context,
         status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
         request=request
@@ -80,15 +91,20 @@ async def global_exception_handler(request: Request, exc: Exception):
     #Define los parámetros que se inyectarán en la plantilla de Jinja2
     error_traceback = "".join(traceback.format_exception(type(exc), exc, exc.__traceback__))
     logger.error(f"Error en la ruta {request.url.path}: {str(exc)}\n{error_traceback}")
+    mensaje_general = "Se produjo un error al procesar tu solicitud en el sistema."
+
+    if es_peticion_ajax(request):
+        return JSONResponse(status_code=500, content={"mensaje": mensaje_general})
+
     context = {
         "request": request,
-        "mensaje": "Se produjo un error al procesar tu solicitud en el sistema.",
+        "mensaje": mensaje_general,
         "url_redireccion": "/dashboard"  # Cambia esto por la ruta de tu app a la que quieras enviar al usuario
     }
 
     return templates.TemplateResponse(
-    name="/excepciones/excepcion_500.html", 
-    context=context, 
+    name="/excepciones/excepcion_500.html",
+    context=context,
     status_code=500,
     request= request
     )

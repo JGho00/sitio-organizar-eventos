@@ -40,13 +40,13 @@ async def consultar_pagos_bd(sesion:Session):
     
     return df_pagos
 
-async def consultar_pago_id_bd(sesion:Session, id_cuota:int):
+async def consultar_pagos_cuota_bd(sesion:Session, id_cuota:int):
 
-    consulta = select(Pago).where(Pago.id_cuota == id_cuota)
+    consulta = select(Pago).where(Pago.id_cuota == id_cuota).order_by(Pago.fecha)
 
-    pago:Pago = sesion.exec(consulta).first()
+    pagos:List[Pago] = sesion.exec(consulta).all()
 
-    return pago 
+    return pagos
 
 async def generar_pago_bd(sesion:Session,id_cuota:int,monto:Decimal,ruta_comprobante:str):
 

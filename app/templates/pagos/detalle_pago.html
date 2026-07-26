@@ -13,21 +13,36 @@
             <span class="detalle-valor mono">${{ monto_cuota }}</span>
         </div>
         <div class="detalle-item">
-            <span class="detalle-label">Monto del pago</span>
+            <span class="detalle-label">Monto pagado (total)</span>
             <span class="detalle-valor mono">${{ monto_pagado }}</span>
         </div>
         <div class="detalle-item">
             <span class="detalle-label">Monto por pagar</span>
             <span class="detalle-valor mono">${{ monto_por_pagar }}</span>
         </div>
-        <div class="detalle-item">
-            <span class="detalle-label">Metodo de pago</span>
-            <span class="detalle-valor mono">{{ metodo_pago }}</span>
-        </div>
     </div>
 
-    <div class="detalle-comprobante">
-        <span class="detalle-label">Comprobante</span>
-        <img class="comprobante-img" src="/{{ ruta_comprobante }}" alt="Comprobante de pago">
+    <div class="detalle-historial-pagos">
+        <span class="detalle-label">Historial de pagos</span>
+
+        {% if pagos %}
+            <ul class="lista-pagos">
+                {% for pago in pagos %}
+                <li class="pago-item">
+                    <div class="pago-item-datos">
+                        <span class="detalle-valor mono">${{ pago.monto }}</span>
+                        <span class="detalle-label">{{ pago.fecha.strftime('%d/%m/%Y') }} · {{ pago.metodo_pago }}</span>
+                    </div>
+                    {% if pago.ruta_comprobante %}
+                        <img class="comprobante-img" src="/{{ pago.ruta_comprobante }}" alt="Comprobante de pago">
+                    {% else %}
+                        <span>Sin comprobante adjuntado</span>
+                    {% endif %}
+                </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <span>Todavía no se registraron pagos para esta cuota</span>
+        {% endif %}
     </div>
 </div>

@@ -6,7 +6,7 @@ const botones = document.querySelectorAll('.btn_registrar_pago_cuota');
 botones.forEach(boton => {
     boton.addEventListener('click', async (evento) => {
         const idCuota = evento.currentTarget.getAttribute('data-idcuota');
-        console.log("ID capturado para abrir formulario:", idCuota); 
+        //console.log("ID capturado para abrir formulario:", idCuota); 
         await abrirFormularioPago(idCuota);
     });
 });
@@ -50,10 +50,17 @@ function configurarEnvioPago(idcuota) {
         const inputMonto = document.getElementById("monto_pagar");
         const monto = inputMonto ? inputMonto.value : 0;
 
+        // Capturamos el comprobante (opcional)
+        const inputComprobante = document.getElementById("comprobante");
+        const archivoComprobante = inputComprobante && inputComprobante.files.length > 0 ? inputComprobante.files[0] : null;
+
         try {
             // Creamos un FormData para simular el envío de un formulario tradicional que entienda FastAPI Form(...)
             const datosFormulario = new FormData();
             datosFormulario.append("monto_pagar", monto);
+            if (archivoComprobante) {
+                datosFormulario.append("comprobante", archivoComprobante);
+            }
 
             // Hacemos el POST real para procesar el pago en la base de datos
             const respuesta = await fetch(`/pagos/registrar-pago/${idcuota}`, {

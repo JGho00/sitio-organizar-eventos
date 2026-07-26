@@ -64,7 +64,7 @@ Escuelas
                         <td class="cell-anio">{{ escuela.telefono}}</td>
                         <td class="cell-acciones">
                             <button type="button" class="btn-small btn-edit" data-id="{{ escuela.id }}">✏️ Editar</button>
-                            <form action="/escuelas/eliminar-escuela/{{escuela.id}}" method="post">
+                            <form action="/escuelas/eliminar-escuela/{{escuela.id}}" method="post" data-ajax data-confirm="¿Está seguro de que desea eliminar esta escuela?">
                                 <button class="btn-small btn-delete">
                                     🗑️ Eliminar
                                 </button>

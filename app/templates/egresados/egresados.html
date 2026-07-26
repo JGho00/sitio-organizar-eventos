@@ -65,12 +65,12 @@ Egresados
                     <td class="cell-direccion">{{ egresado.direccion }}</td>
                     <td class="cell-telefono">{{ egresado.telefono }}</td>
                     <td class="cell-acciones">
-                        <form action="/egresados/dni/{{ egresado.dni }}"  method="POST" style="display:inline;">
+                        <form action="/egresados/dni/{{ egresado.dni }}"  method="POST" style="display:inline;" data-ajax data-redirect="/egresados/dni/{{ egresado.dni }}">
                             <button type="submit" class="btn-small btn-edit">Consultar</button>
                         </form>
-                        
-                        <form action="/egresados/eliminar-egresado/{{egresado.dni}}" method="POST" style="display:inline;">
-                            <button class="btn-small btn-delete" onclick="deleteEgresado('{{ egresado.dni }}')">
+
+                        <form action="/egresados/eliminar-egresado/{{egresado.dni}}" method="POST" style="display:inline;" data-ajax data-confirm="¿Está seguro de que desea eliminar este egresado?">
+                            <button class="btn-small btn-delete">
                             🗑️ Eliminar
                             </button>
                         </form>

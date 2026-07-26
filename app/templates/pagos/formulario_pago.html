@@ -7,7 +7,11 @@
 
     <form class="field full">
         <label for="monto_pagar">Monto a abonar</label>
-        <input type="text" id="monto_pagar" name="monto_pagar" max="{{ monto_total }}" required>
+        <input type="text" id="monto_pagar" name="monto_pagar" max="{{ restante }}" value = {{restante}} required>
+
+        
+        <label for="comprobante">Comprobante (opcional)</label>
+        <input type="file" id="comprobante" name="comprobante" accept=".pdf,.jpg,.jpeg,.png">
 
         <div id="mensaje-resultado"></div>
 

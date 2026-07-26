@@ -124,7 +124,7 @@ async def eliminar_usuario(id_usuario: int,request: Request,sesion: Session = De
     
     return templates.TemplateResponse(
             request=request,
-            name="escuelas/usuarios.html",
+            name="usuarios/usuarios.html",
             context={
                 "usuarios": usuarios,
                 "username":username

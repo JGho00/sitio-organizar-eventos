@@ -153,6 +153,8 @@ async def get_egresado_dni(request:Request,dni:int,sesion:Session = Depends(obte
     
     egresado = await obtener_egresado_con_cuotas(sesion,dni)
 
+
+    
     estadisticas= await estadisticas_egresado(egresado)
 
     return templates.TemplateResponse(
@@ -177,7 +179,15 @@ async def get_egresado_dni(request:Request,dni:int,sesion:Session = Depends(obte
 
     
     egresado = await obtener_egresado_con_cuotas(sesion,dni)
-
+    print("EGRESADO ENVIADO",type(egresado))
+    print(egresado)
+    
+    #Obtener dataframe
+    #df_egresado = df_egresado_cuotas(egresado)
+    #df_egresado_cuotas['por_pagar'] = df_egresado['monto_original'] - df_egresado['monto_pago']
+    #print("Data egresado completa")
+    #print(df_egresado)
+    
     estadisticas= await estadisticas_egresado(egresado)
 
     return templates.TemplateResponse(

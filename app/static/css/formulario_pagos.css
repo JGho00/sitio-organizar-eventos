@@ -54,7 +54,8 @@
 }
 
 .modal-contenido input[type="text"],
-.modal-contenido input[type="number"] {
+.modal-contenido input[type="number"],
+.modal-contenido input[type="file"] {
     width: 100%;
     padding: 10px 12px;
     background: var(--surface-alt, #16233A);
@@ -63,6 +64,18 @@
     border-radius: 6px;
     font-family: 'JetBrains Mono', monospace;
     font-size: 13.5px;
+}
+
+.modal-contenido input[type="file"]::file-selector-button {
+    background: var(--border, #223049);
+    color: var(--text, #E8EDF7);
+    border: none;
+    border-radius: 4px;
+    padding: 6px 10px;
+    margin-right: 10px;
+    font-family: 'Inter', sans-serif;
+    font-size: 12.5px;
+    cursor: pointer;
 }
 
 .modal-contenido input:focus {
@@ -119,6 +132,36 @@
     display: flex;
     flex-direction: column;
     gap: 8px;
+}
+
+.detalle-historial-pagos {
+    margin-top: 14px;
+}
+
+.lista-pagos {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 8px;
+    max-height: 260px;
+    overflow-y: auto;
+}
+
+.pago-item {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    padding: 10px;
+    border: 1px solid var(--border, #223049);
+    border-radius: 8px;
+    background: var(--surface-alt, #16233A);
+}
+
+.pago-item-datos {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
 .comprobante-img {
