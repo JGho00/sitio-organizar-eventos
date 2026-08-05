@@ -1,0 +1,108 @@
+{% extends "base.html" %}
+
+{% block title %}
+Logs
+{% endblock %}
+
+{% block page_title %}Registro de Actividad{% endblock %}
+{% block page_subtitle %}Auditoría de acciones realizadas en el portal{% endblock %}
+
+{% block styles %}
+<link rel="stylesheet" href="/static/css/logs.css">
+{% endblock %}
+
+{% block content %}
+
+<div class="page-container">
+
+    <div class="status-grid">
+        <section class="panel status-card">
+            <div class="panel-head"><h2>Usuario activo</h2></div>
+            <div class="panel-body">
+                <div class="status-row">
+                    <span class="dot"></span>
+                    <div>
+                        <div class="status-value">{{ username.username }}</div>
+                        <div class="status-meta">Rol: {{ username.rol }}</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="panel status-card">
+            <div class="panel-head"><h2>Último acceso registrado</h2></div>
+            <div class="panel-body">
+                {% if logs %}
+                {% set ultimo_log = logs[0] %}
+                <div class="status-row">
+                    <span class="dot"></span>
+                    <div>
+                        <div class="status-value">{{ ultimo_log.nombre }}</div>
+                        <div class="status-meta">{{ ultimo_log.accion }} — {{ ultimo_log.detalle }}</div>
+                        <div class="status-meta mono">{{ ultimo_log.fecha_log }}</div>
+                    </div>
+                </div>
+                {% else %}
+                <div class="row-empty">Sin actividad registrada</div>
+                {% endif %}
+            </div>
+        </section>
+    </div>
+
+    <section class="panel">
+        <div class="panel-head">
+            <h2>Buscar por fecha</h2>
+        </div>
+        <div class="search-box">
+            <input
+                type="date"
+                id="searchDateInput"
+                onchange=""
+            >
+        </div>
+    </section>
+
+    <section class="panel">
+        <div class="panel-head">
+            <h2>Últimas acciones</h2>
+        </div>
+
+        <div class="table-responsive">
+            <table class="log-table">
+                <thead>
+                    <tr>
+                        <th>Usuario</th>
+                        <th>Acción</th>
+                        <th>Detalle</th>
+                        <th>Fecha</th>
+                    </tr>
+                </thead>
+                <tbody id="logsTableBody">
+                    {% if logs %}
+                    {% for log in logs[:10] %}
+                        <tr class="table-row" data-search="{{ log.fecha_log|string }}">
+                            <td class="cell-usuario">
+                                <strong>{{ log.id_usuario }}</strong>
+                            </td>
+                            <td class="cell-accion">{{ log.accion }}</td>
+                            <td class="cell-detalle">{{ log.detalle }}</td>
+                            <td class="cell-fecha mono">{{ log.fecha_log }}</td>
+                        </tr>
+                    {% endfor %}
+                    {% else %}
+                        <tr><td colspan="4" class="row-empty">Sin registros de actividad</td></tr>
+                    {% endif %}
+                </tbody>
+            </table>
+
+            {% if not logs %}
+            <div class="empty-state">
+                <p>📭 No hay logs registrados</p>
+            </div>
+            {% endif %}
+        </div>
+    </section>
+
+</div>
+
+{% endblock %}

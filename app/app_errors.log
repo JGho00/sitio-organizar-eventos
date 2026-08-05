@@ -1619,3 +1619,222 @@ Traceback (most recent call last):
     return getattr(obj, attribute)
 jinja2.exceptions.UndefinedError: 'username' is undefined
 
+2026-08-04 22:28:42,715 - app_logger - ERROR - Error en la ruta /egresados/: 'None' has no attribute 'escuela'
+Traceback (most recent call last):
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\starlette\middleware\errors.py", line 164, in __call__
+    await self.app(scope, receive, _send)
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\starlette\middleware\sessions.py", line 88, in __call__
+    await self.app(scope, receive, send_wrapper)
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\starlette\middleware\exceptions.py", line 63, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\fastapi\middleware\asyncexitstack.py", line 18, in __call__
+    await self.app(scope, receive, send)
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\starlette\routing.py", line 660, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\starlette\routing.py", line 680, in app
+    await route.handle(scope, receive, send)
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\starlette\routing.py", line 276, in handle
+    await self.app(scope, receive, send)
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\fastapi\routing.py", line 134, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\fastapi\routing.py", line 120, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\fastapi\routing.py", line 674, in app
+    raw_response = await run_endpoint_function(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<3 lines>...
+    )
+    ^
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\fastapi\routing.py", line 328, in run_endpoint_function
+    return await dependant.call(**values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\app\api\endopoints\egresados.py", line 40, in get_egresados
+    return templates.TemplateResponse(
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        request=request,
+        ^^^^^^^^^^^^^^^^
+    ...<4 lines>...
+        }
+        ^
+    )
+    ^
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\starlette\templating.py", line 149, in TemplateResponse
+    return _TemplateResponse(
+        template,
+    ...<4 lines>...
+        background=background,
+    )
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\starlette\templating.py", line 43, in __init__
+    content = template.render(context)
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\jinja2\environment.py", line 1295, in render
+    self.environment.handle_exception()
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\jinja2\environment.py", line 942, in handle_exception
+    raise rewrite_traceback_stack(source=source)
+  File "templates\egresados\egresados.html", line 1, in top-level template code
+    {% extends "base.html" %}
+  File "templates\base.html", line 108, in top-level template code
+    {% block content %}
+    ^^^^^^^^^^^^^^^^^
+  File "templates\egresados\egresados.html", line 63, in block 'content'
+    <td class="cell-escuela">{{ egresado.curso.escuela.nombre }}</td>
+    ^^^^^
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\jinja2\environment.py", line 490, in getattr
+    return getattr(obj, attribute)
+jinja2.exceptions.UndefinedError: 'None' has no attribute 'escuela'
+
+2026-08-04 22:31:49,258 - app_logger - ERROR - Error en la ruta /egresados/: 'None' has no attribute 'escuela'
+Traceback (most recent call last):
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\starlette\middleware\errors.py", line 164, in __call__
+    await self.app(scope, receive, _send)
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\starlette\middleware\sessions.py", line 88, in __call__
+    await self.app(scope, receive, send_wrapper)
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\starlette\middleware\exceptions.py", line 63, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\fastapi\middleware\asyncexitstack.py", line 18, in __call__
+    await self.app(scope, receive, send)
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\starlette\routing.py", line 660, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\starlette\routing.py", line 680, in app
+    await route.handle(scope, receive, send)
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\starlette\routing.py", line 276, in handle
+    await self.app(scope, receive, send)
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\fastapi\routing.py", line 134, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\fastapi\routing.py", line 120, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\fastapi\routing.py", line 674, in app
+    raw_response = await run_endpoint_function(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<3 lines>...
+    )
+    ^
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\fastapi\routing.py", line 328, in run_endpoint_function
+    return await dependant.call(**values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\app\api\endopoints\egresados.py", line 40, in get_egresados
+    return templates.TemplateResponse(
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        request=request,
+        ^^^^^^^^^^^^^^^^
+    ...<4 lines>...
+        }
+        ^
+    )
+    ^
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\starlette\templating.py", line 149, in TemplateResponse
+    return _TemplateResponse(
+        template,
+    ...<4 lines>...
+        background=background,
+    )
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\starlette\templating.py", line 43, in __init__
+    content = template.render(context)
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\jinja2\environment.py", line 1295, in render
+    self.environment.handle_exception()
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\jinja2\environment.py", line 942, in handle_exception
+    raise rewrite_traceback_stack(source=source)
+  File "templates\egresados\egresados.html", line 1, in top-level template code
+    {% extends "base.html" %}
+  File "templates\base.html", line 108, in top-level template code
+    {% block content %}
+    ^^^^^^^^^^^^^^^^^
+  File "templates\egresados\egresados.html", line 63, in block 'content'
+    <td class="cell-escuela">{{ egresado.curso.escuela.nombre }}</td>
+    ^^^^^
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\jinja2\environment.py", line 490, in getattr
+    return getattr(obj, attribute)
+jinja2.exceptions.UndefinedError: 'None' has no attribute 'escuela'
+
+2026-08-04 22:34:31,129 - app_logger - ERROR - Error en la ruta /egresados/: 'None' has no attribute 'escuela'
+Traceback (most recent call last):
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\starlette\middleware\errors.py", line 164, in __call__
+    await self.app(scope, receive, _send)
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\starlette\middleware\sessions.py", line 88, in __call__
+    await self.app(scope, receive, send_wrapper)
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\starlette\middleware\exceptions.py", line 63, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\fastapi\middleware\asyncexitstack.py", line 18, in __call__
+    await self.app(scope, receive, send)
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\starlette\routing.py", line 660, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\starlette\routing.py", line 680, in app
+    await route.handle(scope, receive, send)
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\starlette\routing.py", line 276, in handle
+    await self.app(scope, receive, send)
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\fastapi\routing.py", line 134, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\fastapi\routing.py", line 120, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\fastapi\routing.py", line 674, in app
+    raw_response = await run_endpoint_function(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<3 lines>...
+    )
+    ^
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\fastapi\routing.py", line 328, in run_endpoint_function
+    return await dependant.call(**values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\app\api\endopoints\egresados.py", line 40, in get_egresados
+    return templates.TemplateResponse(
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        request=request,
+        ^^^^^^^^^^^^^^^^
+    ...<4 lines>...
+        }
+        ^
+    )
+    ^
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\starlette\templating.py", line 149, in TemplateResponse
+    return _TemplateResponse(
+        template,
+    ...<4 lines>...
+        background=background,
+    )
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\starlette\templating.py", line 43, in __init__
+    content = template.render(context)
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\jinja2\environment.py", line 1295, in render
+    self.environment.handle_exception()
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\jinja2\environment.py", line 942, in handle_exception
+    raise rewrite_traceback_stack(source=source)
+  File "templates\egresados\egresados.html", line 1, in top-level template code
+    {% extends "base.html" %}
+  File "templates\base.html", line 108, in top-level template code
+    {% block content %}
+    ^^^^^^^^^^^^^^^^^
+  File "templates\egresados\egresados.html", line 63, in block 'content'
+    <td class="cell-escuela">{{ egresado.curso.escuela.nombre }}</td>
+    ^^^^^
+  File "C:\Users\PC\Desktop\Apps\sitio-organizar-eventos\venv\Lib\site-packages\jinja2\environment.py", line 490, in getattr
+    return getattr(obj, attribute)
+jinja2.exceptions.UndefinedError: 'None' has no attribute 'escuela'
+
