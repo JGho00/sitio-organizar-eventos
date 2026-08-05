@@ -42,8 +42,8 @@
 
             <li class="rail-item">
                 <a href="/egresados" class="{% if request.url.path.startswith('/egresados') %}active{% endif %}">
-                    <span class="rail-icon">🎓</span>
-                    <span class="rail-text">Egresados</span>
+                    <span class="rail-icon">📊</span>
+                    <span class="rail-text">Pagos</span>
                 </a>
             </li>
 
@@ -54,34 +54,23 @@
                 </a>
             </li>
 
-            <li class="rail-item">
-                <a href="/cuotas" class="{% if request.url.path.startswith('/cuotas') %}active{% endif %}">
-                    <span class="rail-icon">📊</span>
-                    <span class="rail-text">Cuotas</span>
-                </a>
-            </li>
-
-            <li class="rail-item">
-                <a href="/eventos" class="{% if request.url.path.startswith('/eventos') %}active{% endif %}">
-                    <span class="rail-icon">📅</span>
-                    <span class="rail-text">Eventos</span>
-                </a>
-            </li>
+            
 
             <li class="rail-divider"></li>
 
-            <li class="rail-item">
-                <a href="/escuelas" class="{% if request.url.path.startswith('/escuelas') %}active{% endif %}">
-                    <span class="rail-icon">🏫</span>
-                    <span class="rail-text">Escuelas</span>
-                </a>
-            </li>
 
             {% if username.rol == 'admin' %}
             <li class="rail-item">
                 <a href="/users" class="{% if request.url.path.startswith('/users') %}active{% endif %}">
                     <span class="rail-icon">👥</span>
                     <span class="rail-text">Usuarios</span>
+                </a>
+            </li>
+
+            <li class="rail-item">
+                <a href="/logs" class="{% if request.url.path.startswith('/logs') %}active{% endif %}">
+                    <span class="rail-icon">📋</span>
+                    <span class="rail-text">Logs</span>
                 </a>
             </li>
             {% endif %}

@@ -28,7 +28,7 @@ router = APIRouter(
 templates = Jinja2Templates( "templates")
 
 @router.get("/")
-async def get_egresados(request:Request,username = Depends(VerificarRol(['admin'])),sesion:Session = Depends(obtener_sesion)):
+async def get_egresados(request:Request,username = Depends(VerificarRol(['admin','user'])),sesion:Session = Depends(obtener_sesion)):
     
     if not username:
         response = RedirectResponse(url="/login", status_code=status.HTTP_303_SEE_OTHER)
@@ -47,7 +47,7 @@ async def get_egresados(request:Request,username = Depends(VerificarRol(['admin'
     )
 
 @router.get("/cargar-egresado")
-async def cargar_egresado(request:Request,username = Depends(VerificarRol(['admin'])),sesion:Session = Depends(obtener_sesion)):
+async def cargar_egresado(request:Request,username = Depends(VerificarRol(['admin','user'])),sesion:Session = Depends(obtener_sesion)):
     
     escuelas = await obtener_escuelas_bd(sesion)
 
@@ -143,7 +143,7 @@ async def get_egresado_dni(request:Request,dni:int,nombre:str =Form(...),telefon
 
 
 @router.post("/dni/{dni}")
-async def get_egresado_dni(request:Request,dni:int,sesion:Session = Depends(obtener_sesion),username = Depends(VerificarRol(['admin']))):
+async def get_egresado_dni(request:Request,dni:int,sesion:Session = Depends(obtener_sesion),username = Depends(VerificarRol(['admin','user']))):
     
     if not username:
         response = RedirectResponse(url="/login", status_code=status.HTTP_303_SEE_OTHER)
@@ -170,7 +170,7 @@ async def get_egresado_dni(request:Request,dni:int,sesion:Session = Depends(obte
 
 
 @router.get("/dni/{dni}")
-async def get_egresado_dni(request:Request,dni:int,sesion:Session = Depends(obtener_sesion),username = Depends(VerificarRol(['admin']))):
+async def get_egresado_dni(request:Request,dni:int,sesion:Session = Depends(obtener_sesion),username = Depends(VerificarRol(['admin','user']))):
     
     if not username:
         response = RedirectResponse(url="/login", status_code=status.HTTP_303_SEE_OTHER)
@@ -182,11 +182,7 @@ async def get_egresado_dni(request:Request,dni:int,sesion:Session = Depends(obte
     print("EGRESADO ENVIADO",type(egresado))
     print(egresado)
     
-    #Obtener dataframe
-    #df_egresado = df_egresado_cuotas(egresado)
-    #df_egresado_cuotas['por_pagar'] = df_egresado['monto_original'] - df_egresado['monto_pago']
-    #print("Data egresado completa")
-    #print(df_egresado)
+    
     
     estadisticas= await estadisticas_egresado(egresado)
 

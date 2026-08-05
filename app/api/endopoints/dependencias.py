@@ -76,3 +76,7 @@ class VerificarRol:
             status_code=status.HTTP_303_SEE_OTHER,
             headers={"Location": "/login"}
         )
+
+
+
+listado_cuotas:list = [3,6,9,12,18,24,36]

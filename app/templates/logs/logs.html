@@ -39,7 +39,7 @@ Logs
                     <div>
                         <div class="status-value">{{ ultimo_log.nombre }}</div>
                         <div class="status-meta">{{ ultimo_log.accion }} — {{ ultimo_log.detalle }}</div>
-                        <div class="status-meta mono">{{ ultimo_log.fecha_log }}</div>
+                        <div class="status-meta mono">{{ ultimo_log.fecha_log.strftime('%Y-%m-%d %H:%M:%S') }}</div>
                     </div>
                 </div>
                 {% else %}
@@ -86,7 +86,7 @@ Logs
                             </td>
                             <td class="cell-accion">{{ log.accion }}</td>
                             <td class="cell-detalle">{{ log.detalle }}</td>
-                            <td class="cell-fecha mono">{{ log.fecha_log }}</td>
+                            <td class="cell-fecha mono">{{ log.fecha_log.strftime('%Y-%m-%d %H:%M:%S') }}</td>
                         </tr>
                     {% endfor %}
                     {% else %}
