@@ -8,6 +8,24 @@ Egresados
 {% block page_subtitle %}Administra el registro de egresados{% endblock %}
 
 {% block styles %}
+<style>
+    .pagination {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 6px;
+        margin-top: 14px;
+    }
+    .pagination-info {
+        margin-right: 10px;
+        font-size: 12px;
+        color: var(--muted);
+    }
+    .pagination .btn-small[disabled] {
+        opacity: .4;
+        pointer-events: none;
+    }
+</style>
 {% endblock %}
 
 {% block content %}
@@ -82,58 +100,91 @@ Egresados
         </table>
     </div>
 
+    <div class="pagination" id="egresadosPagination"></div>
+
     {% if not egresados %}
     <div class="empty-state">
         <p>📭 No hay egresados registrados</p>
         <a href="/egresados/cargar-egresado"><button class="btn-primary" onclick="openAddModal()">Agregar Egresado</button></a>
-        
+
     </div>
     {% endif %}
 </section>
 
-<section class="panel">
-    <div class="panel-head">
-        <h2>Carga de egresados</h2>
-    </div>
-    <div class="form-grid">
-        <div class="field">
-            <label>Carga manual</label>
-            <a href="/egresados/cargar-egresado">
-                <button type="button" class="btn-primary" onclick="openAddModal()">➕ Agregar Egresado</button>
-            </a>
-        </div>
-        <div class="field">
-            <label>Carga masiva</label>
-            <a href="">
-                <button type="button" class="btn-primary" onclick="openAddModal()" disabled>➕ Subir archivo</button>
-            </a>
-        </div>
-    </div>
-</section>
 </div>
 
 
 <script>
+const EGRESADOS_POR_PAGINA = 20;
+let paginaActualEgresados = 1;
+
 function filterTable() {
+    paginaActualEgresados = 1;
+    renderizarTablaEgresados();
+}
+
+function obtenerFilasFiltradas() {
     const nombreInput = document.getElementById('searchInput').value.toLowerCase();
     const dniInput = document.getElementById('dniInput').value.toLowerCase();
     const escuelaInput = document.getElementById('escuelaInput').value.toLowerCase();
-    const tableRows = document.querySelectorAll('#egresadosTableBody .table-row');
-    
-    tableRows.forEach(row => {
+    const tableRows = Array.from(document.querySelectorAll('#egresadosTableBody .table-row'));
+
+    return tableRows.filter(row => {
         const searchData = row.getAttribute('data-search');
-        
+
         const nombreMatch = searchData.includes(nombreInput) || nombreInput === '';
         const dniMatch = row.querySelector('.cell-dni').textContent.toLowerCase().includes(dniInput) || dniInput === '';
         const escuelaMatch = row.querySelector('.cell-escuela').textContent.toLowerCase().includes(escuelaInput) || escuelaInput === '';
-        
-        if (nombreMatch && dniMatch && escuelaMatch) {
-            row.style.display = '';
-        } else {
-            row.style.display = 'none';
-        }
+
+        return nombreMatch && dniMatch && escuelaMatch;
     });
 }
+
+function renderizarTablaEgresados() {
+    const todasLasFilas = Array.from(document.querySelectorAll('#egresadosTableBody .table-row'));
+    const filasFiltradas = obtenerFilasFiltradas();
+
+    const totalPaginas = Math.max(1, Math.ceil(filasFiltradas.length / EGRESADOS_POR_PAGINA));
+    if (paginaActualEgresados > totalPaginas) paginaActualEgresados = totalPaginas;
+
+    const inicio = (paginaActualEgresados - 1) * EGRESADOS_POR_PAGINA;
+    const fin = inicio + EGRESADOS_POR_PAGINA;
+    const filasVisibles = new Set(filasFiltradas.slice(inicio, fin));
+
+    todasLasFilas.forEach(row => {
+        row.style.display = filasVisibles.has(row) ? '' : 'none';
+    });
+
+    renderizarPaginacion(totalPaginas, filasFiltradas.length);
+}
+
+function renderizarPaginacion(totalPaginas, totalRegistros) {
+    const contenedor = document.getElementById('egresadosPagination');
+    if (!contenedor) return;
+
+    if (totalRegistros === 0) {
+        contenedor.innerHTML = '';
+        return;
+    }
+
+    let html = `<span class="pagination-info">Página ${paginaActualEgresados} de ${totalPaginas} (${totalRegistros} egresados)</span>`;
+    html += `<button type="button" class="btn-small" ${paginaActualEgresados === 1 ? 'disabled' : ''} onclick="irAPaginaEgresados(${paginaActualEgresados - 1})">‹ Anterior</button>`;
+
+    for (let pagina = 1; pagina <= totalPaginas; pagina++) {
+        html += `<button type="button" class="btn-small ${pagina === paginaActualEgresados ? 'btn-primary' : ''}" onclick="irAPaginaEgresados(${pagina})">${pagina}</button>`;
+    }
+
+    html += `<button type="button" class="btn-small" ${paginaActualEgresados === totalPaginas ? 'disabled' : ''} onclick="irAPaginaEgresados(${paginaActualEgresados + 1})">Siguiente ›</button>`;
+
+    contenedor.innerHTML = html;
+}
+
+function irAPaginaEgresados(pagina) {
+    paginaActualEgresados = pagina;
+    renderizarTablaEgresados();
+}
+
+document.addEventListener('DOMContentLoaded', renderizarTablaEgresados);
 
 function openAddModal() {
     document.getElementById('modalTitle').textContent = 'Agregar Nuevo Egresado';

@@ -67,7 +67,7 @@
                         <td class="mono">{{egresado.monto_original}}</td>
                         <td><span class="badge danger">Vencida</span></td>
                         <td class="btn-row">
-                            <button class="btn">Consultar</button>
+                            <a href="/egresados/dni/{{ egresado.id_egresado }}"><button type="button" class="btn">Consultar</button></a>
                             <button class="btn">Recordatorio</button>
                         </td>
                     </tr>
@@ -107,7 +107,7 @@
                         <td class="mono">{{pago.monto}}</td>
                         <td class="mono">{{pago.fecha}}</td>
                         <td>{{pago.metodo_pago}}</td>
-                        <td><button type="button" class="btn">Cobrar</button></td>
+                        <td><a href="/egresados/dni/{{ pago.dni_egresado }}"><button type="button" class="btn">Consultar</button></a></td>
                     </tr>
                     {% endfor %}
                 {%else%}

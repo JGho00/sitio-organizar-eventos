@@ -23,6 +23,7 @@ async def consultar_pagos_bd(sesion:Session):
         Pago.fecha,
         Pago.monto,
         Pago.metodo_pago,
+        Egresado.dni.label("dni_egresado"),
         Egresado.nombre.label("nombre_egresado"),
         Cuota.numero_cuota,
         Cuota.estado_pago,
