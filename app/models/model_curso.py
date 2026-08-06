@@ -17,7 +17,13 @@ class Curso(SQLModel,table = True):
     escuela: "Escuela" = Relationship(back_populates="cursos")
 
     #Relacion un curso puede tener varios contratos (en general el 1 pero puede tener 2 en caso de actualización de montos)
-    contratos: List["Contrato"] = Relationship(back_populates="curso")
+    contratos: List["Contrato"] = Relationship(
+        back_populates="curso",
+        sa_relationship_kwargs={"passive_deletes": True}
+    )
 
     #Relacion un curso puede tener varios egresados
-    egresados: List["Egresado"] = Relationship(back_populates="curso")
+    egresados: List["Egresado"] = Relationship(
+        back_populates="curso",
+        sa_relationship_kwargs={"passive_deletes": True}
+    )

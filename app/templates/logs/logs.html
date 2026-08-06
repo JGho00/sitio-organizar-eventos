@@ -37,7 +37,7 @@ Logs
                 <div class="status-row">
                     <span class="dot"></span>
                     <div>
-                        <div class="status-value">{{ ultimo_log.nombre }}</div>
+                        <div class="status-value">{{ ultimo_log.usuario.username }}</div>
                         <div class="status-meta">{{ ultimo_log.accion }} — {{ ultimo_log.detalle }}</div>
                         <div class="status-meta mono">{{ ultimo_log.fecha_log.strftime('%Y-%m-%d %H:%M:%S') }}</div>
                     </div>
@@ -82,7 +82,7 @@ Logs
                     {% for log in logs[:10] %}
                         <tr class="table-row" data-search="{{ log.fecha_log|string }}">
                             <td class="cell-usuario">
-                                <strong>{{ log.id_usuario }}</strong>
+                                <strong>{{ log.usuario.username }}</strong>
                             </td>
                             <td class="cell-accion">{{ log.accion }}</td>
                             <td class="cell-detalle">{{ log.detalle }}</td>

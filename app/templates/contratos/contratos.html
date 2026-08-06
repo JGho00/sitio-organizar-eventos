@@ -142,22 +142,28 @@
                 </tr>
             </thead>
             <tbody>
-                {%for contrato in contratos%}
-                    <tr>
-                        <td class="mono">{{ contrato.fecha_inicio.strftime('%Y-%m-%d') }}</td>
-                        <td><strong>{{ contrato.curso.escuela.nombre }}</strong></td>
-                        <td class="mono"><strong>{{ contrato.monto_total }}</strong></td>
-                        <td>Calcular</td>
-                        <td class="mono">{{contrato.interes_mora}} %</td>
-                        <td class="mono">{{ contrato.dia_vencimiento_mensual}}</td>
-                        <td class="mono">{{ contrato.fecha_fin }}</td>
-                        <td class="btn-row">
-                            <button class="btn">Ver</button>
-                        </td>
-                    </tr>
+                {% if contratos %}
+                    {%for contrato in contratos%}
+                        <tr>
+                            <td class="mono">{{ contrato.fecha_inicio.strftime('%Y-%m-%d') }}</td>
+                            <td><strong>{{ contrato.curso.escuela.nombre }}</strong></td>
+                            <td class="mono"><strong>{{ contrato.monto_total }}</strong></td>
+                            <td>Calcular</td>
+                            <td class="mono">{{contrato.interes_mora}} %</td>
+                            <td class="mono">{{ contrato.dia_vencimiento_mensual}}</td>
+                            <td class="mono">{{ contrato.fecha_fin }}</td>
+                            <td class="btn-row">
+                                <button class="btn">Ver</button>
+                                <form action="/contratos/eliminar-contrato/{{ contrato.id }}" method="POST" style="display:inline;" data-ajax data-confirm="¿Está seguro de que desea eliminar este contrato?" data-redirect="/contratos">
+                                    <button type="submit" class="btn">Eliminar</button>
+                                </form>
+                            </td>
+                        </tr>
+                    {%endfor%}
                 {%else%}
+                {% endif %}
                     <tr><td colspan="8" class="row-empty">Sin contratos cargados</td></tr>
-                {%endfor%}
+                
             </tbody>
         </table>
     </div>

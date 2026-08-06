@@ -1,6 +1,11 @@
 from sqlmodel import Session,select
 
 from models.model_contrato import Contrato
+from models.model_curso import Curso
+from models.model_evento import Evento
+from models.model_egresado import Egresado
+from models.model_cuota import Cuota
+from models.model_pago import Pago
 
 
 
@@ -32,13 +37,49 @@ async def crear_contrato_bd(sesion:Session,contrato:Contrato):
     return contrato
 
 async def eliminar_contrato_bd(sesion:Session,contrato:Contrato):
-    
 
+    #Eliminación explícita por pasos, sin depender del cascade de la base de datos.
 
+    #1. Identificar curso y evento asociados al contrato
+    curso:Curso = sesion.get(Curso, contrato.id_curso)
+    evento:Evento = sesion.get(Evento, contrato.id_evento)
+
+    #2. Identificar egresados del curso
+    egresados = sesion.exec(
+        select(Egresado).where(Egresado.id_curso == curso.id)
+    ).all()
+
+    #3. Identificar y eliminar cuotas y pagos de cada egresado
+    for egresado in egresados:
+        cuotas = sesion.exec(
+            select(Cuota).where(Cuota.id_egresado == egresado.dni)
+        ).all()
+
+        for cuota in cuotas:
+            pagos = sesion.exec(
+                select(Pago).where(Pago.id_cuota == cuota.id_cuota)
+            ).all()
+
+            for pago in pagos:
+                sesion.delete(pago)
+
+            sesion.delete(cuota)
+
+        #4. Eliminar el egresado
+        sesion.delete(egresado)
+
+    #5. Eliminar el contrato (debe ir antes que curso y evento, ya que los referencia)
     sesion.delete(contrato)
-    #sesion.commit()
+
+    #6. Eliminar el evento asociado al curso
+    if evento:
+        sesion.delete(evento)
+
+    #7. Eliminar el curso (la escuela no se toca, es el padre del curso)
+    sesion.delete(curso)
+
     sesion.flush()
-    
+
     return contrato
 
 async def estadisticas_contratos(sesion:Session,contratos:Contrato):
