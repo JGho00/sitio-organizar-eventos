@@ -62,10 +62,10 @@ async def estadisticas_egresado(egresado:Egresado):
     
     #Calcular estado de cuenta egresado (AL DÍA, EN MORA)
     estado_cuenta:str = 'PAGOS AL DÍA'
-    if len(df_cuotas_pagas) == 0:
-        estado_cuenta = 'AL DÍA, SIN PAGOS REALIZADOS'
-    elif cant_cuotas_vencidas > 0:
+    if cant_cuotas_vencidas > 0:
         estado_cuenta = 'EN MORA'
+    elif len(df_cuotas_pagas) == 0:
+        estado_cuenta = 'AL DÍA, SIN PAGOS REALIZADOS'
 
 
     estadisticas:dict = {

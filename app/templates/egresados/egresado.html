@@ -61,7 +61,7 @@ Egresados
                     <td class="mono">{{cuota.monto_pago}}</td>
                     <td class="mono">{{cuota.monto_restante}}</td>
                     <td class="mono">{{cuota.fecha_vencimiento}}</td>
-                    <td><span class="badge warn">{{cuota.estado_pago}}</span></td>
+                    <td><span class="badge {% if cuota.estado_visual == 'VENCIDA' %}danger{% elif cuota.estado_visual == 'PAGADO' %}ok{% else %}warn{% endif %}">{{cuota.estado_visual}}</span></td>
                     <td class="btn-row">
                         <button class="btn btn_ver_detalle_pago" data-idcuota="{{cuota.id_cuota}}">Ver detalle</button>
                         <button class="btn primary btn_registrar_pago_cuota" data-idcuota="{{cuota.id_cuota}}">Registrar pago</button>

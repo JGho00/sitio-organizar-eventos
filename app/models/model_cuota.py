@@ -1,6 +1,7 @@
 from sqlmodel import SQLModel,Field,Relationship
 from decimal import Decimal
 from typing import TYPE_CHECKING
+from datetime import date,datetime
 from pydantic import computed_field
 
 if TYPE_CHECKING:
@@ -33,4 +34,19 @@ class Cuota(SQLModel,table = True):
     def monto_restante(self) -> Decimal:
         return self.monto_original - self.monto_pago
 
-    
+    @computed_field
+    @property
+    def estado_visual(self) -> str:
+        if self.estado_pago != 'PENDIENTE':
+            return self.estado_pago
+
+        fecha_venc = self.fecha_vencimiento
+        if isinstance(fecha_venc, str):
+            fecha_venc = datetime.fromisoformat(fecha_venc).date()
+        elif isinstance(fecha_venc, datetime):
+            fecha_venc = fecha_venc.date()
+
+        if fecha_venc and fecha_venc < date.today():
+            return 'VENCIDA'
+
+        return self.estado_pago
