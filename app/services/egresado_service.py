@@ -40,10 +40,15 @@ async def estadisticas_egresado(egresado:Egresado):
     cant_cuotas_pagas:int = 0
     cant_cuotas_vencidas:int = 0
     total_pagado:float = float(0.00)
+    #Total inicial: suma del monto_original de todas las cuotas definidas para el egresado,
+    #es decir, el monto total a pagar del plan (sin importar si ya se pagaron o no).
+    total_inicial:float = float(0.00)
     df_cuotas_pagas:pd.DataFrame = pd.DataFrame()
     df_cuotas_impagas:pd.DataFrame = pd.DataFrame()
     if len(df_egresado_cuotas)>0:
-        
+
+        total_inicial = df_egresado_cuotas['monto_original'].sum()
+
         df_cuotas_impagas = df_egresado_cuotas[df_egresado_cuotas['estado_pago'] == 'PENDIENTE']
         cant_cuotas_impagas = len(df_cuotas_impagas)
         total_no_pagado = df_cuotas_impagas['monto_original'].sum()
@@ -69,6 +74,7 @@ async def estadisticas_egresado(egresado:Egresado):
 
 
     estadisticas:dict = {
+        'total_inicial': total_inicial,
         'cant_cuotas_totales': cant_cuotas_totales,
         'cant_cuotas_pagas': cant_cuotas_pagas,
         'cant_cuotas_impagas': cant_cuotas_impagas,

@@ -49,9 +49,8 @@ async def consultar_pagos_cuota_bd(sesion:Session, id_cuota:int):
 
     return pagos
 
-async def generar_pago_bd(sesion:Session,id_cuota:int,monto:Decimal,ruta_comprobante:str):
+async def generar_pago_bd(sesion:Session,id_cuota:int,monto:Decimal,ruta_comprobante:str,metodo_pago:str):
 
-    metodo_pago = 'Transferecia'
     cobrador = 'admin'
     nuevo_pago:Pago = Pago(id_cuota=id_cuota,monto =monto,metodo_pago=metodo_pago,ruta_comprobante=ruta_comprobante,cobrador=cobrador)
 

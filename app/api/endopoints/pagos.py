@@ -1,6 +1,6 @@
-from fastapi import APIRouter,Request,Depends,status,Form,File,UploadFile
+from fastapi import APIRouter,Request,Depends,Form,File,UploadFile
 from fastapi.templating import Jinja2Templates
-from fastapi.responses import RedirectResponse,HTMLResponse,JSONResponse
+from fastapi.responses import HTMLResponse,JSONResponse
 from sqlmodel import Session
 
 from decimal import Decimal
@@ -20,6 +20,7 @@ from services.log_service import registrar_log_bd
 from api.endopoints.dependencias import VerificarRol
 
 from core.config import obtener_sesion
+from core.logger import logger
 
 router = APIRouter(
     prefix="/pagos",
@@ -85,8 +86,10 @@ async def obtener_formulario_pago(request: Request, cuota_id: int,sesion:Session
     )
 
 
+METODOS_PAGO_VALIDOS = ["EFECTIVO", "TRANSFERENCIA"]
+
 @router.post("/registrar-pago/{idcuota}")
-async def registrar_pago_cuota(request:Request,idcuota:int,monto_pagar:Decimal = Form(...),comprobante:UploadFile|None=File(None),sesion:Session = Depends(obtener_sesion),username = Depends(VerificarRol(['admin','user']))):
+async def registrar_pago_cuota(request:Request,idcuota:int,monto_pagar:Decimal = Form(...),metodo_pago:str = Form(...),comprobante:UploadFile|None=File(None),sesion:Session = Depends(obtener_sesion),username = Depends(VerificarRol(['admin','user']))):
     try:
 
         #Validacion extension del comprobante (solo si fue enviado)
@@ -98,8 +101,11 @@ async def registrar_pago_cuota(request:Request,idcuota:int,monto_pagar:Decimal =
 
         if monto_pagar <= 0:
                 raise ValueError("El monto a pagar debe ser mayor a 0.")
-        
-        
+
+        if metodo_pago not in METODOS_PAGO_VALIDOS:
+                raise ValueError("La forma de pago seleccionada no es válida.")
+
+
         
 
         #Validacion si existe la cuota
@@ -148,7 +154,9 @@ async def registrar_pago_cuota(request:Request,idcuota:int,monto_pagar:Decimal =
 
         print("COMPROBANTE",ruta_comprobante)
 
-        pago:Pago = await generar_pago_bd(sesion,cuota.id_cuota,monto_pagar,ruta_comprobante)
+        print("METODO PAGO",metodo_pago)
+
+        pago:Pago = await generar_pago_bd(sesion,cuota.id_cuota,monto_pagar,ruta_comprobante,metodo_pago)
         
         cuota_actualizada:Cuota = await actualizar_cuota_bd(sesion,cuota,monto_pagar)
 
@@ -162,8 +170,24 @@ async def registrar_pago_cuota(request:Request,idcuota:int,monto_pagar:Decimal =
     
     except ValueError as e:
         sesion.rollback()
-        # Si hay un error controlado de negocio, devolvemos un texto plano con error 400
-        return HTMLResponse(status_code=400, content=str(e))
+        #Error controlado de negocio: se devuelve con el mismo formato (titulo/mensaje/errores)
+        #que usa el popup de error de los demás formularios de la app (mostrarModalErrorAjax).
+        return JSONResponse(
+            status_code=422,
+            content={
+                "titulo": "Error al registrar el pago",
+                "mensaje": str(e),
+                "errores": []
+            }
+        )
     except Exception as e:
         sesion.rollback()
-        return HTMLResponse(status_code=500, content="Error interno de servidor.")
+        logger.error(f'Error al registrar pago de la cuota {idcuota}: {e}')
+        return JSONResponse(
+            status_code=500,
+            content={
+                "titulo": "Error al registrar el pago",
+                "mensaje": "Se produjo un error interno al procesar el pago.",
+                "errores": []
+            }
+        )

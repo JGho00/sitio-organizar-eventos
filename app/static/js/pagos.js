@@ -46,26 +46,26 @@ function configurarEnvioPago(idcuota) {
     formulario.addEventListener("submit", async (evento) => {
         evento.preventDefault(); // Evitamos que la página se recargue completamente
 
-        // Capturamos el input de la cantidad a pagar
-        const inputMonto = document.getElementById("monto_pagar");
-        const monto = inputMonto ? inputMonto.value : 0;
-
-        // Capturamos el comprobante (opcional)
-        const inputComprobante = document.getElementById("comprobante");
-        const archivoComprobante = inputComprobante && inputComprobante.files.length > 0 ? inputComprobante.files[0] : null;
+        // Se arma el FormData directamente desde el <form> (usando los atributos "name"
+        // de cada campo) en lugar de reconstruirlo campo por campo con getElementById.
+        // Reconstruirlo a mano es frágil: si se agrega/renombra un campo en el HTML
+        // (como pasó con "metodo_pago") y no se actualiza también este JS, ese campo
+        // nunca llega al servidor y este devuelve 422 "campo obligatorio" aunque el
+        // usuario sí lo haya completado. Con new FormData(formulario) cualquier campo
+        // con "name" dentro del form viaja automáticamente, sin necesidad de mantenerlo
+        // sincronizado a mano.
+        const datosFormulario = new FormData(formulario);
+        const monto = datosFormulario.get("monto_pagar");
 
         try {
-            // Creamos un FormData para simular el envío de un formulario tradicional que entienda FastAPI Form(...)
-            const datosFormulario = new FormData();
-            datosFormulario.append("monto_pagar", monto);
-            if (archivoComprobante) {
-                datosFormulario.append("comprobante", archivoComprobante);
-            }
-
-            // Hacemos el POST real para procesar el pago en la base de datos
+            // Hacemos el POST real para procesar el pago en la base de datos.
+            // Se manda X-Requested-With para que el backend detecte que es una
+            // petición AJAX y devuelva JSON en caso de error (en vez del HTML
+            // completo de la página de error de validación).
             const respuesta = await fetch(`/pagos/registrar-pago/${idcuota}`, {
                 method: 'POST',
-                body: datosFormulario // Enviamos el monto encapsulado
+                body: datosFormulario, // Enviamos el monto encapsulado
+                headers: { 'X-Requested-With': 'XMLHttpRequest' }
             });
 
             const divResultado = document.getElementById("mensaje-resultado");
@@ -73,11 +73,11 @@ function configurarEnvioPago(idcuota) {
             if (respuesta.ok) {
                 const datos = await respuesta.json();
                 console.log("Respuesta exitosa de la API:", datos);
-                
+
                 if (divResultado) {
                     divResultado.innerHTML = `<p style="color: green;">¡Pago de $${monto} registrado con éxito!</p>`;
                 }
-                
+
                 // Esperamos 3 segundos y cerramos la ventana flotante de forma automática
                 setTimeout(cerrarModal, 3000);
 
@@ -85,11 +85,26 @@ function configurarEnvioPago(idcuota) {
                 const dniEgresado = datos.dni
                 window.location.href = `/egresados/dni/${dniEgresado}`;
             } else {
-                // Si la API arroja un error controlado
-                const textoError = await respuesta.text();
-                if (divResultado) {
-                    divResultado.innerHTML = `<p style="color: red;">Error: ${textoError}</p>`;
+                // Si la API arroja un error controlado, se muestra con el mismo popup
+                // que usan los demás formularios de la app (mostrarModalErrorAjax,
+                // definida en form_ajax.js), en vez de escribirlo dentro del modal
+                // de registro de pago.
+                const tipoContenido = respuesta.headers.get('content-type') || '';
+                let mensaje = 'Ocurrió un error al procesar el pago.';
+                let errores = [];
+                let titulo = null;
+
+                if (tipoContenido.includes('application/json')) {
+                    const datosError = await respuesta.json();
+                    mensaje = datosError.mensaje || datosError.detail || mensaje;
+                    errores = datosError.errores || [];
+                    titulo = datosError.titulo || null;
+                } else {
+                    const texto = await respuesta.text();
+                    if (texto) mensaje = texto;
                 }
+
+                mostrarModalErrorAjax(mensaje, errores, titulo);
             }
         } catch (error) {
             console.error("Error al procesar el pago:", error);

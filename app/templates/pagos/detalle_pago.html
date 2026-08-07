@@ -31,7 +31,11 @@
                 <li class="pago-item">
                     <div class="pago-item-datos">
                         <span class="detalle-valor mono">${{ pago.monto }}</span>
-                        <span class="detalle-label">{{ pago.fecha.strftime('%d/%m/%Y') }} · {{ pago.metodo_pago }}</span>
+                        <span class="detalle-label">{{ pago.fecha.strftime('%d/%m/%Y') }}</span>
+                    </div>
+                    <div class="detalle-item">
+                        <span class="detalle-label">Método de pago</span>
+                        <span class="detalle-valor">{{ pago.metodo_pago }}</span>
                     </div>
                     {% if pago.ruta_comprobante %}
                         <img class="comprobante-img" src="/{{ pago.ruta_comprobante }}" alt="Comprobante de pago">

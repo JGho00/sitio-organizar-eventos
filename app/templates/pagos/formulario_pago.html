@@ -9,7 +9,13 @@
         <label for="monto_pagar">Monto a abonar</label>
         <input type="text" id="monto_pagar" name="monto_pagar" max="{{ restante }}" value = {{restante}} required>
 
-        
+        <label for="metodo_pago">Forma de pago</label>
+        <select id="metodo_pago" name="metodo_pago" required>
+            <option value="">-- Por favor, elige una opción --</option>
+            <option value="EFECTIVO">Efectivo</option>
+            <option value="TRANSFERENCIA">Transferencia</option>
+        </select>
+
         <label for="comprobante">Comprobante (opcional)</label>
         <input type="file" id="comprobante" name="comprobante" accept=".pdf,.jpg,.jpeg,.png">
 

@@ -64,20 +64,34 @@ MENSAJES_CAMPO_POR_RUTA = {
         "id_establecimiento": {"faltante": "No se agregó el establecimiento.", "invalido": "El establecimiento seleccionado no es válido."},
         "archivo_egresados": {"faltante": "No se adjuntó el archivo de egresados.", "invalido": "El archivo de egresados no es válido."},
     },
+    "/pagos/registrar-pago/": {
+        "monto_pagar": {"faltante": "No se indicó el monto a abonar.", "invalido": "El monto a abonar no es válido."},
+        "metodo_pago": {"faltante": "No se seleccionó la forma de pago.", "invalido": "La forma de pago seleccionada no es válida."},
+    },
 }
 
 # Título de la ventana emergente de error, según la ruta del formulario que la origina.
 TITULOS_ERROR_POR_RUTA = {
     "/contratos/carga-masiva-excel": "Error al generar contrato",
+    "/pagos/registrar-pago/": "Error al registrar el pago",
 }
+
+
+def _buscar_por_prefijo_de_ruta(diccionario: dict, ruta: str) -> dict:
+    #Las rutas con parámetros dinámicos (ej: /pagos/registrar-pago/{idcuota}) no matchean
+    #por igualdad exacta, por eso se busca por prefijo.
+    for prefijo, valor in diccionario.items():
+        if ruta.startswith(prefijo):
+            return valor
+    return {}
 
 
 @app.exception_handler(RequestValidationError)
 async def validation_data_exception_handler(request: Request, exc: RequestValidationError):
 
     ruta = request.url.path
-    mensajes_campo = MENSAJES_CAMPO_POR_RUTA.get(ruta, {})
-    titulo = TITULOS_ERROR_POR_RUTA.get(ruta, "Errores de validación")
+    mensajes_campo = _buscar_por_prefijo_de_ruta(MENSAJES_CAMPO_POR_RUTA, ruta)
+    titulo = _buscar_por_prefijo_de_ruta(TITULOS_ERROR_POR_RUTA, ruta) or "Errores de validación"
 
     errores_legibles = []
     for error in exc.errors():
