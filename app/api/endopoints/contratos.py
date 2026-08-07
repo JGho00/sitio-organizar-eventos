@@ -18,7 +18,7 @@ from services.contrato_service import obtener_contratos_bd,obtener_contrato_id_b
 from services.escuela_service import obtener_escuelas_bd
 from schemas.establecimiento import obtener_establecimientos_bd
 from schemas.evento import obtener_evento_bd,agregar_evento_bd
-from schemas.curso import crear_curso_bd
+from schemas.curso import crear_curso_bd,obtener_curso_bd
 from services.curso_service import validar_existencia_curso
 from services.cuota_service import generar_plan_cuotas_egresado
 from services.log_service import registrar_log_bd
@@ -117,10 +117,13 @@ async def consultar_contratos(request: Request,id:int,usuario = Depends(Verifica
         return response
     
     contrato:Contrato = await obtener_contrato_id_bd(sesion,id)
+    curso = await obtener_curso_bd(sesion,"id",contrato.id_curso)
     print("CONTRATO",contrato)
-    contrato = await eliminar_contrato_bd(sesion,contrato)
+    contrato:Contrato = await eliminar_contrato_bd(sesion,contrato)
 
-    log = await registrar_log_bd(sesion, tipo_accion="ELIMINACIÓN CONTRATO", detalle=f"Se eliminó el contrato con ID '{id}' y evento '{contrato.evento.nombre}'.",usuario = usuario.id_usuario)
+    
+    print("CURSO",curso)
+    log = await registrar_log_bd(sesion, tipo_accion="ELIMINACIÓN CONTRATO", detalle=f"Se eliminó el contrato con ID '{id}' perteneciente al año '{curso.año}'.",usuario = usuario.id_usuario)
 
     sesion.commit()
     return "Contrato eliminado"
