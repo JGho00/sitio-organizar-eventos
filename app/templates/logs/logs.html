@@ -51,20 +51,20 @@ Logs
 
     <section class="panel">
         <div class="panel-head">
-            <h2>Buscar por fecha</h2>
+            <h2>Últimas acciones</h2>
         </div>
         <div class="search-box">
             <input
                 type="date"
                 id="searchDateInput"
-                onchange=""
+                onchange="filterTable()"
             >
-        </div>
-    </section>
-
-    <section class="panel">
-        <div class="panel-head">
-            <h2>Últimas acciones</h2>
+            <input
+                type="text"
+                id="searchAccionInput"
+                placeholder="🔍 Buscar por tipo de acción..."
+                onkeyup="filterTable()"
+            >
         </div>
 
         <div class="table-responsive">
@@ -79,8 +79,8 @@ Logs
                 </thead>
                 <tbody id="logsTableBody">
                     {% if logs %}
-                    {% for log in logs[:10] %}
-                        <tr class="table-row" data-search="{{ log.fecha_log|string }}">
+                    {% for log in logs %}
+                        <tr class="table-row" data-fecha="{{ log.fecha_log.strftime('%Y-%m-%d') }}" data-accion="{{ (log.accion|lower) }}">
                             <td class="cell-usuario">
                                 <strong>{{ log.usuario.username }}</strong>
                             </td>
@@ -95,6 +95,8 @@ Logs
                 </tbody>
             </table>
 
+            <div class="pagination" id="logsPagination"></div>
+
             {% if not logs %}
             <div class="empty-state">
                 <p>📭 No hay logs registrados</p>
@@ -105,4 +107,9 @@ Logs
 
 </div>
 
+{% endblock %}
+
+{% block scripts %}
+{{ super() }}
+<script src="/static/js/logs.js"></script>
 {% endblock %}

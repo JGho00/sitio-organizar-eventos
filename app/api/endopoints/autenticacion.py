@@ -37,9 +37,9 @@ async def login_for_access_token(
     sesion = Depends(obtener_sesion)
     
 ) -> Token:
-    print(form_data.username,form_data.password)
+    
     usuarios_bd:list = await obtener_usuarios_bd(sesion)
-    print("Usuarios",usuarios_bd)
+    
     user = authenticate_user(usuarios_bd, form_data.username, form_data.password)
 
     if not user:

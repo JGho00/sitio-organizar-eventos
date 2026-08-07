@@ -11,6 +11,7 @@ from models.model_cuota import Cuota
 from models.model_egresado import Egresado
 from models.model_curso import Curso
 from models.model_escuela import Escuela
+from models.model_pago import Pago
 from services.dependencias import obtener_fecha
 
 
@@ -49,8 +50,14 @@ async def consultar_cuota_id_bd(sesion:Session,id_cuota:int):
     
 async def actualizar_cuota_bd(sesion:Session,cuota:Cuota,monto_pago:Decimal):
 
-    #Acumulo pagos de la cuota
-    monto_acumulado = cuota.monto_pago + monto_pago
+    #Acumulo pagos de la cuota.
+    #Nota: cuota.monto_pago puede venir en None para cuotas generadas antes de la
+    #corrección en generar_plan_cuotas_egresado (ver comentario allí). Si no se contempla
+    #este caso, "None + Decimal" lanza TypeError y el pago se pierde (se revierte la
+    #transacción completa en registrar_pago_cuota), por eso la cuota nunca sale de
+    #PENDIENTE y los montos del dashboard (cobrado del mes, morosidad) quedan mal.
+    monto_pago_actual = cuota.monto_pago if cuota.monto_pago is not None else Decimal('0.00')
+    monto_acumulado = monto_pago_actual + monto_pago
     cuota.monto_pago = monto_acumulado
     
     #Restar monto original - monto del pago
@@ -130,6 +137,28 @@ def consultar_proximos_vencimientos(df_cuotas:pd.DataFrame):
     print(vencimientos_15_dias)
     return vencimientos_15_dias.to_dict(orient='records')
 
+async def consultar_monto_pagado_periodo(sesion:Session,periodo:str = None):
+    '''
+        Suma el monto de los pagos (tabla Pago) cuya fecha real de pago cae dentro
+        del período "MM-YYYY" indicado (o el mes actual si no se especifica).
+    '''
+    if not periodo:
+        fechas:dict = obtener_fecha()
+        periodo:str = fechas['mm_yyyy'].replace('_','-')
+
+    consulta = select(Pago.monto,Pago.fecha)
+    pagos = sesion.exec(consulta).all()
+
+    if not pagos:
+        return Decimal('0.00')
+
+    df_pagos = pd.DataFrame([r._asdict() for r in pagos])
+    df_pagos['fecha'] = pd.to_datetime(df_pagos['fecha'])
+
+    df_pagos_periodo = df_pagos[df_pagos['fecha'].dt.to_period('M') == periodo]
+
+    return df_pagos_periodo['monto'].sum() if not df_pagos_periodo.empty else Decimal('0.00')
+
 async def estadisticas_cuotas(sesion:Session):
 
     df_cuotas:pd.DataFrame = await consultar_cuotas_bd(sesion)
@@ -150,11 +179,14 @@ async def estadisticas_cuotas(sesion:Session):
     cant_cuotas_vencidas:int = len(consultar_cuotas_vencidas(df_cuotas))
     monto_total_vencidas:float = df_cuotas_vencidas['monto_original'].sum()
 
-    #Ingresos
-    df_cuotas_pagas_mes:pd.DataFrame = consultar_cuotas_por_estado_pago(df_cuotas_mes)
-    
-    monto_mes_pagado = (df_cuotas_pagas_mes['monto_pago'].sum())
-    print("total",monto_mes_pagado)
+    #Ingresos del mes.
+    #Antes se sumaba "monto_pago" de las cuotas cuyo VENCIMIENTO caía en el mes actual
+    #y que ya estaban en estado PAGADO. Eso era incorrecto porque: (a) un pago puede
+    #haberse realizado en un mes distinto al de vencimiento de la cuota, y (b) los pagos
+    #parciales (cuota aún PENDIENTE pero con algo abonado) quedaban afuera del total.
+    #Ahora se calcula sobre la FECHA REAL del pago (tabla Pago), que es la fuente de
+    #verdad de "cuánto se cobró" en el mes.
+    monto_mes_pagado = await consultar_monto_pagado_periodo(sesion)
 
     cant_cuotas_pendientes:int  =len(df_cuotas[df_cuotas['estado_pago'] == 'PENDIENTE'])
     print("PENDIENTES")
@@ -211,10 +243,17 @@ async def generar_plan_cuotas_egresado(
         # (ej: si pides un día 31 y el mes es febrero, lo ajustará al 28 o 29)
         fecha_vencimiento = mes_objetivo + relativedelta(day=dia_vencimiento)
 
+        # monto_pago se inicializa en 0.00 (no en None): el modelo Cuota lo define como
+        # Decimal no-opcional, pero al ser una tabla SQLModel no valida el tipo en runtime,
+        # por lo que pasar None se guardaba igual como NULL en la base. Eso rompía
+        # actualizar_cuota_bd en el primer pago de cada cuota ("None + Decimal" -> TypeError),
+        # el cual además hacía rollback de toda la transacción (incluido el pago ya creado).
+        # Como consecuencia, ninguna cuota lograba pasar a PAGADO y los montos del dashboard
+        # ("cobrado este mes" y "morosidad total") quedaban mal calculados.
         nueva_cuota = Cuota(
             id_contrato=id_contrato,
             monto_original=monto_cuota_base,
-            monto_pago=None,
+            monto_pago=Decimal('0.00'),
             id_egresado=egresado,
             numero_cuota=i,
             fecha_vencimiento=fecha_vencimiento,

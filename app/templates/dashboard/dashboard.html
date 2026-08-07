@@ -20,7 +20,7 @@
     <div class="cell">
         <div class="lbl">Proyección mensual</div>
         {%if resumen.cuotas%}
-            <div class="val ok">{{resumen.cuotas.total_proyeccion_mes}}</div>
+            <div class="val ok">$ {{resumen.cuotas.total_proyeccion_mes}}</div>
         {%else%}
             <div class="val">Sin ingresos</div>
         {%endif%}
@@ -28,7 +28,7 @@
     <div class="cell">
         <div class="lbl">Cobrado este mes</div>
         {%if resumen.cuotas%}
-            <div class="val">{{resumen.cuotas.monto_mes_pagado}}</div>
+            <div class="val">$ {{resumen.cuotas.monto_mes_pagado}}</div>
         {%else%}
             <div class="val">Sin pagos en el mes</div>
         {%endif%}
@@ -36,7 +36,7 @@
     <div class="cell">
         <div class="lbl">Morosidad total</div>
         {%if resumen.cuotas%}
-            <div class="val danger">{{resumen.cuotas.monto_total_morosidad}}</div>
+            <div class="val danger">$ {{resumen.cuotas.monto_total_morosidad}}</div>
         {%else%}
             <div class="val ok">Al día</div>
         {%endif%}

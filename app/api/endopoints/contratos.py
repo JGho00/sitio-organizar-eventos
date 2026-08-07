@@ -21,6 +21,7 @@ from schemas.evento import obtener_evento_bd,agregar_evento_bd
 from schemas.curso import crear_curso_bd
 from services.curso_service import validar_existencia_curso
 from services.cuota_service import generar_plan_cuotas_egresado
+from services.log_service import registrar_log_bd
 from services import dependencias
 templates = Jinja2Templates("templates")
 
@@ -119,6 +120,7 @@ async def consultar_contratos(request: Request,id:int,usuario = Depends(Verifica
     print("CONTRATO",contrato)
     contrato = await eliminar_contrato_bd(sesion,contrato)
 
+    log = await registrar_log_bd(sesion, tipo_accion="ELIMINACIÓN CONTRATO", detalle=f"Se eliminó el contrato con ID '{id}' y evento '{contrato.evento.nombre}'.",usuario = usuario.id_usuario)
 
     sesion.commit()
     return "Contrato eliminado"
@@ -229,6 +231,11 @@ async def carga_masiva(
                 dia_vencimiento=dia_vencimiento,
                 cantidad_cuotas=cantidad_cuotas
             )
+
+
+        #Registrar log de actividad
+        print("Usuario" ,username.id_usuario)
+        log = await registrar_log_bd(sesion, tipo_accion="CREACIÓN CONTRATO", detalle=f"Se realizó una carga masiva de contratos para el evento '{evento_nombre}' con {cantidad_egresados} egresados.",usuario = username.id_usuario)
 
 
         #Guardo los cambios

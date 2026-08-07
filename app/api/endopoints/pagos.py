@@ -16,6 +16,7 @@ from models.model_curso import Curso
 
 from services.pago_service import consultar_pagos_bd,generar_pago_bd,consultar_pagos_cuota_bd
 from services.cuota_service import consultar_cuota_id_bd,actualizar_cuota_bd
+from services.log_service import registrar_log_bd
 from api.endopoints.dependencias import VerificarRol
 
 from core.config import obtener_sesion
@@ -151,13 +152,18 @@ async def registrar_pago_cuota(request:Request,idcuota:int,monto_pagar:Decimal =
         
         cuota_actualizada:Cuota = await actualizar_cuota_bd(sesion,cuota,monto_pagar)
 
+
+        log = await registrar_log_bd(sesion, tipo_accion="REGISTRO PAGO", detalle=f"Se registró un pago de {monto_pagar} para la cuota {cuota.id_cuota} del egresado {egresado.nombre} (DNI: {egresado.dni}).",usuario = username.id_usuario)
+
         sesion.commit()
 
 
         return JSONResponse(status_code=200, content={"status": "success", "message": "Pago guardado","dni":cuota.id_egresado})
     
     except ValueError as e:
+        sesion.rollback()
         # Si hay un error controlado de negocio, devolvemos un texto plano con error 400
         return HTMLResponse(status_code=400, content=str(e))
     except Exception as e:
+        sesion.rollback()
         return HTMLResponse(status_code=500, content="Error interno de servidor.")
