@@ -14,7 +14,7 @@
 
     <div class="error-modal">
         <div class="error-icon">⚠️</div>
-        <h2 class="error-title warning">Errores de validación</h2>
+        <h2 class="error-title warning">{{ titulo or "Errores de validación" }}</h2>
         <p class="error-msg">{{ mensaje }}</p>
         <ul class="error-list">
             {% for error in errores %}

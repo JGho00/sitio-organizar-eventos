@@ -2,11 +2,12 @@ from decimal import Decimal,ROUND_CEILING
 
 from fastapi import APIRouter, Depends,Request,status,UploadFile,File,Form
 from fastapi.templating import Jinja2Templates
-from fastapi.responses import RedirectResponse
+from fastapi.responses import RedirectResponse,JSONResponse
 from api.endopoints.dependencias import VerificarRol,listado_cuotas
 import os
-from sqlmodel import  Session
+from sqlmodel import Session,select
 from core.config import obtener_sesion
+from core.logger import logger
 
 from models.model_contrato import Contrato
 from models.model_evento import Evento
@@ -67,6 +68,44 @@ async def consultar_contratos(request: Request,username = Depends(VerificarRol([
         }
     )
 
+@router.get("/{id}")
+async def consultar_contrato_id(request: Request,id:int,username = Depends(VerificarRol(['admin','user'])),sesion: Session = Depends(obtener_sesion)):
+
+    contrato:Contrato = await obtener_contrato_id_bd(sesion,id)
+
+    evento = await obtener_evento_bd(sesion,"id",contrato.id_evento)
+    establecimiento = evento.establecimiento if evento else None
+
+    cuotas = contrato.cuotas
+    egresados = contrato.curso.egresados
+
+    monto_recaudado = sum((cuota.monto_pago for cuota in cuotas), Decimal('0'))
+    monto_pendiente = contrato.monto_total - monto_recaudado
+    cuotas_vencidas = len([cuota for cuota in cuotas if cuota.estado_visual == 'VENCIDA'])
+    cuotas_pagadas = len([cuota for cuota in cuotas if cuota.estado_pago == 'PAGADO'])
+
+    estadisticas = {
+        'cantidad_egresados': len(egresados),
+        'cantidad_cuotas': len(cuotas),
+        'cuotas_pagadas': cuotas_pagadas,
+        'cuotas_vencidas': cuotas_vencidas,
+        'monto_recaudado': monto_recaudado,
+        'monto_pendiente': monto_pendiente,
+    }
+
+    return templates.TemplateResponse(
+        request=request,
+        name="contratos/contrato.html",
+        context={
+            'username':username,
+            'contrato':contrato,
+            'evento':evento,
+            'establecimiento':establecimiento,
+            'estadisticas':estadisticas,
+            }
+    )
+
+
 
 @router.post("/eliminar-contrato/{id}")
 async def consultar_contratos(request: Request,id:int,usuario = Depends(VerificarRol(['admin','user'])),sesion: Session = Depends(obtener_sesion)):
@@ -104,11 +143,12 @@ async def carga_masiva(
 
         #Definir cantidad de cuotas.
         cantidad_cuotas = int(cantidad_cuotas) if cantidad_cuotas else 12
-        print(f"Cuotas: {cantidad_cuotas}")
 
-
-        
-
+        #Validar el último día de pago antes de crear cualquier registro
+        try:
+            dia_vencimiento = int(ultimo_dia_pago)
+        except (TypeError, ValueError):
+            raise ValueError("El último día de la fecha de pago no es válido.")
 
         #Validar existencia del curso sino crearlo
         curso:Curso = await validar_existencia_curso(sesion,division,escuela_id)
@@ -144,7 +184,7 @@ async def carga_masiva(
         df =dependencias.obtener_df_egresados(archivo)
 
         egresados:list = []
-        for index, row in df.iterrows():
+        for _, row in df.iterrows():
             egresado = {
                 "nombre": row["Nombre"],
                 "apellido": row["Apellido"],
@@ -157,7 +197,20 @@ async def carga_masiva(
             }
             egresados.append(egresado)
 
+        if not egresados:
+            raise ValueError("El archivo de egresados está vacío.")
 
+        #Validar que ningún egresado del archivo ya exista en el sistema
+        dnis_egresados = [egresado["dni"] for egresado in egresados]
+        dnis_existentes = sesion.exec(
+            select(Egresado.dni).where(Egresado.dni.in_(dnis_egresados))
+        ).all()
+
+        if dnis_existentes:
+            dnis_texto = ", ".join(str(dni) for dni in dnis_existentes)
+            if len(dnis_existentes) == 1:
+                raise ValueError(f"El egresado con DNI {dnis_texto} ya existe.")
+            raise ValueError(f"Los egresados con DNI {dnis_texto} ya existen.")
 
         sesion.add_all([Egresado(**egresado) for egresado in egresados])
 
@@ -173,7 +226,7 @@ async def carga_masiva(
                 sesion=sesion,
                 monto_total_deuda=monto_por_egresado,
                 egresado=egresado["dni"],
-                dia_vencimiento=int(ultimo_dia_pago),
+                dia_vencimiento=dia_vencimiento,
                 cantidad_cuotas=cantidad_cuotas
             )
 
@@ -181,17 +234,22 @@ async def carga_masiva(
         #Guardo los cambios
         sesion.commit()
 
+        return RedirectResponse(url="/contratos", status_code=status.HTTP_303_SEE_OTHER)
 
-
+    except ValueError as excepcion_negocio:
+        sesion.rollback()
+        logger.warning(f"Error de validación en carga masiva de contratos: {excepcion_negocio}")
+        return JSONResponse(
+            status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+            content={
+                "titulo": "Error al generar contrato",
+                "mensaje": str(excepcion_negocio),
+                "errores": []
+            }
+        )
 
     except Exception as excepcion_sistema:
-        print(f'Error en carga masiva: {excepcion_sistema}. Linea: {excepcion_sistema.__traceback__.tb_lineno}')
-        if sesion:
-            #Por algún error se vuelve atrás la transacción
-            sesion.rollback()
+        sesion.rollback()
+        logger.error(f'Error en carga masiva de contratos: {excepcion_sistema}')
         raise excepcion_sistema
-
-    finally:
-        response = RedirectResponse(url="/contratos", status_code=status.HTTP_303_SEE_OTHER)
-        return response
 

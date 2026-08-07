@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+
+{% block title %}
+Contratos
+{% endblock %}
+
+{% block page_title %}Detalle del Contrato{% endblock %}
+{% block page_subtitle %}{{ evento.nombre if evento else '' }} - {{ contrato.curso.escuela.nombre }} {{ contrato.curso.division }}{% endblock %}
+
+{% block styles %}
+<link rel="stylesheet" href="/static/css/contrato_detalle.css">
+{% endblock %}
+
+{% block content %}
+
+<div class="page-container">
+
+<div class="grid2">
+    <section class="panel">
+        <div class="panel-head"><h2>Información general</h2></div>
+        <div class="panel-body">
+            <p>Evento: <strong>{{ evento.nombre if evento else '-' }}</strong></p>
+            <p>Establecimiento: {{ establecimiento.nombre if establecimiento else '-' }}</p>
+            <p>Escuela: {{ contrato.curso.escuela.nombre }}</p>
+            <p>Curso / División: {{ contrato.curso.division }}</p>
+            <p>Año: {{ contrato.curso.año }}</p>
+            <p>Fecha de inicio: <span class="mono">{{ contrato.fecha_inicio.strftime('%Y-%m-%d') if contrato.fecha_inicio else '-' }}</span></p>
+            <p>Fecha de fin: <span class="mono">{{ contrato.fecha_fin.strftime('%Y-%m-%d') if contrato.fecha_fin else '-' }}</span></p>
+            <p>Estado: <span class="badge {% if contrato.fecha_fin %}warn{% else %}ok{% endif %}">{% if contrato.fecha_fin %}Finalizado{% else %}Activo{% endif %}</span></p>
+        </div>
+    </section>
+
+    <section class="panel">
+        <div class="panel-head"><h2>Resumen financiero</h2></div>
+        <div class="panel-body">
+            <p>Monto total: <span class="mono">{{ contrato.monto_total }}</span></p>
+            <p>Interés por mora: <span class="mono">{{ contrato.interes_mora }} %</span></p>
+            <p>Día de vencimiento mensual: <span class="mono">{{ contrato.dia_vencimiento_mensual }}</span></p>
+            <p>Monto recaudado: <span class="mono">{{ estadisticas.monto_recaudado }}</span></p>
+            <p>Monto pendiente: <span class="mono">{{ estadisticas.monto_pendiente }}</span></p>
+            <p>Cantidad de egresados: <span class="mono">{{ estadisticas.cantidad_egresados }}</span></p>
+            <p>Cuotas pagadas: <span class="mono">{{ estadisticas.cuotas_pagadas }}</span> / {{ estadisticas.cantidad_cuotas }}</p>
+            <p>Cuotas vencidas: <span class="badge {% if estadisticas.cuotas_vencidas > 0 %}danger{% else %}ok{% endif %}">{{ estadisticas.cuotas_vencidas }}</span></p>
+        </div>
+    </section>
+</div>
+
+<section class="panel">
+    <div class="panel-body btn-row">
+        <a href="/contratos"><button type="button" class="btn">‹ Volver al listado</button></a>
+    </div>
+</section>
+
+</div>
+
+{% endblock %}

@@ -51,28 +51,55 @@ def es_peticion_ajax(request: Request) -> bool:
     return request.headers.get("x-requested-with") == "XMLHttpRequest"
 
 
+# Mensajes legibles por campo, agrupados por ruta del formulario que los origina.
+MENSAJES_CAMPO_POR_RUTA = {
+    "/contratos/carga-masiva-excel": {
+        "evento_nombre": {"faltante": "No se agregó el nombre del evento.", "invalido": "El nombre del evento no es válido."},
+        "escuela_id": {"faltante": "No se agregó la escuela.", "invalido": "La escuela seleccionada no es válida."},
+        "division": {"faltante": "No se agregó la división.", "invalido": "La división no es válida."},
+        "monto_total": {"faltante": "No se agregó el monto total.", "invalido": "El monto total ingresado no es válido."},
+        "interes_mora": {"faltante": "No se agregó el interés por mora.", "invalido": "El interés por mora ingresado no es válido."},
+        "ultimo_dia_pago": {"faltante": "No se definió el último día de la fecha de pago.", "invalido": "El último día de la fecha de pago no es válido."},
+        "anio": {"faltante": "No se agregó el año del contrato.", "invalido": "El año del contrato no es válido."},
+        "id_establecimiento": {"faltante": "No se agregó el establecimiento.", "invalido": "El establecimiento seleccionado no es válido."},
+        "archivo_egresados": {"faltante": "No se adjuntó el archivo de egresados.", "invalido": "El archivo de egresados no es válido."},
+    },
+}
+
+# Título de la ventana emergente de error, según la ruta del formulario que la origina.
+TITULOS_ERROR_POR_RUTA = {
+    "/contratos/carga-masiva-excel": "Error al generar contrato",
+}
+
+
 @app.exception_handler(RequestValidationError)
 async def validation_data_exception_handler(request: Request, exc: RequestValidationError):
 
+    ruta = request.url.path
+    mensajes_campo = MENSAJES_CAMPO_POR_RUTA.get(ruta, {})
+    titulo = TITULOS_ERROR_POR_RUTA.get(ruta, "Errores de validación")
+
     errores_legibles = []
     for error in exc.errors():
-        campo = error["loc"][-1]
+        campo = str(error["loc"][-1])
+        mensajes_de_este_campo = mensajes_campo.get(campo)
         if error["type"] == "missing":
-            mensaje = f"El campo '{campo}' es obligatorio."
+            mensaje = mensajes_de_este_campo["faltante"] if mensajes_de_este_campo else f"El campo '{campo}' es obligatorio."
         else:
-            mensaje = f"El campo '{campo}' tiene un formato inválido."
+            mensaje = mensajes_de_este_campo["invalido"] if mensajes_de_este_campo else f"El campo '{campo}' tiene un formato inválido."
         errores_legibles.append(mensaje)
 
-    mensaje_general = "El formulario contiene errores de validación."
+    mensaje_general = errores_legibles[0] if len(errores_legibles) == 1 else "El formulario contiene errores de validación."
 
     if es_peticion_ajax(request):
         return JSONResponse(
             status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
-            content={"mensaje": mensaje_general, "errores": errores_legibles}
+            content={"titulo": titulo, "mensaje": mensaje_general, "errores": errores_legibles}
         )
 
     context = {
         "request": request,
+        "titulo": titulo,
         "mensaje": mensaje_general,
         "errores": errores_legibles,
         "url_redireccion": "/eventos"

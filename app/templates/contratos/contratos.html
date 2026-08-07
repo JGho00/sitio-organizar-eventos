@@ -153,7 +153,7 @@
                             <td class="mono">{{ contrato.dia_vencimiento_mensual}}</td>
                             <td class="mono">{{ contrato.fecha_fin }}</td>
                             <td class="btn-row">
-                                <button class="btn">Ver</button>
+                                <a href="/contratos/{{ contrato.id }}"><button type="button" class="btn">Ver</button></a>
                                 <form action="/contratos/eliminar-contrato/{{ contrato.id }}" method="POST" style="display:inline;" data-ajax data-confirm="¿Está seguro de que desea eliminar este contrato?" data-redirect="/contratos">
                                     <button type="submit" class="btn">Eliminar</button>
                                 </form>

@@ -2,7 +2,7 @@
 // Intercepta el envío de formularios marcados con data-ajax y los envía por fetch,
 // mostrando los errores (422 u otros) en un modal superpuesto en vez de navegar a otra página.
 
-function mostrarModalErrorAjax(mensaje, errores) {
+function mostrarModalErrorAjax(mensaje, errores, titulo) {
     cerrarModalErrorAjax();
 
     const overlay = document.createElement('div');
@@ -17,7 +17,7 @@ function mostrarModalErrorAjax(mensaje, errores) {
     modal.innerHTML = `
         <button type="button" class="btn-cerrar-esquina" id="ajax-error-cerrar">&times;</button>
         <div class="error-icon">⚠️</div>
-        <h2 class="error-title warning">Errores de validación</h2>
+        <h2 class="error-title warning">${titulo || 'Errores de validación'}</h2>
         <p class="error-msg">${mensaje}</p>
         ${listaErrores ? `<ul class="error-list">${listaErrores}</ul>` : ''}
     `;
@@ -64,17 +64,19 @@ async function manejarEnvioFormularioAjax(evento) {
         const tipoContenido = respuesta.headers.get('content-type') || '';
         let mensaje = 'Ocurrió un error al procesar la solicitud.';
         let errores = [];
+        let titulo = null;
 
         if (tipoContenido.includes('application/json')) {
             const datos = await respuesta.json();
             mensaje = datos.mensaje || datos.detail || mensaje;
             errores = datos.errores || [];
+            titulo = datos.titulo || null;
         } else {
             const texto = await respuesta.text();
             if (texto) mensaje = texto;
         }
 
-        mostrarModalErrorAjax(mensaje, errores);
+        mostrarModalErrorAjax(mensaje, errores, titulo);
     } catch (error) {
         console.error('Error al enviar el formulario:', error);
         mostrarModalErrorAjax('No se pudo conectar con el servidor.', []);
